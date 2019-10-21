@@ -2,7 +2,7 @@
 // Created by jakhremchik
 //
 
-#include "tflow_wrapper_core.h"
+#include "tensorflow_wrapper_core.h"
 
 TensorflowWrapperCore::TensorflowWrapperCore(TensorflowWrapperCore &&that) {
     this->_session = that._session;
@@ -115,6 +115,7 @@ std::string TensorflowWrapperCore::inference(const std::vector<cv::Mat> &imgs)
     using namespace tensorflow;
 
     Tensor input = getConvertFunction(INPUT_TYPE::DT_FLOAT)(imgs, _input_height, _input_width, _input_width, _convert_to_float, _mean);
+//    std::vector<std::pair<string, tensorflow::Tensor>> inputs = {{_input_node_name, input}, {"", false}};
     std::vector<std::pair<string, tensorflow::Tensor>> inputs = {{_input_node_name, input}};
 
     status = _session->Run(inputs, _output_node_names, {}, &_output_tensors);

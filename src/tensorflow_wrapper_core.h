@@ -2,10 +2,10 @@
 // Created by jakhremchik on 18.10.2019.
 //
 
-#ifndef TF_WRAPPER_EMBEDDING_TFLOW_WRAPPER_CORE_H
-#define TF_WRAPPER_EMBEDDING_TFLOW_WRAPPER_CORE_H
+#ifndef TF_WRAPPER_EMBEDDING_TENSORFLOW_WRAPPER_CORE_H
+#define TF_WRAPPER_EMBEDDING_TENSORFLOW_WRAPPER_CORE_H
 
-#include "tflow_base.h"
+#include "tensorflow_base.h"
 
 #include <string>
 #include <vector>
@@ -35,7 +35,7 @@ public:
     virtual void setName(const std::string& name);
 
 
-    virtual void warmUp(int batchSize) = 0;
+//    virtual void warmUp(int batchSize) = 0;
 
     std::string getPath() const;
 
@@ -68,10 +68,11 @@ public:
     bool getAllowGrowth() const;
     void setAllowGrowth(bool allow_growth);
 
+
 protected:
 
-    virtual void clearModel() = 0;
-    virtual void clearSession() = 0;
+//    virtual void clearModel() = 0;
+//    virtual void clearSession() = 0;
 
     ///values for covert image before processing
     short _input_height = 0;
@@ -139,4 +140,4 @@ protected:
 
 };
 
-#endif //TF_WRAPPER_EMBEDDING_TFLOW_WRAPPER_CORE_H
+#endif //TF_WRAPPER_EMBEDDING_TENSORFLOW_WRAPPER_CORE_H

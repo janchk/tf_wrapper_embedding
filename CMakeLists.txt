@@ -22,7 +22,7 @@ set(CMAKE_MODULE_PATH
 find_package(TensorflowCC REQUIRED)
 find_package( OpenCV REQUIRED )
 
-add_executable(TF_WRAPPER_EMBEDDING src/main.cpp src/tflow_base.cpp src/tflow_base.h src/tflow_wrapper_core.cpp src/tflow_wrapper_core.h)
+add_executable(TF_WRAPPER_EMBEDDING src/main.cpp src/tensorflow_base.cpp src/tensorflow_base.h src/tensorflow_wrapper_core.cpp src/tensorflow_wrapper_core.h src/common/image_handling.cpp src/common/image_handling.h src/tensorflow_embeddings.cpp src/tensorflow_embeddings.h)
 
 # message("${TensorFlow_INCLUDE_DIRS}")
 
