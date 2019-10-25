@@ -14,9 +14,12 @@ public:
     TensorFlowEmbeddings() = default;
     virtual ~TensorFlowEmbeddings() = default;
 
+    std::string inference(const std::vector<cv::Mat> &imgs) override;
     std::vector<std::vector<float>> getOutputEmbeddings();
 
+
 protected:
+    tensorflow::Status _status;
 //    virtual void clearSession();
     std::vector<std::vector<float>> embeddings;
 

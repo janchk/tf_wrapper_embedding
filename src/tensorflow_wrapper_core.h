@@ -1,11 +1,12 @@
 //
-// Created by jakhremchik on 18.10.2019.
+// Created by jakhremchik
 //
 
 #ifndef TF_WRAPPER_EMBEDDING_TENSORFLOW_WRAPPER_CORE_H
 #define TF_WRAPPER_EMBEDDING_TENSORFLOW_WRAPPER_CORE_H
 
 #include "tensorflow_base.h"
+#include "tensorflow_auxiliary.h"
 
 #include <string>
 #include <vector>
@@ -74,10 +75,14 @@ protected:
 //    virtual void clearModel() = 0;
 //    virtual void clearSession() = 0;
 
+    void getInputNodeNameFromGraphIfPossible(const std::string &inputNodeName);
+
+    tensorflow::Status _status;
+
     ///values for covert image before processing
-    short _input_height = 0;
-    short _input_width = 0;
-    short _input_depth = 0;
+    short _input_height = 256;
+    short _input_width = 256;
+    short _input_depth = 3;
 
     std::vector<float> _mean = {0, 0, 0};
     bool _convert_to_float = false;
@@ -85,8 +90,8 @@ protected:
 
     ///values for inference
     ///Inputs and outputs should be reassigned probably
-    std::string _input_node_name = "input";
-    std::vector<std::string> _output_node_names = {"embeddings"};
+    std::string _input_node_name = "image_batch_p:0";
+    std::vector<std::string> _output_node_names = {"embeddings:0"};
 
     ///_______________________________________
 
@@ -103,15 +108,15 @@ protected:
     ///
     tensorflow::Tensor getTensorFromGraph(const std::string& tensor_name);
 
-    using ConvertFunctionType = decltype(&(tf_base::convertMatToTensor<tensorflow::DT_FLOAT>));
+    using ConvertFunctionType = decltype(&(tf_aux::convertMatToTensor<tensorflow::DT_FLOAT>));
 
     ConvertFunctionType getConvertFunction(INPUT_TYPE type) {
         if (type == INPUT_TYPE::DT_FLOAT) {
-            return tf_base::convertMatToTensor<tensorflow::DT_FLOAT>;
+            return tf_aux::convertMatToTensor<tensorflow::DT_FLOAT>;
         }
-///Actually we don't need support for int operations because we don't have hardware limits.
+///Actually we don't need support for int operations because we don't have strong hardware limits.
 //        else if (type == INPUT_TYPE::DT_UINT8) {
-//            return tf_base::convertMatToTensor<tensorflow::DT_UINT8>;
+//            return tf_aux::convertMatToTensor<tensorflow::DT_UINT8>;
 //        }
         else throw std::invalid_argument("not implemented");
     }
