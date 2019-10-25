@@ -14,6 +14,8 @@ public:
     TensorFlowEmbeddings() = default;
     virtual ~TensorFlowEmbeddings() = default;
 
+    int batch_size;
+
     std::string inference(const std::vector<cv::Mat> &imgs) override;
     std::vector<std::vector<float>> getOutputEmbeddings();
 

@@ -26,9 +26,10 @@ std::string parseCommandLine(int argc, char *argv[], std::string c) {
         char *filename = getCmdOption(argv, argv + argc, c);
         ret = std::string(filename);
     } else {
-        std::cout << "Use -f $image$"
+        std::cout << "Use -img $image$"
                      " -pb frozen.pb"
-                     "-batch sizeOfButch"
+                     "-batch size of batch"
+                     "--input_node name of input node"
                   << std::endl;
         return 0;
     }
@@ -37,20 +38,22 @@ std::string parseCommandLine(int argc, char *argv[], std::string c) {
 
 
 int main(int argc, char *argv[]) {
-    std::vector<std::vector<float>> output;
-    auto *tf_embed = new TensorFlowEmbeddings();
     std::string const inFileName = parseCommandLine(argc, argv, std::string("-img"));
     std::string m_tfNetPath = parseCommandLine(argc, argv, std::string("-pb"));
     std::string const m_tfInputNode = parseCommandLine(argc, argv, std::string("--input_node"));
-//    std::string batchSizeStr = parseCommandLine(argc, argv, std::string("-batch"));
+    //TODO this is redundant parameter
+    std::string batchSizeStr = parseCommandLine(argc, argv, std::string("-batch"));
 //    std::string numTurnStr = parseCommandLine(argc, argv, std::string("-Nturn"));
 
+    auto *tf_embed = new TensorFlowEmbeddings();
+    tf_embed->batch_size = std::stoi(batchSizeStr);
+    std::vector<std::vector<float>> output;
 
     cv::Mat img = fs_img::read_img(inFileName);
+
     tf_embed->load(m_tfNetPath, m_tfInputNode);
+    tf_embed->inference({img, img});
 
-
-    tf_embed->inference({img});
     output = tf_embed->getOutputEmbeddings();
 
     return 0;

@@ -65,11 +65,10 @@ namespace tf_aux
         }
 
         Tensor input(T, TensorShape({imgs.size(), height, width, depth}));
-//            Tensor input(T, TensorShape({1, 256, 256, 2}));
 
         using POD_type = typename tensorflow::EnumToDataType<T>::Type;
-//        auto input_tensor_mapped = input.tensor<POD_type, 4>();
-        auto input_tensor_mapped = input.tensor<float, 4>();
+        auto input_tensor_mapped = input.tensor<POD_type, 4>();
+//        auto input_tensor_mapped = input.tensor<float, 4>();
 
         const auto batch_size = imgs.size();
         for(size_t i = 0; i < batch_size; ++i)

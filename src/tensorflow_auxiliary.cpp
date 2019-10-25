@@ -43,11 +43,19 @@ std::vector<std::vector<float>> tf_aux::convertTensorToVector(const tensorflow::
     std::vector<std::vector<float>> vec_embeddings;
 
 
-    for (size_t embedding_size = 0; embedding_size < dims.dim_size(1); ++embedding_size) {
-        temp_vec.push_back(tensor.flat<float_t>().data()[embedding_size]);
+//    char out_shape;
+//    std::sprintf(&out_shape,"%lld, %lld, %lld",dims.dim_size(0), dims.dim_size(1), dims.dim_size(2));
+//    std::cout << out_shape << std::endl;
+    for (size_t batch_size = 0; batch_size < dims.dim_size(0); ++batch_size){
+        std::cout << batch_size << std::endl; //for debug
+        for (size_t embedding_size = 0; embedding_size < dims.dim_size(1); ++embedding_size) {
+            temp_vec.push_back(temp_tensor(batch_size, embedding_size));
+            std::cout << temp_tensor(batch_size, embedding_size) << " "; //for debug
+        }
+        std::cout << std::endl; //for debug
 
+        vec_embeddings.push_back(temp_vec);
     }
-    vec_embeddings.push_back(temp_vec);
 
     return vec_embeddings;
 
