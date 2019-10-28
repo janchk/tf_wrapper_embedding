@@ -39,7 +39,12 @@ std::string TensorFlowEmbeddings::inference(const std::vector<cv::Mat> &imgs) {
     return _status.ToString();
 }
 
-std::vector<std::pair<unsigned long, float>> TensorFlowEmbeddings::matching(std::vector<std::vector<float>> base, std::vector<float> target) {
+bool sortbysec(const std::pair<unsigned long, float> &a, const std::pair<unsigned long, float> &b){
+    return (a.second < b.second);
+}
+
+std::vector<std::pair<unsigned long, float>> TensorFlowEmbeddings::matching(std::vector<std::vector<float>> base,
+                                                                            std::vector<float> target){
     std::vector<std::pair<unsigned long, float>> distances;
     std::pair<unsigned long, float> pair;
     for (unsigned long i = 0; i < base.size(); ++i) {
@@ -49,7 +54,7 @@ std::vector<std::pair<unsigned long, float>> TensorFlowEmbeddings::matching(std:
         distances.push_back(pair);
     }
 
-    std::sort(distances.begin(), distances.end());
+    std::sort(distances.begin(), distances.end(), sortbysec);
 
     return distances;
 }
