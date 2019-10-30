@@ -41,7 +41,7 @@ int main(int argc, char *argv[]) {
     std::string const inFileName = parseCommandLine(argc, argv, std::string("-img"));
     std::string m_tfNetPath = parseCommandLine(argc, argv, std::string("-pb"));
     std::string const m_tfInputNode = parseCommandLine(argc, argv, std::string("--input_node"));
-    //TODO this is redundant parameter
+    //TODO this is redundant parameter ?
     std::string batchSizeStr = parseCommandLine(argc, argv, std::string("-batch"));
 //    std::string numTurnStr = parseCommandLine(argc, argv, std::string("-Nturn"));
 
@@ -50,9 +50,12 @@ int main(int argc, char *argv[]) {
     std::vector<std::vector<float>> output;
 
     cv::Mat img = fs_img::read_img(inFileName);
+//    auto data = img.at<cv::Vec3b>(0,0);
 
+//    tf_embed->read()
     tf_embed->load(m_tfNetPath, m_tfInputNode);
-    tf_embed->inference({img, img});
+//    tf_embed->inference({img, img});
+    tf_embed->inference({img});
 
     output = tf_embed->getOutputEmbeddings();
 

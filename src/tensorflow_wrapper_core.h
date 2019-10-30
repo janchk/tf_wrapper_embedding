@@ -7,6 +7,7 @@
 
 #include "tensorflow_base.h"
 #include "tensorflow_auxiliary.h"
+#include "wrapper_legacy.h"
 
 #include <string>
 #include <vector>
@@ -108,11 +109,11 @@ protected:
     ///
     tensorflow::Tensor getTensorFromGraph(const std::string& tensor_name);
 
-    using ConvertFunctionType = decltype(&(tf_aux::convertMatToTensor<tensorflow::DT_FLOAT>));
+    using ConvertFunctionType = decltype(&(wrapper_legacy::convertMatToTensor<tensorflow::DT_FLOAT>));
 
     ConvertFunctionType getConvertFunction(INPUT_TYPE type) {
         if (type == INPUT_TYPE::DT_FLOAT) {
-            return tf_aux::convertMatToTensor<tensorflow::DT_FLOAT>;
+            return wrapper_legacy::convertMatToTensor<tensorflow::DT_FLOAT>;
         }
 ///Actually we don't need support for int operations because we don't have strong hardware limits.
 //        else if (type == INPUT_TYPE::DT_UINT8) {
