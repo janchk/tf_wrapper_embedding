@@ -25,6 +25,7 @@ bool TensorFlowEmbeddings::normalize_image(cv::Mat &img) {
 
 std::string TensorFlowEmbeddings::prepare_inference(std::string path) {
 
+
 }
 
 std::string TensorFlowEmbeddings::inference(const std::vector<cv::Mat> &imgs) {

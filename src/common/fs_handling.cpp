@@ -22,3 +22,8 @@ cv::Mat fs_img::read_img(const std::string& im_filename){
     cv::cvtColor(img, img, cv::COLOR_BGR2RGB);
     return img;
 }
+
+std::vector<std::pair<cv::Mat, std::string>> fs_img::read_imgs(const std::string &dir_path) {
+    fs
+
+}
