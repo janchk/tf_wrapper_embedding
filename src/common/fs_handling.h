@@ -9,6 +9,7 @@
 #include "opencv/cv.hpp"
 #include "vector"
 #include "string"
+#include "../tensorflow_auxiliary.h"
 
 #define EXPERIMENTAL
 #ifdef EXPERIMENTAL

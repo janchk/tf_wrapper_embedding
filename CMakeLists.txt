@@ -28,7 +28,7 @@ add_executable(TF_WRAPPER_EMBEDDING src/main.cpp src/tensorflow_base.cpp src/ten
 
 # target_include_directories(TF_WRAPPER_EMBEDDING PRIVATE ${TensorFlow_INCLUDE_DIRS})
 #target_link_libraries(TF_WRAPPER_EMBEDDING TensorflowCC::Shared ${OpenCV_LIBS})
-target_link_libraries(TF_WRAPPER_EMBEDDING TensorflowCC::Static ${OpenCV_LIBS})
+target_link_libraries(TF_WRAPPER_EMBEDDING TensorflowCC::Static  stdc++fs ${OpenCV_LIBS})
 
 # OLD WAY TO INCLUDE TENSORFLOW #
 
