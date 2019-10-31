@@ -19,11 +19,10 @@ bool TensorFlowEmbeddings::normalize_image(cv::Mat &img) {
     img = (img * 2) - cv::Scalar(1);
     return true;
 
-
-
 }
 
-std::string TensorFlowEmbeddings::prepare_inference(std::string path) {
+std::string TensorFlowEmbeddings::prepare_inference(std::string path, std::string db_path) {
+    //open file
 
 
 }
@@ -106,14 +105,14 @@ std::vector<std::vector<float>> TensorFlowEmbeddings::getOutputEmbeddings() {
         return {};
     }
 
-    if (embeddings.empty()){
+    if (out_embeddings.empty()){
         const auto& output = _output_tensors[0];
 //        std::cout << _output_tensors[0](0,0) std::endl;
-        embeddings = convertTensorToVector(output);
+        out_embeddings = convertTensorToVector(output);
 
     }
 
-    return embeddings;
+    return out_embeddings;
 }
 
 

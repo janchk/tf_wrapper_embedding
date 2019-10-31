@@ -8,6 +8,9 @@
 #include "tensorflow_wrapper_core.h"
 #include "tensorflow_base.h"
 #include "opencv2/imgproc/imgproc.hpp"
+
+
+
 #include <cmath>
 
 class TensorFlowEmbeddings : public TensorflowWrapperCore
@@ -18,7 +21,11 @@ public:
 
     int batch_size;
 
-    std::string prepare_inference (std::string path);
+    ///
+    /// \param path
+    /// \param db_path
+    /// \return
+    std::string prepare_inference(std::string path, std::string db_path);
 
     std::string inference(const std::vector<cv::Mat> &imgs) override;
     std::vector<std::vector<float>> getOutputEmbeddings();
@@ -34,11 +41,16 @@ public:
 protected:
 
 
+
     tensorflow::Status _status;
     tensorflow::Tensor _input_tensor;
-//    virtual void clearSession();
-    std::vector<std::vector<float>> embeddings;
+    // virtual void clearSession();
+    std::vector<std::vector<float>> out_embeddings;
+
+
     float _calc_distance(std::vector<float> base, std::vector<float> target);
+
+
 
 
 };
