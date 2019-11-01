@@ -19,12 +19,18 @@ public:
     }
     ~WrapperBase() = default;
 
+    unsigned int topN;
+
     bool prepare_for_inference();
-//    bool inference_and_matching();
+    bool inference_and_matching(std::string img_path);
 protected:
     DatabaseHandling *db_handler;
     TensorFlowEmbeddings *inference_handler;
     std::vector<std::string> list_of_imgs;
+
+    float _calc_distance(std::vector<float> base, std::vector<float> target);
+
+    bool matching(std::vector<DatabaseHandling::data_vec_entry> &base, std::vector<float> &target);
 
     bool add_updates();
     bool check_for_updates();

@@ -52,6 +52,7 @@ int main(int argc, char *argv[]) {
 //    std::cout << "lol" << std::endl;
     auto *tf_wrapper = new WrapperBase();
     tf_wrapper->prepare_for_inference();
+//    tf_wrapper->
 //    auto *tf_embed = new TensorFlowEmbeddings();
 //    tf_embed->batch_size = std::stoi(batchSizeStr);
 //    std::vector<std::vector<float>> output;
