@@ -21,44 +21,42 @@ bool TensorFlowEmbeddings::normalize_image(cv::Mat &img) {
 
 }
 
-std::string TensorFlowEmbeddings::prepare_inference(std::string path, std::string db_path) {
-    //open file
-
-
-}
+//std::string TensorFlowEmbeddings::prepare_inference(std::string path, std::string db_path) {
+//    //open file
+//
+//
+//}
 
 std::string TensorFlowEmbeddings::inference(const std::vector<cv::Mat> &imgs) {
     using namespace tensorflow;
-    for (const cv::Mat &img : imgs) {
-        auto data = &img.at<cv::Vec3b>(0,0);
-        if(!tf_aux::fastResizeIfPossible(img, const_cast<cv::Mat *>(&img), cv::Size(256, 256))) {
-            return "Fail to normalize images";
-        }
-        data = &img.at<cv::Vec3b>(0,0);
-        if(!normalize_image(const_cast<cv::Mat &>(img))){
-            return "Fail to normalize images";
-        }
-        auto fdata = &img.at<cv::Vec3f>(0,1);
-        std::cout << *fdata << std::endl;
-    }
+//    for (const cv::Mat &img : imgs) {
+////        //TODO move out Size!
+////        if(!tf_aux::fastResizeIfPossible(img, const_cast<cv::Mat *>(&img), cv::Size(256, 256))) {
+////            return "Fail to normalize images";
+////        }
+//        if(!normalize_image(const_cast<cv::Mat &>(img))){
+//            return "Fail to normalize images";
+//        }
+//    }
+//
+//    if (!tf_aux::convertMatToTensor_v2(imgs, this->_input_tensor)){
+//        return "Fail to convert Mat to Tensor";
+//    }
 
-    if (!tf_aux::convertMatToTensor_v2(imgs, this->_input_tensor)){
-        return "Fail to convert Mat to Tensor";
-    }
-
-//    Tensor input = getConvertFunction(INPUT_TYPE::DT_FLOAT)(imgs, _input_height,
-//            _input_width, _input_depth, _convert_to_float, _mean);
+    Tensor input = getConvertFunction(INPUT_TYPE::DT_FLOAT)(imgs, _input_height,
+            _input_width, _input_depth, _convert_to_float, _mean);
     //preprocess imgs first
 //    Tensor input = tf_aux::convertMatToTensor_v2(imgs);
-    std::vector in_tensor_shape = tf_aux::get_tensor_shape(this->_input_tensor);
+//    std::vector in_tensor_shape = tf_aux::get_tensor_shape(this->_input_tensor);
+    std::vector in_tensor_shape = tf_aux::get_tensor_shape(input);
 
     #ifdef PHASEINPUT
     tensorflow::Tensor phase_tensor(tensorflow::DT_BOOL, tensorflow::TensorShape());
     phase_tensor.scalar<bool>()() = false;
     std::vector<std::pair<string, tensorflow::Tensor>> inputs = {{_input_node_name, input},{"phase_train:0", phase_tensor}};
     #else
-    std::vector<std::pair<string, tensorflow::Tensor>> inputs = {{_input_node_name, this->_input_tensor}};
-//    std::vector<std::pair<string, tensorflow::Tensor>> inputs = {{_input_node_name, input}};
+//    std::vector<std::pair<string, tensorflow::Tensor>> inputs = {{_input_node_name, this->_input_tensor}};
+    std::vector<std::pair<string, tensorflow::Tensor>> inputs = {{_input_node_name, input}};
     #endif
 
     _status = _session->Run(inputs, _output_node_names, {}, &_output_tensors);

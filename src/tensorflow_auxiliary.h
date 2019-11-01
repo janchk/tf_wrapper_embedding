@@ -30,7 +30,7 @@ namespace tf_aux
         std::cerr << header << ": " << msg << "\n";
     #endif
     }
-    bool fastResizeIfPossible(const cv::Mat& in, cv::Mat *dist, const cv::Size& size);
+    bool fastResizeIfPossible(const cv::Mat &in, cv::Mat *dist, const cv::Size &size);
 
 
     ///
@@ -42,7 +42,7 @@ namespace tf_aux
     ///
     /// \param tensor
     /// \return
-    std::vector<int> get_tensor_shape(tensorflow::Tensor& tensor);
+    std::vector<int> get_tensor_shape(tensorflow::Tensor &tensor);
 
 
 struct profiler {

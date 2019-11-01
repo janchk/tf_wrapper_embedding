@@ -21,11 +21,11 @@ public:
 
     int batch_size;
 
-    ///
-    /// \param path
-    /// \param db_path
-    /// \return
-    std::string prepare_inference(std::string path, std::string db_path);
+//    ///
+//    /// \param path
+//    /// \param db_path
+//    /// \return
+//    std::string prepare_inference(std::string path, std::string db_path);
 
     std::string inference(const std::vector<cv::Mat> &imgs) override;
     std::vector<std::vector<float>> getOutputEmbeddings();

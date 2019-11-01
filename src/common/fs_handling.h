@@ -54,6 +54,8 @@ public:
     std::string datafile_path = "/media/jakhremchik/ubuntuHD/PROJECTS/test_imgs/data.txt";
     std::string imgs_path = "/media/jakhremchik/ubuntuHD/PROJECTS/test_imgs/";
     bool load_database();
+    bool add_json_entry(data_vec_entry new_data);
+
 protected:
     std::fstream imgs_datafile;
 
@@ -61,7 +63,6 @@ protected:
 
     bool open_datafile();
 //    bool load_database();
-    bool add_json_entry();
 
 
 };

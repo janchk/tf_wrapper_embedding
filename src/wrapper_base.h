@@ -15,15 +15,18 @@ public:
     WrapperBase()
     {
         db_handler = new DatabaseHandling();
+        inference_handler = new TensorFlowEmbeddings();
     }
     ~WrapperBase() = default;
 
     bool prepare_for_inference();
-    bool inference_and_matching();
+//    bool inference_and_matching();
 protected:
     DatabaseHandling *db_handler;
+    TensorFlowEmbeddings *inference_handler;
     std::vector<std::string> list_of_imgs;
 
+    bool add_updates();
     bool check_for_updates();
 
 };

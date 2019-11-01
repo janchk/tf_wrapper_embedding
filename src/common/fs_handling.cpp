@@ -3,6 +3,8 @@
 //
 
 #include "fs_handling.h"
+
+#include <utility>
 //TODO add if exception to lng dependent fs
 //#include <experimental/filesystem>
 
@@ -19,7 +21,7 @@ cv::Mat fs_img::read_img(const std::string& im_filename) {
     cv::Mat img;
     cv::Size size = cv::Size(256, 256); // TODO move out this param
     img = cv::imread(im_filename, cv::IMREAD_COLOR);
-    cv::cvtColor(img, img, cv::COLOR_BGR2RGB);
+//    cv::cvtColor(img, img, cv::COLOR_BGR2RGB);
     tf_aux::fastResizeIfPossible(img, const_cast<cv::Mat *>(&img), size);
     return img;
 }
@@ -60,8 +62,9 @@ bool DatabaseHandling::load_database() {
             rapidjson::Value &img_embedding = doc["embedding"];
 
             base_entry.filepath = img_name.GetString();
-            for (const auto &value : img_embedding.GetObject()) {
-                base_entry.embedding.emplace_back(value.value.GetFloat());
+//            for (const auto &value : img_embedding.GetObject()) {
+            for (const auto &value : img_embedding.GetArray()) {
+                base_entry.embedding.emplace_back(value.GetFloat());
             }
             this->data_vec_base.emplace_back(base_entry);
 
@@ -75,15 +78,34 @@ bool DatabaseHandling::load_database() {
 }
 
 // Adding images one by one. No batch using.
-//bool DatabaseHandling::add_json_entry() {
-//    using namespace rapidjson;
-//    if (this->imgs_datafile.is_open()){
-////        for (auto entry=imgs_and_paths.begin(); entry!=imgs_and_paths.end(); ++entry) {
-////        }
-//    }
-//    else {
-//        this->open_datafile();
-//        this->add_json_entry();
-//
-//    }
-//}
+bool DatabaseHandling::add_json_entry(data_vec_entry new_data) {
+    using namespace rapidjson;
+    StringBuffer strbuf;
+    Writer<StringBuffer> writer(strbuf);
+
+    Document line; // rapidjson doc as line in file
+    Value embedding(kArrayType); // for embedding
+    Value name(kStringType); // for img path
+    Document::AllocatorType& allocator = line.GetAllocator();
+    if (this->imgs_datafile.is_open()) {
+        for (const auto &value : new_data.embedding) {
+            embedding.PushBack(value, allocator);
+        }
+
+        line.AddMember("name", name, allocator);
+        line.AddMember("embedding", embedding, allocator);
+
+        line.Accept(writer);
+        std::cout << "json entry " << strbuf.GetString() << std::endl;
+
+
+
+//        for (auto entry=imgs_and_paths.begin(); entry!=imgs_and_paths.end(); ++entry) {
+//        }
+    }
+    else {
+        this->open_datafile();
+        this->add_json_entry(std::move(new_data));
+
+    }
+}
