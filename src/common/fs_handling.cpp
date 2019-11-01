@@ -74,6 +74,7 @@ bool DatabaseHandling::load_database() {
         this->open_datafile();
         this->load_database();
     }
+    this->imgs_datafile.close();
     return true;
 }
 
@@ -84,6 +85,7 @@ bool DatabaseHandling::add_json_entry(data_vec_entry new_data) {
     Writer<StringBuffer> writer(strbuf);
 
     Document line; // rapidjson doc as line in file
+    line.SetObject();
     Value embedding(kArrayType); // for embedding
     Value name(kStringType); // for img path
     Document::AllocatorType& allocator = line.GetAllocator();
@@ -91,12 +93,15 @@ bool DatabaseHandling::add_json_entry(data_vec_entry new_data) {
         for (const auto &value : new_data.embedding) {
             embedding.PushBack(value, allocator);
         }
+        name.SetString(new_data.filepath.c_str(), allocator);
 
         line.AddMember("name", name, allocator);
         line.AddMember("embedding", embedding, allocator);
 
         line.Accept(writer);
         std::cout << "json entry " << strbuf.GetString() << std::endl;
+        this->imgs_datafile << strbuf.GetString() << std::endl;
+        this->imgs_datafile.close();
 
 
 

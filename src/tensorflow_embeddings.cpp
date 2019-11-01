@@ -132,7 +132,7 @@ std::vector<std::vector<float>> TensorFlowEmbeddings::convertTensorToVector(cons
         std::cout << batch_size << std::endl; //for debug
         for (size_t embedding_size = 0; embedding_size < dims.dim_size(1); ++embedding_size) {
             std::cout <<  uchar( temp_tensor(batch_size, embedding_size)) << " ";
-//            temp_vec.push_back(uchar( temp_tensor(batch_size, embedding_size)));
+            temp_vec.push_back( temp_tensor(batch_size, embedding_size));
             std::cout << temp_tensor(batch_size, embedding_size) << " "; //for debug
         }
         std::cout << std::endl; //for debug

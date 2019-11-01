@@ -11,10 +11,14 @@ bool WrapperBase::prepare_for_inference() {
 //    db_handler->datafile_path = "";
 //    db_handler->imgs_path = "";
 
+
     db_handler->load_database();
     this->list_of_imgs = fs_img::list_imgs(db_handler->imgs_path); //TODO rewrite it
     this->check_for_updates();
-    this->add_updates();
+    if (!list_of_imgs.empty())
+        this->add_updates();
+    else
+       std::cout << "No new images found" << std::endl;
 
 
 
@@ -22,6 +26,7 @@ bool WrapperBase::prepare_for_inference() {
 
 bool WrapperBase::add_updates() {
     cv::Mat img;
+    inference_handler->load("/home/jakhremchik/Downloads/optimized_val_84.pb", "image_batch_p:0"); //TODO move out constants
     std::vector<float> out_embedding; //TODO remember about batch
     DatabaseHandling::data_vec_entry new_data;
     for (const auto &img_path : this->list_of_imgs) {
@@ -31,19 +36,17 @@ bool WrapperBase::add_updates() {
         new_data.filepath = img_path;
         db_handler->data_vec_base.push_back(new_data);
         db_handler->add_json_entry(new_data);
-
     }
-
-
-//    for (const auto &new_img)
 
 }
 
 bool WrapperBase::check_for_updates() {
-    for (auto img_path=this->list_of_imgs.begin(); img_path!=this->list_of_imgs.end(); ++img_path) {
-        for (const auto &entry : db_handler->data_vec_base ) {
+    for (const auto &entry : db_handler->data_vec_base) {
+        for (auto img_path=this->list_of_imgs.begin(); img_path!=this->list_of_imgs.end();) {
             if (*img_path == entry.filepath) {
-                list_of_imgs.erase(img_path);
+                this->list_of_imgs.erase(img_path);
+            } else {
+                img_path++;
             }
         }
     }
@@ -52,6 +55,7 @@ bool WrapperBase::check_for_updates() {
             std::cout << "Found new data" << entry << std::endl;
         }
     }
+
     return true;
 
 
