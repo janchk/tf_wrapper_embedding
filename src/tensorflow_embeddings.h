@@ -24,29 +24,18 @@ public:
 
     std::string inference(const std::vector<cv::Mat> &imgs) override;
     std::vector<std::vector<float>> getOutputEmbeddings();
-    std::vector<std::pair<unsigned long, float>> matching(std::vector<std::vector<float>> base, std::vector<float> target);
     bool normalize_image(cv::Mat &img);
 
     /// \brief function to convert output tensor of embeddings to vector of embeddings
     /// \param tensor
     /// \return Vector of embeddings
-    std::vector<std::vector<float>> convertTensorToVector(const tensorflow::Tensor& tensor);
+    static  std::vector<std::vector<float>> convertTensorToVector(const tensorflow::Tensor& tensor);
 
 
 protected:
-
-
-
     tensorflow::Status _status;
     tensorflow::Tensor _input_tensor;
-    // virtual void clearSession();
     std::vector<std::vector<float>> out_embeddings;
-
-
-    float _calc_distance(std::vector<float> base, std::vector<float> target);
-
-
-
 
 };
 

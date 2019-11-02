@@ -9,7 +9,6 @@
 
 bool TensorFlowEmbeddings::normalize_image(cv::Mat &img) {
     double  min, max;
-//    cv::Mat out_img;
 
 //    tf_aux::fastResizeIfPossible()
     cv::Scalar data = img.at<cv::Vec3b>(0,0);
@@ -21,19 +20,9 @@ bool TensorFlowEmbeddings::normalize_image(cv::Mat &img) {
 
 }
 
-//std::string TensorFlowEmbeddings::prepare_inference(std::string path, std::string db_path) {
-//    //open file
-//
-//
-//}
-
 std::string TensorFlowEmbeddings::inference(const std::vector<cv::Mat> &imgs) {
     using namespace tensorflow;
     for (const cv::Mat &img : imgs) {
-////        //TODO move out Size!
-////        if(!tf_aux::fastResizeIfPossible(img, const_cast<cv::Mat *>(&img), cv::Size(256, 256))) {
-////            return "Fail to normalize images";
-////        }
         if(!normalize_image(const_cast<cv::Mat &>(img))){
             return "Fail to normalize images";
         }
@@ -47,7 +36,7 @@ std::string TensorFlowEmbeddings::inference(const std::vector<cv::Mat> &imgs) {
 //            _input_width, _input_depth, _convert_to_float, _mean);
     //preprocess imgs first
 //    Tensor input = tf_aux::convertMatToTensor_v2(imgs);
-    std::vector in_tensor_shape = tf_aux::get_tensor_shape(this->_input_tensor);
+//    std::vector in_tensor_shape = tf_aux::get_tensor_shape(this->_input_tensor);
 //    std::vector in_tensor_shape = tf_aux::get_tensor_shape(input);
 
     #ifdef PHASEINPUT
@@ -76,9 +65,11 @@ std::vector<std::vector<float>> TensorFlowEmbeddings::getOutputEmbeddings() {
 
     if (out_embeddings.empty()){
         const auto& output = _output_tensors[0];
-//        std::cout << _output_tensors[0](0,0) std::endl;
+//        std::cout  << "converting tensor to Vector" << std::endl;
         out_embeddings = convertTensorToVector(output);
-
+    } else {
+        out_embeddings.clear();
+        getOutputEmbeddings();
     }
 
     return out_embeddings;
@@ -88,25 +79,17 @@ std::vector<std::vector<float>> TensorFlowEmbeddings::getOutputEmbeddings() {
 std::vector<std::vector<float>> TensorFlowEmbeddings::convertTensorToVector(const tensorflow::Tensor &tensor) {
     const auto &temp_tensor = tensor.tensor<float, 2>();
     const auto &dims = tensor.shape();
-//    auto eig_vec = tensor.matrix<tensorflow::bfloat16>();
     std::vector<float> temp_vec;
 
 //    TODO prealloc vector?
-//    std::vector<std::vector<float>> vec_embeddings(dims.dim_size(0));
     std::vector<std::vector<float>> vec_embeddings;
 
 
-//    char out_shape;
-//    std::sprintf(&out_shape,"%lld, %lld, %lld",dims.dim_size(0), dims.dim_size(1), dims.dim_size(2));
-//    std::cout << out_shape << std::endl;
     for (size_t batch_size = 0; batch_size < dims.dim_size(0); ++batch_size){
-        std::cout << batch_size << std::endl; //for debug
+//        std::cout << batch_size << std::endl; //for debug
         for (size_t embedding_size = 0; embedding_size < dims.dim_size(1); ++embedding_size) {
-            std::cout <<  uchar( temp_tensor(batch_size, embedding_size)) << " ";
             temp_vec.push_back( temp_tensor(batch_size, embedding_size));
-            std::cout << temp_tensor(batch_size, embedding_size) << " "; //for debug
         }
-        std::cout << std::endl; //for debug
 
         vec_embeddings.push_back(temp_vec);
     }

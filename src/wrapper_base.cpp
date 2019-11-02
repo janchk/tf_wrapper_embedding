@@ -22,30 +22,29 @@ bool WrapperBase::prepare_for_inference() {
 
 }
 
-bool WrapperBase::inference_and_matching(std::string img_path) {
+std::vector<WrapperBase::distance> WrapperBase::inference_and_matching(std::string img_path) {
     cv::Mat img = fs_img::read_img(img_path);
     std::vector<float> embedding;
     if(!inference_handler->isLoaded())
-        inference_handler->load("/home/jakhremchik/Downloads/optimized_val_84.pb", "image_batch_p:0");
+        inference_handler->load(this->proto_path, this->input_node);
     inference_handler->inference({img});
     embedding = inference_handler->getOutputEmbeddings()[0];
-    inference_handler->matching();
+    this->matching(db_handler->data_vec_base,embedding );
+    inference_handler->clearSession();
 
-
-
-
-
+    return distances;
 }
 
 bool WrapperBase::add_updates() {
     cv::Mat img;
-    inference_handler->load("/home/jakhremchik/Downloads/optimized_val_84.pb", "image_batch_p:0"); //TODO move out constants
+    inference_handler->load(this->proto_path, this->input_node);
     std::vector<float> out_embedding; //TODO remember about batch
     DatabaseHandling::data_vec_entry new_data;
     for (const auto &img_path : this->list_of_imgs) {
         img = fs_img::read_img(img_path);
         inference_handler->inference({img}); //TODO remember about batch
         new_data.embedding = inference_handler->getOutputEmbeddings()[0]; //TODO BATCH
+        inference_handler->clearSession();
         new_data.filepath = img_path;
         db_handler->data_vec_base.push_back(new_data);
         db_handler->add_json_entry(new_data);
@@ -71,33 +70,29 @@ bool WrapperBase::check_for_updates() {
 
     return true;
 }
-bool sortbysec(const std::pair<unsigned long, float> &a, const std::pair<unsigned long, float> &b){
-    return (a.second < b.second);
+bool sortbydist(const WrapperBase::distance &a, const WrapperBase::distance &b){
+    return (a.dist < b.dist);
 }
 
 bool WrapperBase::matching(std::vector<DatabaseHandling::data_vec_entry> &base,
                             std::vector<float> &target){
-
-    std::vector<std::pair<unsigned long, float>> distances;
-    std::pair<unsigned long, float> pair;
-    for (unsigned long i = 0; i < base.size(); ++i) {
-        float distance = this->_calc_distance(base[i], target);
-        pair.first = i;
-        pair.second = distance;
-        distances.push_back(pair);
+    WrapperBase::distance distance;
+    for (auto & it : base) {
+        distance.dist = WrapperBase::_calc_distance(it.embedding , target);
+        distance.path = it.filepath;
+        distances.push_back(distance);
     }
+    std::sort(distances.begin(), distances.end(), sortbydist);
+    distances.erase(distances.begin() + topN, distances.end());
 
-    std::sort(distances.begin(), distances.end(), sortbysec);
-
-    return distances;
+    return true;
 }
 
 float WrapperBase::_calc_distance(std::vector<float> base, std::vector<float> target) {
-    auto base_iter  = base.begin();
-    auto target_iter = target.begin();
     float sum = 0;
-    for (; base_iter != base.end(); ++base_iter, ++ target_iter) {
-        sum += pow((*base_iter - *target_iter), 2);
+    auto target_it = target.begin();
+    for (auto base_it = base.begin(); base_it !=base.end(); ++base_it, ++target_it) {
+        sum += pow((*base_it - *target_it), 2);
     }
     return sqrt(sum);
 

@@ -3,10 +3,8 @@
 //
 
 #include "fs_handling.h"
-
 #include <utility>
-//TODO add if exception to lng dependent fs
-//#include <experimental/filesystem>
+
 
 
 std::vector<cv::Mat> read_batch(const std::string &imgs_path, int batch_size) {
@@ -14,7 +12,6 @@ std::vector<cv::Mat> read_batch(const std::string &imgs_path, int batch_size) {
     cv::Mat batch_image;
     batch.push_back(batch_image);
 
-//    batch_image = cv::imread()
 }
 
 cv::Mat fs_img::read_img(const std::string& im_filename) {
@@ -49,13 +46,11 @@ bool DatabaseHandling::load_database() {
     using namespace rapidjson;
     std::string line;
     Document doc;
-    data_vec_entry base_entry;
 
 //    this->imgs_and_paths = fs_img::read_imgs(imgs_path); //TODO probably move this out
-
-
     if (this->imgs_datafile.is_open()) {
         while (std::getline(imgs_datafile, line)) {
+            data_vec_entry base_entry;
             doc.Parse(line.c_str());
 
             rapidjson::Value &img_name = doc["name"];
@@ -103,10 +98,6 @@ bool DatabaseHandling::add_json_entry(data_vec_entry new_data) {
         this->imgs_datafile << strbuf.GetString() << std::endl;
         this->imgs_datafile.close();
 
-
-
-//        for (auto entry=imgs_and_paths.begin(); entry!=imgs_and_paths.end(); ++entry) {
-//        }
     }
     else {
         this->open_datafile();

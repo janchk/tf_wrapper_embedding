@@ -33,6 +33,8 @@ public:
 
     virtual inline bool isLoaded() const { return _is_loaded; }
 
+    virtual void clearSession();
+
     virtual inline std::string getName() const { return _name; }
     virtual void setName(const std::string& name);
 

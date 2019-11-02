@@ -14,6 +14,10 @@ TensorflowWrapperCore::TensorflowWrapperCore(TensorflowWrapperCore &&that) {
 
 }
 
+void TensorflowWrapperCore::clearSession() {
+    _output_tensors.clear();
+}
+
 // TODO Disable graph optimization. We assume that graph already optimized.
 tensorflow::SessionOptions TensorflowWrapperCore::configureSession(){
     using namespace tensorflow;
