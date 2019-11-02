@@ -11,9 +11,9 @@ bool WrapperBase::prepare_for_inference() {
 //    db_handler->datafile_path = "";
 //    db_handler->imgs_path = "";
 
-
+    db_handler->load_config();
     db_handler->load_database();
-    this->list_of_imgs = fs_img::list_imgs(db_handler->imgs_path); //TODO rewrite it
+    this->list_of_imgs = fs_img::list_imgs(db_handler->config.imgs_path); //TODO rewrite it
     this->check_for_updates();
     if (!list_of_imgs.empty())
         this->add_updates();
@@ -23,7 +23,7 @@ bool WrapperBase::prepare_for_inference() {
 }
 
 std::vector<WrapperBase::distance> WrapperBase::inference_and_matching(std::string img_path) {
-    cv::Mat img = fs_img::read_img(img_path);
+    cv::Mat img = fs_img::read_img(img_path, db_handler->config.input_size);
     std::vector<float> embedding;
     if(!inference_handler->isLoaded())
         inference_handler->load(this->proto_path, this->input_node);
@@ -41,7 +41,7 @@ bool WrapperBase::add_updates() {
     std::vector<float> out_embedding; //TODO remember about batch
     DatabaseHandling::data_vec_entry new_data;
     for (const auto &img_path : this->list_of_imgs) {
-        img = fs_img::read_img(img_path);
+        img = fs_img::read_img(img_path, db_handler->config.input_size);
         inference_handler->inference({img}); //TODO remember about batch
         new_data.embedding = inference_handler->getOutputEmbeddings()[0]; //TODO BATCH
         inference_handler->clearSession();
@@ -64,7 +64,7 @@ bool WrapperBase::check_for_updates() {
     }
     if (!list_of_imgs.empty()) {
         for (const auto &entry : list_of_imgs) {
-            std::cout << "Found new data" << entry << std::endl;
+            std::cout << "Found new data " << entry << std::endl;
         }
     }
 

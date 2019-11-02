@@ -1,7 +1,4 @@
 #include <iostream>
-#include "tensorflow_wrapper_core.h"
-#include "common/fs_handling.h"
-#include "tensorflow_embeddings.h"
 #include "wrapper_base.h"
 
 #include <vector>
@@ -40,11 +37,11 @@ std::string parseCommandLine(int argc, char *argv[], std::string c) {
 
 int main(int argc, char *argv[]) {
     std::string const inFileName = parseCommandLine(argc, argv, std::string("-img"));
-    std::string const filePath = parseCommandLine(argc, argv, std::string("-path"));
-    std::string m_tfNetPath = parseCommandLine(argc, argv, std::string("-pb"));
-    std::string const m_tfInputNode = parseCommandLine(argc, argv, std::string("--input_node"));
-    //TODO this is redundant parameter ?
-    std::string batchSizeStr = parseCommandLine(argc, argv, std::string("-batch"));
+//    std::string const filePath = parseCommandLine(argc, argv, std::string("-path"));
+//    std::string m_tfNetPath = parseCommandLine(argc, argv, std::string("-pb"));
+//    std::string const m_tfInputNode = parseCommandLine(argc, argv, std::string("--input_node"));
+//    TODO this is redundant parameter ?
+//    std::string batchSizeStr = parseCommandLine(argc, argv, std::string("-batch"));
 //    std::string numTurnStr = parseCommandLine(argc, argv, std::string("-Nturn"));
 
 

@@ -14,9 +14,8 @@ std::vector<cv::Mat> read_batch(const std::string &imgs_path, int batch_size) {
 
 }
 
-cv::Mat fs_img::read_img(const std::string& im_filename) {
+cv::Mat fs_img::read_img(const std::string &im_filename, cv::Size &size ) {
     cv::Mat img;
-    cv::Size size = cv::Size(256, 256); // TODO move out this param
     img = cv::imread(im_filename, cv::IMREAD_COLOR);
 //    cv::cvtColor(img, img, cv::COLOR_BGR2RGB);
     tf_aux::fastResizeIfPossible(img, const_cast<cv::Mat *>(&img), size);
@@ -38,8 +37,42 @@ std::vector<std::string> fs_img::list_imgs(const std::string &dir_path) {
 }
 
 bool DatabaseHandling::open_datafile() {
-   this->imgs_datafile.open(datafile_path, std::ios::in | std::ios::app);
+   this->imgs_datafile.open(config.datafile_path, std::ios::in | std::ios::app);
    return true;
+}
+
+bool DatabaseHandling::open_config() {
+    this->config_datafile.open(config_path, std::ios::in | std::ios::app);
+    return true;
+}
+
+bool DatabaseHandling::load_config() {
+    using namespace rapidjson;
+    Document doc;
+    std::string line;
+
+    if (this->config_datafile.is_open()) {
+        std::getline(config_datafile, line);
+        doc.Parse(line.c_str());
+
+        rapidjson::Value &input_size = doc["input_size"];
+        rapidjson::Value &datafile_path = doc["datafile_path"];
+        rapidjson::Value &img_path = doc["imgs_path"];
+        rapidjson::Value &input_node = doc["input_node"];
+        rapidjson::Value &pb_path = doc["pb_path"];
+
+        config.input_node = input_node.GetString();
+        config.datafile_path = datafile_path.GetString();
+        config.imgs_path = img_path.GetString();
+        config.pb_path = pb_path.GetString();
+        config.input_size.height = input_size.GetArray()[0].GetInt();
+        config.input_size.width = input_size.GetArray()[1].GetInt();
+
+    } else {
+        open_config();
+        load_config();
+    }
+
 }
 
 bool DatabaseHandling::load_database() {
