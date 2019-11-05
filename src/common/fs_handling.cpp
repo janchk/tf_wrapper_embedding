@@ -23,8 +23,9 @@ cv::Mat fs_img::read_img(const std::string &im_filename, cv::Size &size ) {
 }
 
 bool path_is_img(std::string path){
-    return path.substr(path.find_last_of(".") + 1) == "jpg";
-    
+    std::string extension = path.substr(path.find_last_of((".") + 1));
+    return extension == "jpg" || extension == "JPG";
+
 }
 
 std::vector<std::string> fs_img::list_imgs(const std::string &dir_path) {
