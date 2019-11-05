@@ -24,8 +24,6 @@ public:
     }
     ~WrapperBase() = default;
 
-//    std::string proto_path = "/home/jakhremchik/Downloads/optimized_val_84.pb";
-//    std::string input_node = "image_batch_p:0";
 
     unsigned int topN = 5;
 
