@@ -26,7 +26,7 @@ std::vector<WrapperBase::distance> WrapperBase::inference_and_matching(std::stri
     cv::Mat img = fs_img::read_img(img_path, db_handler->config.input_size);
     std::vector<float> embedding;
     if(!inference_handler->isLoaded())
-        inference_handler->load(this->proto_path, this->input_node);
+        inference_handler->load(db_handler->config.pb_path, db_handler->config.input_node);
     inference_handler->inference({img});
     embedding = inference_handler->getOutputEmbeddings()[0];
     this->matching(db_handler->data_vec_base,embedding );
@@ -37,7 +37,7 @@ std::vector<WrapperBase::distance> WrapperBase::inference_and_matching(std::stri
 
 bool WrapperBase::add_updates() {
     cv::Mat img;
-    inference_handler->load(this->proto_path, this->input_node);
+    inference_handler->load(db_handler->config.pb_path, db_handler->config.input_node);
     std::vector<float> out_embedding; //TODO remember about batch
     DatabaseHandling::data_vec_entry new_data;
     for (const auto &img_path : this->list_of_imgs) {
