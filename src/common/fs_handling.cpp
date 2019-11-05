@@ -23,7 +23,7 @@ cv::Mat fs_img::read_img(const std::string &im_filename, cv::Size &size ) {
 }
 
 bool path_is_img(std::string path){
-    std::string extension = path.substr(path.find_last_of((".") + 1));
+    auto  extension = path.substr(path.find_last_of('.') + 1);
     return extension == "jpg" || extension == "JPG";
 
 }

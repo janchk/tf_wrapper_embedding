@@ -83,6 +83,8 @@ bool WrapperBase::matching(std::vector<DatabaseHandling::data_vec_entry> &base,
         distances.push_back(distance);
     }
     std::sort(distances.begin(), distances.end(), sortbydist);
+    if (topN > distances.size())
+        topN = distances.size();
     distances.erase(distances.begin() + topN, distances.end());
 
     return true;
