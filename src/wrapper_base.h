@@ -11,11 +11,6 @@
 class WrapperBase
 {
 public:
-    struct distance {
-        float dist;
-        std::string path;
-    };
-
 
     WrapperBase()
     {
@@ -24,11 +19,22 @@ public:
     }
     ~WrapperBase() = default;
 
+    struct distance {
+        float dist;
+        std::string path;
+    };
 
-    unsigned int topN = 5;
+    unsigned int topN = 5; //it's not very secure to set var like that, but whatever.
 
+    /// \brief main method used for reading images in directory and adding the to th database
+    /// \return
     bool prepare_for_inference();
-    std::vector<WrapperBase::distance>  inference_and_matching(std::string img_path);
+
+    /// \brief main method used for matching passed image with images that already in database
+    /// \param img_path passed image
+    /// \return vector of distances between passed image and db images
+    std::vector<WrapperBase::distance> inference_and_matching(std::string img_path);
+
 protected:
     DatabaseHandling *db_handler;
     TensorFlowEmbeddings *inference_handler;

@@ -9,8 +9,6 @@
 #include "tensorflow_base.h"
 #include "opencv2/imgproc/imgproc.hpp"
 
-
-
 #include <cmath>
 
 class TensorFlowEmbeddings : public TensorflowWrapperCore
@@ -21,9 +19,18 @@ public:
 
     int batch_size;
 
-
+    /// \brief function for inferencing vector of input images
+    /// \param imgs is vector of images
+    /// \return status message
     std::string inference(const std::vector<cv::Mat> &imgs) override;
+
+    /// \brief
+    /// \return vector of output embeddings after inference
     std::vector<std::vector<float>> getOutputEmbeddings();
+
+    /// \brief function to normalize input image
+    /// \param img is an input_image
+    /// \return state of processing
     bool normalize_image(cv::Mat &img);
 
     /// \brief function to convert output tensor of embeddings to vector of embeddings
