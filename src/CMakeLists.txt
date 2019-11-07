@@ -9,7 +9,6 @@ set(CMAKE_MODULE_PATH
 find_package(TensorflowCC REQUIRED)
 find_package( OpenCV REQUIRED )
 
-# add_executable(TF_WRAPPER_EMBEDDING src/main.cpp)
 add_library(TF_WRAPPER_EMBEDDING STATIC)
 
 target_include_directories(TF_WRAPPER_EMBEDDING PUBLIC ${CMAKE_CURRENT_LIST_DIR}/../include/ .)
@@ -36,19 +35,22 @@ target_sources(TF_WRAPPER_EMBEDDING
 
 # message("${TensorFlow_INCLUDE_DIRS}")
 
-# target_include_directories(TF_WRAPPER_EMBEDDING PRIVATE ${TensorFlow_INCLUDE_DIRS})
-#target_link_libraries(TF_WRAPPER_EMBEDDING TensorflowCC::Shared stdc++fs ${OpenCV_LIBS})
-target_link_libraries(TF_WRAPPER_EMBEDDING TensorflowCC::Static  stdc++fs ${OpenCV_LIBS})
+find_package(Protobuf REQUIRED)
+
+target_include_directories(TF_WRAPPER_EMBEDDING PRIVATE "${Protobuf_INCLUDE_DIRS}" )
+target_link_libraries(TF_WRAPPER_EMBEDDING TensorflowCC::Shared stdc++fs ${Protobuf_LIBRARIES} ${OpenCV_LIBS})
+#target_link_libraries(TF_WRAPPER_EMBEDDING TensorflowCC::Static  stdc++fs ${OpenCV_LIBS})
+#target_link_libraries(TF_WRAPPER_EMBEDDING stdc++fs  ${OpenCV_LIBS})
 
 # OLD WAY TO INCLUDE TENSORFLOW #
 
-## TensorFlow headers
+# TensorFlow headers
 #include_directories("/usr/local/include/tf/")
 #include_directories("/usr/local/include/tf/bazel-genfiles/")
 #include_directories("/usr/local/include/tf/tensorflow/")
 #include_directories("/usr/local/include/tf/third-party/")
-#
-## Link TensorFlow libs
+
+# Link TensorFlow libs
 #target_link_libraries(TF_WRAPPER_EMBEDDING "/usr/local/lib/libtensorflow_cc.so")
 #target_link_libraries(TF_WRAPPER_EMBEDDING "/usr/local/lib/libtensorflow_framework.so")
 

@@ -68,7 +68,7 @@ protected:
     std::fstream imgs_datafile;
     std::fstream config_datafile;
 
-    std::string config_path = "../config.json";
+    std::string config_path = "../../config.json";
 
     std::vector<std::pair<cv::Mat, std::string>> imgs_and_paths;
 
