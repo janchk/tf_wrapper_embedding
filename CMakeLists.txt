@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(TF_WRAPPER)
+set(CMAKE_PREFIX_PATH ~/.local)
+
 
 add_subdirectory(src)
 add_subdirectory(application)
