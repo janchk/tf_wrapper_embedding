@@ -59,6 +59,8 @@ public:
    // important variable. It contains information of image paths and corresponding embeddings.
     std::vector<data_vec_entry> data_vec_base;
 
+    std::string config_path;
+
     //TODO MOVE IT OUT
     bool load_database();
     bool load_config();
@@ -68,7 +70,6 @@ protected:
     std::fstream imgs_datafile;
     std::fstream config_datafile;
 
-    std::string config_path = "../../../config.json";
 
     std::vector<std::pair<cv::Mat, std::string>> imgs_and_paths;
 
