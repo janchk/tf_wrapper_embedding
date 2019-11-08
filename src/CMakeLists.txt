@@ -12,7 +12,11 @@ find_package( OpenCV REQUIRED )
 
 add_library(TF_WRAPPER_EMBEDDING STATIC)
 
-target_include_directories(TF_WRAPPER_EMBEDDING PUBLIC ${CMAKE_CURRENT_LIST_DIR}/../include/ ~/local/include)
+target_include_directories(TF_WRAPPER_EMBEDDING
+        PUBLIC
+        ~/.local/include
+        ${PROJECT_SOURCE_DIR}/../include/
+        )
 
 target_sources(TF_WRAPPER_EMBEDDING
         PUBLIC
