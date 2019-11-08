@@ -27,6 +27,7 @@ target_sources(TF_WRAPPER_EMBEDDING
         ${CMAKE_CURRENT_LIST_DIR}/wrapper_legacy.h
         ${CMAKE_CURRENT_LIST_DIR}/wrapper_base.h
         ${CMAKE_CURRENT_LIST_DIR}/common/fs_handling.h
+        ${CMAKE_CURRENT_LIST_DIR}/common/common_ops.h
         PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}/tensorflow_base.cpp
         ${CMAKE_CURRENT_LIST_DIR}/tensorflow_wrapper_core.cpp
@@ -35,6 +36,7 @@ target_sources(TF_WRAPPER_EMBEDDING
         ${CMAKE_CURRENT_LIST_DIR}/wrapper_legacy.cpp
         ${CMAKE_CURRENT_LIST_DIR}/wrapper_base.cpp
         ${CMAKE_CURRENT_LIST_DIR}/common/fs_handling.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/common/common_ops.cpp
 
 )
 

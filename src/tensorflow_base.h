@@ -13,6 +13,8 @@
 #include "tensorflow/core/public/session.h"
 #include "tensorflow/core/graph/default_device.h"
 
+#include "common/common_ops.h"
+
 namespace tf_base
 {
 
