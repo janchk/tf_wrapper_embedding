@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
 
     auto *tf_wrapper = new WrapperBase();
     tf_wrapper->prepare_for_inference();
-    tf_wrapper->topN = 1;
+    tf_wrapper->topN = 10;
     std::vector<WrapperBase::distance> results = tf_wrapper->inference_and_matching(inFileName);
     for (const auto &result : results)
         std::cout << "Dst " << result.dist << " path " << result.path <<std::endl;

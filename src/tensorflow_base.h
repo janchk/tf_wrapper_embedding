@@ -8,12 +8,14 @@
 
 #include "opencv/cv.h"
 #include "opencv/cv.hpp"
+#include <iostream>
 
 #include "tensorflow/core/public/session.h"
 #include "tensorflow/core/graph/default_device.h"
 
 namespace tf_base
 {
+
 
 }
 

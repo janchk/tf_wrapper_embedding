@@ -81,7 +81,7 @@ std::vector<std::vector<float>> TensorFlowEmbeddings::convertTensorToVector(cons
     const auto &dims = tensor.shape();
     std::vector<float> temp_vec;
 
-//    TODO prealloc vector?
+//    TODO prealloc vector/array?
     std::vector<std::vector<float>> vec_embeddings;
 
 

@@ -3,15 +3,16 @@ project(TF_WRAPPER_EMBEDDING)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_MODULE_PATH
-    ${PROJECT_SOURCE_DIR}/cmake
+    ${PROJECT_SOURCE_DIR}/../cmake
     ${CMAKE_MODULE_PATH})
 
-find_package(TensorflowCC REQUIRED)
+find_package(TensorFlow CONFIG REQUIRED)
+#message("${CMAKE_MODULE_PATH}")
 find_package( OpenCV REQUIRED )
 
 add_library(TF_WRAPPER_EMBEDDING STATIC)
 
-target_include_directories(TF_WRAPPER_EMBEDDING PUBLIC ${CMAKE_CURRENT_LIST_DIR}/../include/ .)
+target_include_directories(TF_WRAPPER_EMBEDDING PUBLIC ${CMAKE_CURRENT_LIST_DIR}/../include/ ~/local/include)
 
 target_sources(TF_WRAPPER_EMBEDDING
         PUBLIC
@@ -35,10 +36,14 @@ target_sources(TF_WRAPPER_EMBEDDING
 
 # message("${TensorFlow_INCLUDE_DIRS}")
 
-find_package(Protobuf REQUIRED)
+#find_package(Protobuf REQUIRED)
+message(TF LIBRARIES ${TensorFlow_LIBRARIES})
 
-target_include_directories(TF_WRAPPER_EMBEDDING PRIVATE "${Protobuf_INCLUDE_DIRS}" )
-target_link_libraries(TF_WRAPPER_EMBEDDING TensorflowCC::Shared stdc++fs ${Protobuf_LIBRARIES} ${OpenCV_LIBS})
+#set(PROJECT_LIBRARIES ${TensorFlow_LIBRARIES} ${PROTOBUF_LIBRARIES})
+
+target_include_directories(TF_WRAPPER_EMBEDDING PRIVATE)
+target_link_libraries(TF_WRAPPER_EMBEDDING stdc++fs TensorFlow::TensorFlow ${OpenCV_LIBS})
+#target_link_libraries(TF_WRAPPER_EMBEDDING TensorflowCC::Shared stdc++fs ${Protobuf_LIBRARIES} ${OpenCV_LIBS})
 #target_link_libraries(TF_WRAPPER_EMBEDDING TensorflowCC::Static  stdc++fs ${OpenCV_LIBS})
 #target_link_libraries(TF_WRAPPER_EMBEDDING stdc++fs  ${OpenCV_LIBS})
 
