@@ -1,1 +1,1 @@
-{  "input_size": [    256,    256  ],  "datafile_path": "/media/jakhremchik/ubuntuHD/PROJECTS/test_imgs/data.txt",  "imgs_path" : "/media/jakhremchik/ubuntuHD/PROJECTS/test_imgs",  "pb_path" : "/home/jakhremchik/Downloads/optimized_val_84.pb",   "input_node" : "image_batch_p:0"}
+{  "input_size": [    256,    256  ],  "datafile_path": "/media/jakhremchik/ubuntuHD/PROJECTS/test_imgs/data_metrics.txt",  "imgs_path" : "/home/jakhremchik/Documents/test_metrics/train/",  "pb_path" : "/home/jakhremchik/Downloads/optimized_val_84.pb",   "input_node" : "image_batch_p:0"}
