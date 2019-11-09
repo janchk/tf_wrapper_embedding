@@ -24,7 +24,7 @@ std::string parseCommandLine(int argc, char *argv[], std::string c) {
     } else {
         std::cout << "Use --test_path $path for images to test$"
                   << std::endl;
-        return 0;
+        std::exit(EXIT_FAILURE);
     }
     return ret;
 }

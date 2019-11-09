@@ -26,7 +26,7 @@ std::string parseCommandLine(int argc, char *argv[], std::string c) {
     } else {
         std::cout << "Use -img $image$"
                   << std::endl;
-        return 0;
+        std::exit(EXIT_FAILURE);
     }
     return ret;
 }
