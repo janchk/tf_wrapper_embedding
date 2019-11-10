@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 project(TF_WRAPPER_EMBEDDING)
+set(CMAKE_PREFIX_PATH ~/.local)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_MODULE_PATH
