@@ -21,4 +21,20 @@ std::string common_ops::extract_class(const std::string &filepath) {
    return token;
 }
 
+std::vector<std::string> common_ops::split(const std::string &text, const std::string &delim) {
+    std::vector<std::string> results;
+    for (auto p = cbegin(text); p != cend(text); ) {
+        const auto n = search(p, cend(text), cbegin(delim), cend(delim));
+        results.emplace_back(p, n);
+        p = n;
+        if (cend(text) != n) // we found delim, skip over it.
+            p += delim.length();
+    }
+    return results;
+}
 
+std::string common_ops::extract_class_depth_based(const std::string &filepath) {
+    std::vector<std::string> tokens = split(filepath, "/");
+    std::string classname = tokens[tokens.size() - 3];
+    return split(classname, "__")[0];
+}
