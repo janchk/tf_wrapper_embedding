@@ -46,6 +46,10 @@ protected:
 
     static float _calc_distance(std::vector<float> base, std::vector<float> target);
 
+    /// \brief protected method for matching. Just comparing with no inference.
+    /// \param base vector of embeddings that in db.
+    /// \param target embedding to match
+    /// \return
     bool matching(std::vector<DatabaseHandling::data_vec_entry> &base, std::vector<float> &target);
 
     bool add_updates();
