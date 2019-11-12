@@ -42,7 +42,7 @@ float MetricsBase::getMetrics(std::string &testimg_path) {
         *it.is_correct = test_class == entry.img_class; //So much simplified so wow.
         *it.img_class_proposed = test_class;
         *it.distance = test_distance.dist;
-        std::cout << it << " of" << testimg_vector.size() << std::endl;
+        std::cout << it - testimg_vector.begin() << " of" << testimg_vector.size() << std::endl;
    
     }
     // for (auto &entry : testimg_vector) {
