@@ -177,7 +177,7 @@ bool DatabaseHandling::add_error_entry(std::string act_class_in,
         this->errors_datafile << strbuf.GetString() << std::endl;
         this->errors_datafile.close();
 
-    }
+    // }
     // else {
     //     this->open_error_datafile();
     //     this->add_error_entry(std::move(new_data));
