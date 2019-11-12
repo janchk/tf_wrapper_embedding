@@ -164,9 +164,9 @@ bool DatabaseHandling::add_error_entry(std::string act_class_in,
         // for (const auto &value : new_data.embedding) {
             // embedding.PushBack(value, allocator);
             // }
-        act_class.SetString(act_class_in, allocator);
-        act_path.SetString(act_path_in, allocator);
-        expected_class.SetString(expected_class_in, allocator);
+        act_class.SetString(act_class_in.c_str(), allocator);
+        act_path.SetString(act_path_in.c_str(), allocator);
+        expected_class.SetString(expected_class_in.c_str(), allocator);
 
         line.AddMember("actual_path", act_path, allocator);
         line.AddMember("actual_class", act_class, allocator);
