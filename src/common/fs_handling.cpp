@@ -158,10 +158,12 @@ bool DatabaseHandling::add_error_entry(std::string act_class_in,
     Value act_path(kStringType); // for img path
     Value expected_class(kStringType); // for img path
     Document::AllocatorType& allocator = line.GetAllocator();
-    if (this->errors_datafile.is_open()) {
+    if (!this->errors_datafile.is_open()) {
+        this->open_error_datafile();
+    }
         // for (const auto &value : new_data.embedding) {
             // embedding.PushBack(value, allocator);
-        // }
+            // }
         act_class.SetString(act_class_in, allocator);
         act_path.SetString(act_path_in, allocator);
         expected_class.SetString(expected_class_in, allocator);
@@ -176,9 +178,9 @@ bool DatabaseHandling::add_error_entry(std::string act_class_in,
         this->errors_datafile.close();
 
     }
-    else {
-        this->open_error_datafile();
-        this->add_error_entry(std::move(act_class_in,act_path_in, expected_class_in  ));
+    // else {
+    //     this->open_error_datafile();
+    //     this->add_error_entry(std::move(new_data));
 
-    }
+    // }
 }
