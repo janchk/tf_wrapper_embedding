@@ -32,8 +32,10 @@ std::string parseCommandLine(int argc, char *argv[], std::string c) {
 
 
 int main(int argc, char *argv[]) {
-    auto *tf_wrapper = new MetricsBase();
     std::string const inPath = parseCommandLine(argc, argv, std::string("--test_path"));
+    std::cout << "Start initalizing tf_wrapper" << std::endl;
+    auto *tf_wrapper = new MetricsBase();
+    std::cout << "Wrapper was initialized" << std::endl
     tf_wrapper->getMetrics((std::string &) inPath);
     std::cout << "Using TOP"<< tf_wrapper->topN << std::endl;
 

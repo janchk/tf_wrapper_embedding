@@ -42,6 +42,11 @@ bool DatabaseHandling::open_datafile() {
    return true;
 }
 
+bool DatabaseHandling::open_error_datafile() {
+   this->errors_datafile.open("errors.txt", std::ios::in | std::ios::app); //TODO!!
+   return true;
+}
+
 bool DatabaseHandling::open_config() {
     this->config_datafile.open(config_path, std::ios::in | std::ios::app);
     return true;
@@ -136,6 +141,44 @@ bool DatabaseHandling::add_json_entry(data_vec_entry new_data) {
     else {
         this->open_datafile();
         this->add_json_entry(std::move(new_data));
+
+    }
+}
+
+bool DatabaseHandling::add_error_entry(std::string act_class_in, 
+                                        std::string act_path_in, std::string expected_class_in) {
+     using namespace rapidjson;
+    StringBuffer strbuf;
+    Writer<StringBuffer> writer(strbuf);
+
+    Document line; // rapidjson doc as line in file
+    line.SetObject();
+    // Value embedding(kArrayType); // for embedding
+    Value act_class(kStringType); // for img path
+    Value act_path(kStringType); // for img path
+    Value expected_class(kStringType); // for img path
+    Document::AllocatorType& allocator = line.GetAllocator();
+    if (this->errors_datafile.is_open()) {
+        // for (const auto &value : new_data.embedding) {
+            // embedding.PushBack(value, allocator);
+        // }
+        act_class.SetString(act_class_in, allocator);
+        act_path.SetString(act_path_in, allocator);
+        expected_class.SetString(expected_class_in, allocator);
+
+        line.AddMember("actual_path", act_path, allocator);
+        line.AddMember("actual_class", act_class, allocator);
+        line.AddMember("expected_class", expected_class, allocator);
+
+        line.Accept(writer);
+        // std::cout << "json entry " << strbuf.GetString() << std::endl;
+        this->errors_datafile << strbuf.GetString() << std::endl;
+        this->errors_datafile.close();
+
+    }
+    else {
+        this->open_error_datafile();
+        this->add_error_entry(std::move(new_data));
 
     }
 }

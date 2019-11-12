@@ -66,15 +66,20 @@ public:
     bool load_config();
     bool add_json_entry(data_vec_entry new_data);
 
+    bool add_error_entry(std::string act_class_in, 
+                                        std::string act_path_in, std::string expected_class_in);
+
 protected:
     std::fstream imgs_datafile;
     std::fstream config_datafile;
+    std::fstream errors_datafile;
 
 
     std::vector<std::pair<cv::Mat, std::string>> imgs_and_paths;
 
     bool open_datafile();
     bool open_config();
+    bool open_erroe_datafile();
 };
 
 
