@@ -79,7 +79,7 @@ protected:
 
     bool open_datafile();
     bool open_config();
-    bool open_erroe_datafile();
+    bool open_error_datafile();
 };
 
 

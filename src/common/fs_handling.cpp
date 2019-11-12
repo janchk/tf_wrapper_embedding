@@ -178,7 +178,7 @@ bool DatabaseHandling::add_error_entry(std::string act_class_in,
     }
     else {
         this->open_error_datafile();
-        this->add_error_entry(std::move(new_data));
+        this->add_error_entry(std::move(act_class_in,act_path_in, expected_class_in  ));
 
     }
 }
