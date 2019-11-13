@@ -12,7 +12,9 @@ bool WrapperBase::prepare_for_inference() {
 //    db_handler->imgs_path = "";
 
     db_handler->load_config();
+    std::cout << "Config was loaded" << std::endl;
     db_handler->load_database();
+    std::cout << "Database was loaded" << std::endl;
     this->list_of_imgs = fs_img::list_imgs(db_handler->config.imgs_path); //TODO rewrite it
     this->check_for_updates();
     if (!list_of_imgs.empty())
