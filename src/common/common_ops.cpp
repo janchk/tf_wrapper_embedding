@@ -23,7 +23,7 @@ std::string common_ops::extract_class(const std::string &filepath) {
            token = token.substr(0, pos_end);
        } else {
            pos_end = filepath.find(classname_delim);
-           pos_begin = pos_begin + train_identifier.size() + 1;
+           pos_begin = pos_begin + train_identifier.size();
            token = filepath.substr(pos_begin, pos_end - pos_begin);
        }
 
@@ -35,7 +35,7 @@ std::string common_ops::extract_class(const std::string &filepath) {
            token = token.substr(0, pos_end);
        } else {
            pos_end = filepath.find(classname_delim);
-           pos_begin = pos_begin + test_identifier.size() + 1;
+           pos_begin = pos_begin + test_identifier.size();
            token = filepath.substr(pos_begin, pos_end - pos_begin);
        }
    }
