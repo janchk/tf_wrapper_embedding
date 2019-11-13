@@ -1,5 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
-project(TF_WRAPPER_EMBEDDING_APP)
+project(TF_WRAPPER_EMBEDDING_EXAMPLE)
 
 add_executable(TF_WRAPPER_EXAMPLE main.cpp)
 

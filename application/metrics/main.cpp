@@ -1,9 +1,7 @@
-#include <iostream>
-#include "wrapper_base.h"
-
-#include <vector>
-#include <string>
-#include <algorithm>
+//
+// Created by jakhremchik
+//
+#include "metrics_base.h"
 
 char *getCmdOption(char **begin, char **end, const std::string &option) {
     char **itr = std::find(begin, end, option);
@@ -24,7 +22,7 @@ std::string parseCommandLine(int argc, char *argv[], std::string c) {
         char *filename = getCmdOption(argv, argv + argc, c);
         ret = std::string(filename);
     } else {
-        std::cout << "Use -img $image$"
+        std::cout << "Use --test_path $path for images to test$"
                   << std::endl;
         std::exit(EXIT_FAILURE);
     }
@@ -32,15 +30,13 @@ std::string parseCommandLine(int argc, char *argv[], std::string c) {
 }
 
 
+
 int main(int argc, char *argv[]) {
-    std::string const inFileName = parseCommandLine(argc, argv, std::string("-img"));
+    std::string const inPath = parseCommandLine(argc, argv, std::string("--test_path"));
+    std::cout << "Start initalizing tf_wrapper" << std::endl;
+    auto *tf_wrapper = new MetricsBase();
+    std::cout << "Wrapper was initialized" << std::endl;
+    tf_wrapper->getMetrics((std::string &) inPath);
+    std::cout << "Using TOP"<< tf_wrapper->topN << std::endl;
 
-    auto *tf_wrapper = new WrapperBase();
-    tf_wrapper->prepare_for_inference();
-    tf_wrapper->topN = 10;
-    std::vector<WrapperBase::distance> results = tf_wrapper->inference_and_matching(inFileName);
-    for (const auto &result : results)
-        std::cout << "Dst " << result.dist << " path " << result.path <<std::endl;
-
-    return 0;
 }

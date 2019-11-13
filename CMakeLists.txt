@@ -6,6 +6,7 @@ set(CMAKE_PREFIX_PATH ~/.local)
 
 add_subdirectory(src)
 add_subdirectory(application/example)
+add_subdirectory(application/metrics)
 
 include(cmake/googletest.cmake)
 fetch_googletest(

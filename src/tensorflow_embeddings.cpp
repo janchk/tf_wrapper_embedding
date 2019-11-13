@@ -50,7 +50,7 @@ std::string TensorFlowEmbeddings::inference(const std::vector<cv::Mat> &imgs) {
 
     _status = _session->Run(inputs, _output_node_names, {}, &_output_tensors);
 
-    tf_aux::DebugOutput("NETWORK_STATUS", _status.ToString());
+//    tf_aux::DebugOutput("NETWORK_STATUS", _status.ToString());
     return _status.ToString();
 }
 

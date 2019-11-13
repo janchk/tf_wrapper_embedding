@@ -12,7 +12,9 @@ bool WrapperBase::prepare_for_inference() {
 //    db_handler->imgs_path = "";
 
     db_handler->load_config();
+    std::cout << "Config was loaded" << std::endl;
     db_handler->load_database();
+    std::cout << "Database was loaded" << std::endl;
     this->list_of_imgs = fs_img::list_imgs(db_handler->config.imgs_path); //TODO rewrite it
     this->check_for_updates();
     if (!list_of_imgs.empty())
@@ -76,16 +78,17 @@ bool sortbydist(const WrapperBase::distance &a, const WrapperBase::distance &b){
 
 bool WrapperBase::matching(std::vector<DatabaseHandling::data_vec_entry> &base,
                             std::vector<float> &target){
+    this->distances.clear();
     WrapperBase::distance distance;
     for (auto & it : base) {
         distance.dist = WrapperBase::_calc_distance(it.embedding , target);
         distance.path = it.filepath;
-        distances.push_back(distance);
+        this->distances.push_back(distance);
     }
-    std::sort(distances.begin(), distances.end(), sortbydist);
-    if (topN > distances.size())
-        topN = distances.size();
-    distances.erase(distances.begin() + topN, distances.end());
+    std::sort(this->distances.begin(), this->distances.end(), sortbydist);
+    if (topN > this->distances.size())
+        topN = this->distances.size();
+    this->distances.erase(this->distances.begin() + topN, this->distances.end());
 
     return true;
 }

@@ -15,6 +15,9 @@ public:
     WrapperBase()
     {
         db_handler = new DatabaseHandling();
+
+        db_handler->config_path = "../../../config.json"; //Not my best decision
+
         inference_handler = new TensorFlowEmbeddings();
     }
     ~WrapperBase() = default;
@@ -24,16 +27,16 @@ public:
         std::string path;
     };
 
-    unsigned int topN = 5; //it's not very secure to set var like that, but whatever.
+    unsigned int topN = 1; //it's not very secure to set var like that, but whatever.
 
     /// \brief main method used for reading images in directory and adding the to th database
     /// \return
-    bool prepare_for_inference();
+    virtual bool prepare_for_inference();
 
     /// \brief main method used for matching passed image with images that already in database
     /// \param img_path passed image
     /// \return vector of distances between passed image and db images
-    std::vector<WrapperBase::distance> inference_and_matching(std::string img_path);
+    virtual std::vector<WrapperBase::distance> inference_and_matching(std::string img_path);
 
 protected:
     DatabaseHandling *db_handler;
