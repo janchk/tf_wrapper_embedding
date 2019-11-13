@@ -9,7 +9,7 @@ std::string common_ops::extract_class(const std::string &filepath) {
    std::string token;
    std::string train_identifier = "series/";
    std::string test_identifier = "queries/";
-   std::string classname_delim = "__";
+   std::string classname_delim = "/"; //need to change __ -> /
 
    size_t pos_begin = filepath.find(test_identifier);
    size_t pos_end = filepath.find(classname_delim);
