@@ -133,7 +133,7 @@ bool DatabaseHandling::add_json_entry(data_vec_entry new_data) {
         line.AddMember("embedding", embedding, allocator);
 
         line.Accept(writer);
-        std::cout << "json entry " << strbuf.GetString() << std::endl;
+//        std::cout << "json entry " << strbuf.GetString() << std::endl;
         this->imgs_datafile << strbuf.GetString() << std::endl;
         this->imgs_datafile.close();
 
