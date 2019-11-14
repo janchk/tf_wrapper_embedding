@@ -22,10 +22,11 @@ float MetricsBase::getMetrics(std::string &testimg_path) {
     std::cout << "Preparaing for inference was finished" << std::endl;
 
     float val_correct;
-
+    std::string series_path = this->db_handler->config.imgs_path;
+    
     for (const auto &test_img_path : test_imgs_paths ) {
         test_img.img_path = test_img_path;
-        test_img.img_class = common_ops::extract_class(test_img_path);
+        test_img.img_class = common_ops::extract_class(test_img_path, series_path, testimg_path);
         test_img.img = fs_img::read_img(test_img_path, db_handler->config.input_size);
 
         testimg_vector.emplace_back(test_img);
@@ -33,7 +34,7 @@ float MetricsBase::getMetrics(std::string &testimg_path) {
 
     for (auto it = testimg_vector.begin(); it != testimg_vector.end(); ++it){
         test_distance = inference_and_matching(it->img_path)[0];
-        test_class = common_ops::extract_class(test_distance.path);
+        test_class = common_ops::extract_class(test_distance.path, series_path, testimg_path);
         if (test_class == it->img_class) {
             it->is_correct = true;
         } else {
