@@ -13,6 +13,7 @@ public:
     MetricsBase()
     {
         db_handler->config_path = "../../../application/metrics/config.json";
+
 //        db_handler->load_config();
     };
 

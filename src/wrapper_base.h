@@ -20,7 +20,12 @@ public:
 
         inference_handler = new TensorFlowEmbeddings();
     }
-    ~WrapperBase() = default;
+    ~WrapperBase()
+    {
+        common_ops::delete_safe(inference_handler);
+        common_ops::delete_safe(db_handler);
+        common_ops::delete_safe(inference_handler);
+    };
 
     struct distance {
         float dist;
@@ -44,12 +49,16 @@ protected:
     std::vector<std::string> list_of_imgs;
     std::vector<WrapperBase::distance> distances;
 
+    std::vector<std::string> _input_nodes;
+    std::vector<std::string> _output_nodes;
+
+
     static float _calc_distance(std::vector<float> base, std::vector<float> target);
 
-    bool matching(std::vector<DatabaseHandling::data_vec_entry> &base, std::vector<float> &target);
+    bool _matching(std::vector<DatabaseHandling::data_vec_entry> &base, std::vector<float> &target);
 
-    bool add_updates();
-    bool check_for_updates();
+    bool _add_updates();
+    bool _check_for_updates();
 
 };
 

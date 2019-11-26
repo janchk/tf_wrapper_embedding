@@ -92,9 +92,8 @@ protected:
     ///_______________________________________
 
     ///values for inference
-    ///Inputs and outputs should be reassigned probably
-    std::string _input_node_name = "image_batch_p:0";
-    std::vector<std::string> _output_node_names = {"embeddings:0"};
+    std::vector<std::string> _input_node_names;
+    std::vector<std::string> _output_node_names;
 
     ///_______________________________________
 

@@ -4,8 +4,14 @@
 
 #include "tensorflow_embeddings.h"
 
+#include <utility>
 
 
+bool TensorFlowEmbeddings::set_input_output(std::vector<std::string> in_nodes, std::vector<std::string> out_nodes) {
+    this->_input_node_names = std::move(in_nodes);
+    this->_output_node_names = std::move(out_nodes);
+    return true;
+}
 
 bool TensorFlowEmbeddings::normalize_image(cv::Mat &img) {
     double  min, max;
@@ -32,20 +38,12 @@ std::string TensorFlowEmbeddings::inference(const std::vector<cv::Mat> &imgs) {
         return "Fail to convert Mat to Tensor";
     }
 
-//    Tensor input = getConvertFunction(INPUT_TYPE::DT_FLOAT)(imgs, _input_height,
-//            _input_width, _input_depth, _convert_to_float, _mean);
-    //preprocess imgs first
-//    Tensor input = tf_aux::convertMatToTensor_v2(imgs);
-//    std::vector in_tensor_shape = tf_aux::get_tensor_shape(this->_input_tensor);
-//    std::vector in_tensor_shape = tf_aux::get_tensor_shape(input);
-
     #ifdef PHASEINPUT
     tensorflow::Tensor phase_tensor(tensorflow::DT_BOOL, tensorflow::TensorShape());
     phase_tensor.scalar<bool>()() = false;
     std::vector<std::pair<string, tensorflow::Tensor>> inputs = {{_input_node_name, input},{"phase_train:0", phase_tensor}};
     #else
-    std::vector<std::pair<string, tensorflow::Tensor>> inputs = {{_input_node_name, this->_input_tensor}};
-//    std::vector<std::pair<string, tensorflow::Tensor>> inputs = {{_input_node_name, input}};
+    std::vector<std::pair<string, tensorflow::Tensor>> inputs = {{_input_node_names[0], this->_input_tensor}};
     #endif
 
     _status = _session->Run(inputs, _output_node_names, {}, &_output_tensors);
@@ -63,16 +61,15 @@ std::vector<std::vector<float>> TensorFlowEmbeddings::getOutputEmbeddings() {
         return {};
     }
 
-    if (out_embeddings.empty()){
+    if (_out_embeddings.empty()){
         const auto& output = _output_tensors[0];
-//        std::cout  << "converting tensor to Vector" << std::endl;
-        out_embeddings = convertTensorToVector(output);
+        _out_embeddings = convertTensorToVector(output);
     } else {
-        out_embeddings.clear();
+        _out_embeddings.clear();
         getOutputEmbeddings();
     }
 
-    return out_embeddings;
+    return _out_embeddings;
 }
 
 

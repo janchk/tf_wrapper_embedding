@@ -32,7 +32,7 @@ float MetricsBase::getMetrics(std::string &testimg_path) {
     }
 
     for (auto it = testimg_vector.begin(); it != testimg_vector.end(); ++it){
-        test_distance = inference_and_matching(it->img_path)[0];
+        test_distance = MetricsBase::inference_and_matching(it->img_path)[0];
         test_class = common_ops::extract_class(test_distance.path);
         if (test_class == it->img_class) {
             it->is_correct = true;
