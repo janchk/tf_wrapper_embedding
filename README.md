@@ -6,6 +6,7 @@ This repository provides instrumentary for inferencing tensorflow networks using
 
 * Tensorflow
 * Protobuf
+* Opencv (may be remove it later)
 * Abseil _(for tests)_
 
 #### Instructions
