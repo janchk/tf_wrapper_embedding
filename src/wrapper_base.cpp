@@ -7,7 +7,7 @@
 
 
 bool WrapperBase::prepare_for_inference() {
-//    auto *db_handler = new DatabaseHandling();
+//    auto *db_handler = new DataHandling();
 //    db_handler->datafile_path = "";
 //    db_handler->imgs_path = "";
 
@@ -51,7 +51,7 @@ bool WrapperBase::_add_updates() {
     cv::Mat img;
     inference_handler->load(db_handler->config.pb_path, db_handler->config.input_node);
     std::vector<float> out_embedding; //TODO remember about batch
-    DatabaseHandling::data_vec_entry new_data;
+    DataHandling::data_vec_entry new_data;
     for (const auto &img_path : this->list_of_imgs) {
         img = fs_img::read_img(img_path, db_handler->config.input_size);
         inference_handler->inference({img}); //TODO remember about batch
@@ -86,7 +86,7 @@ bool sortbydist(const WrapperBase::distance &a, const WrapperBase::distance &b){
     return (a.dist < b.dist);
 }
 
-bool WrapperBase::_matching(std::vector<DatabaseHandling::data_vec_entry> &base,
+bool WrapperBase::_matching(std::vector<DataHandling::data_vec_entry> &base,
                             std::vector<float> &target){
     this->distances.clear();
     WrapperBase::distance distance;

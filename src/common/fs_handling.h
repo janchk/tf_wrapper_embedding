@@ -34,11 +34,11 @@ namespace fs_img
     std::vector<std::string> list_imgs(const std::string & dir_path);
 }
 
-class DatabaseHandling
+class DataHandling
 {
 public:
-    DatabaseHandling() = default;
-    virtual ~DatabaseHandling() = default;
+    DataHandling() = default;
+    virtual ~DataHandling() = default;
 
     struct data_vec_entry
     {

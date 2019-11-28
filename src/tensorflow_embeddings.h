@@ -45,8 +45,6 @@ protected:
     tensorflow::Status _status;
     tensorflow::Tensor _input_tensor;
     std::vector<std::vector<float>> _out_embeddings;
-    std::vector<std::string> _input_node_names;
-    std::vector<std::string> _output_node_names;
 
 };
 

@@ -37,22 +37,22 @@ std::vector<std::string> fs_img::list_imgs(const std::string &dir_path) {
     return vector_of_data;
 }
 
-bool DatabaseHandling::open_datafile() {
+bool DataHandling::open_datafile() {
    this->imgs_datafile.open(config.datafile_path, std::ios::in | std::ios::app);
    return true;
 }
 
-bool DatabaseHandling::open_error_datafile() {
+bool DataHandling::open_error_datafile() {
    this->errors_datafile.open("errors.txt", std::ios::in | std::ios::app); //TODO!!
    return true;
 }
 
-bool DatabaseHandling::open_config() {
+bool DataHandling::open_config() {
     this->config_datafile.open(config_path, std::ios::in | std::ios::app);
     return true;
 }
 
-bool DatabaseHandling::load_config() {
+bool DataHandling::load_config() {
     using namespace rapidjson;
     Document doc;
     std::string line;
@@ -83,7 +83,7 @@ bool DatabaseHandling::load_config() {
 
 }
 
-bool DatabaseHandling::load_database() {
+bool DataHandling::load_database() {
     using namespace rapidjson;
     std::string line;
     Document doc;
@@ -115,7 +115,7 @@ bool DatabaseHandling::load_database() {
 }
 
 // Adding images one by one. No batch using.
-bool DatabaseHandling::add_json_entry(data_vec_entry new_data) {
+bool DataHandling::add_json_entry(data_vec_entry new_data) {
     using namespace rapidjson;
     StringBuffer strbuf;
     Writer<StringBuffer> writer(strbuf);
@@ -147,8 +147,8 @@ bool DatabaseHandling::add_json_entry(data_vec_entry new_data) {
     }
 }
 
-bool DatabaseHandling::add_error_entry(const std::string& act_class_in,
-                                        const std::string& act_path_in, const std::string& expected_class_in) {
+bool DataHandling::add_error_entry(const std::string& act_class_in,
+                                   const std::string& act_path_in, const std::string& expected_class_in) {
      using namespace rapidjson;
     StringBuffer strbuf;
     Writer<StringBuffer> writer(strbuf);
