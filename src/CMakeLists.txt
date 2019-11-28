@@ -40,30 +40,15 @@ target_sources(TF_WRAPPER_EMBEDDING
 
 )
 
-# message("${TensorFlow_INCLUDE_DIRS}")
 
-#find_package(Protobuf REQUIRED)
+
 message(TF LIBRARIES ${TensorFlow_LIBRARIES})
 
-#set(PROJECT_LIBRARIES ${TensorFlow_LIBRARIES} ${PROTOBUF_LIBRARIES})
+
 
 target_include_directories(TF_WRAPPER_EMBEDDING PRIVATE)
 target_link_libraries(TF_WRAPPER_EMBEDDING stdc++fs TensorFlow::TensorFlow ${OpenCV_LIBS})
-#target_link_libraries(TF_WRAPPER_EMBEDDING TensorflowCC::Shared stdc++fs ${Protobuf_LIBRARIES} ${OpenCV_LIBS})
-#target_link_libraries(TF_WRAPPER_EMBEDDING TensorflowCC::Static  stdc++fs ${OpenCV_LIBS})
-#target_link_libraries(TF_WRAPPER_EMBEDDING stdc++fs  ${OpenCV_LIBS})
 
-# OLD WAY TO INCLUDE TENSORFLOW #
-
-# TensorFlow headers
-#include_directories("/usr/local/include/tf/")
-#include_directories("/usr/local/include/tf/bazel-genfiles/")
-#include_directories("/usr/local/include/tf/tensorflow/")
-#include_directories("/usr/local/include/tf/third-party/")
-
-# Link TensorFlow libs
-#target_link_libraries(TF_WRAPPER_EMBEDDING "/usr/local/lib/libtensorflow_cc.so")
-#target_link_libraries(TF_WRAPPER_EMBEDDING "/usr/local/lib/libtensorflow_framework.so")
 
 
 
@@ -72,5 +57,5 @@ if(CUDA_FOUND)
   target_link_libraries(TF_WRAPPER_EMBEDDING ${CUDA_LIBRARIES})
 endif()
 
-#message("${TensorFlow_LIBRARIES}")
-# message("${TensorFlow_INCLUDE_DIRS}")
+message("INCLUDING TF LIBS""${TensorFlow_LIBRARIES}")
+#message("${TensorFlow_INCLUDE_DIRS}")

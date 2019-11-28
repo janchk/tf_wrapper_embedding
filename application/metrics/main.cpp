@@ -8,7 +8,7 @@ char *getCmdOption(char **begin, char **end, const std::string &option) {
     if (itr != end && ++itr != end) {
         return *itr;
     }
-    return 0;
+    return nullptr;
 }
 
 bool cmdOptionExists(char **begin, char **end, const std::string &option) {
@@ -16,7 +16,7 @@ bool cmdOptionExists(char **begin, char **end, const std::string &option) {
 }
 
 
-std::string parseCommandLine(int argc, char *argv[], std::string c) {
+std::string parseCommandLine(int argc, char *argv[], const std::string& c) {
     std::string ret;
     if (cmdOptionExists(argv, argv + argc, c)) {
         char *filename = getCmdOption(argv, argv + argc, c);
@@ -39,4 +39,5 @@ int main(int argc, char *argv[]) {
     tf_wrapper->getMetrics((std::string &) inPath);
     std::cout << "Using TOP"<< tf_wrapper->topN << std::endl;
 
+    common_ops::delete_safe(tf_wrapper);
 }

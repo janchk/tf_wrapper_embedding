@@ -19,6 +19,8 @@ public:
 
     int batch_size;
 
+    bool set_input_output(std::vector<std::string> in_nodes, std::vector<std::string> out_nodes);
+
     /// \brief function for inferencing vector of input images
     /// \param imgs is vector of images
     /// \return status message
@@ -42,7 +44,7 @@ public:
 protected:
     tensorflow::Status _status;
     tensorflow::Tensor _input_tensor;
-    std::vector<std::vector<float>> out_embeddings;
+    std::vector<std::vector<float>> _out_embeddings;
 
 };
 

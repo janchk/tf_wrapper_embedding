@@ -34,11 +34,11 @@ namespace fs_img
     std::vector<std::string> list_imgs(const std::string & dir_path);
 }
 
-class DatabaseHandling
+class DataHandling
 {
 public:
-    DatabaseHandling() = default;
-    virtual ~DatabaseHandling() = default;
+    DataHandling() = default;
+    virtual ~DataHandling() = default;
 
     struct data_vec_entry
     {
@@ -51,6 +51,7 @@ public:
         std::string imgs_path;
         std::string input_node;
         std::string pb_path;
+        std::string output_node;
     };
 
     // struct with all config data
@@ -66,8 +67,8 @@ public:
     bool load_config();
     bool add_json_entry(data_vec_entry new_data);
 
-    bool add_error_entry(std::string act_class_in, 
-                                        std::string act_path_in, std::string expected_class_in);
+    bool add_error_entry(const std::string& act_class_in,
+                                        const std::string& act_path_in, const std::string& expected_class_in);
 
 protected:
     std::fstream imgs_datafile;

@@ -22,7 +22,7 @@ cv::Mat fs_img::read_img(const std::string &im_filename, cv::Size &size ) {
     return img;
 }
 
-bool path_is_img(std::string path){
+bool path_is_img(std::string &path){
     auto  extension = path.substr(path.find_last_of('.') + 1);
     return extension == "jpg" || extension == "JPG";
 
@@ -31,28 +31,28 @@ bool path_is_img(std::string path){
 std::vector<std::string> fs_img::list_imgs(const std::string &dir_path) {
     std::vector<std::string> vector_of_data;
     for (const auto &entry : fs::recursive_directory_iterator(dir_path)) {
-        if (fs::is_regular_file(entry) && path_is_img(entry.path()))
+        if (fs::is_regular_file(entry) && path_is_img((std::string &) entry.path()))
             vector_of_data.emplace_back(entry.path());
     }
     return vector_of_data;
 }
 
-bool DatabaseHandling::open_datafile() {
+bool DataHandling::open_datafile() {
    this->imgs_datafile.open(config.datafile_path, std::ios::in | std::ios::app);
    return true;
 }
 
-bool DatabaseHandling::open_error_datafile() {
+bool DataHandling::open_error_datafile() {
    this->errors_datafile.open("errors.txt", std::ios::in | std::ios::app); //TODO!!
    return true;
 }
 
-bool DatabaseHandling::open_config() {
+bool DataHandling::open_config() {
     this->config_datafile.open(config_path, std::ios::in | std::ios::app);
     return true;
 }
 
-bool DatabaseHandling::load_config() {
+bool DataHandling::load_config() {
     using namespace rapidjson;
     Document doc;
     std::string line;
@@ -65,9 +65,11 @@ bool DatabaseHandling::load_config() {
         rapidjson::Value &datafile_path = doc["datafile_path"];
         rapidjson::Value &img_path = doc["imgs_path"];
         rapidjson::Value &input_node = doc["input_node"];
+        rapidjson::Value &output_node = doc["output_node"];
         rapidjson::Value &pb_path = doc["pb_path"];
 
         config.input_node = input_node.GetString();
+        config.output_node = output_node.GetString();
         config.datafile_path = datafile_path.GetString();
         config.imgs_path = img_path.GetString();
         config.pb_path = pb_path.GetString();
@@ -81,7 +83,7 @@ bool DatabaseHandling::load_config() {
 
 }
 
-bool DatabaseHandling::load_database() {
+bool DataHandling::load_database() {
     using namespace rapidjson;
     std::string line;
     Document doc;
@@ -113,7 +115,7 @@ bool DatabaseHandling::load_database() {
 }
 
 // Adding images one by one. No batch using.
-bool DatabaseHandling::add_json_entry(data_vec_entry new_data) {
+bool DataHandling::add_json_entry(data_vec_entry new_data) {
     using namespace rapidjson;
     StringBuffer strbuf;
     Writer<StringBuffer> writer(strbuf);
@@ -145,8 +147,8 @@ bool DatabaseHandling::add_json_entry(data_vec_entry new_data) {
     }
 }
 
-bool DatabaseHandling::add_error_entry(std::string act_class_in, 
-                                        std::string act_path_in, std::string expected_class_in) {
+bool DataHandling::add_error_entry(const std::string& act_class_in,
+                                   const std::string& act_path_in, const std::string& expected_class_in) {
      using namespace rapidjson;
     StringBuffer strbuf;
     Writer<StringBuffer> writer(strbuf);

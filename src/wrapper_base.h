@@ -14,13 +14,18 @@ public:
 
     WrapperBase()
     {
-        db_handler = new DatabaseHandling();
+        db_handler = new DataHandling();
 
         db_handler->config_path = "../../../config.json"; //Not my best decision
 
         inference_handler = new TensorFlowEmbeddings();
     }
-    ~WrapperBase() = default;
+    ~WrapperBase()
+    {
+        common_ops::delete_safe(inference_handler);
+        common_ops::delete_safe(db_handler);
+        common_ops::delete_safe(inference_handler);
+    };
 
     struct distance {
         float dist;
@@ -39,17 +44,21 @@ public:
     virtual std::vector<WrapperBase::distance> inference_and_matching(std::string img_path);
 
 protected:
-    DatabaseHandling *db_handler;
+    DataHandling *db_handler;
     TensorFlowEmbeddings *inference_handler;
     std::vector<std::string> list_of_imgs;
     std::vector<WrapperBase::distance> distances;
 
+    std::vector<std::string> _input_nodes;
+    std::vector<std::string> _output_nodes;
+
+
     static float _calc_distance(std::vector<float> base, std::vector<float> target);
 
-    bool matching(std::vector<DatabaseHandling::data_vec_entry> &base, std::vector<float> &target);
+    bool _matching(std::vector<DataHandling::data_vec_entry> &base, std::vector<float> &target);
 
-    bool add_updates();
-    bool check_for_updates();
+    bool _add_updates();
+    bool _check_for_updates();
 
 };
 

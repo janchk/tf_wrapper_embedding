@@ -10,7 +10,7 @@ char *getCmdOption(char **begin, char **end, const std::string &option) {
     if (itr != end && ++itr != end) {
         return *itr;
     }
-    return 0;
+    return nullptr;
 }
 
 bool cmdOptionExists(char **begin, char **end, const std::string &option) {
@@ -18,7 +18,7 @@ bool cmdOptionExists(char **begin, char **end, const std::string &option) {
 }
 
 
-std::string parseCommandLine(int argc, char *argv[], std::string c) {
+std::string parseCommandLine(int argc, char *argv[], const std::string& c) {
     std::string ret;
     if (cmdOptionExists(argv, argv + argc, c)) {
         char *filename = getCmdOption(argv, argv + argc, c);
@@ -39,8 +39,11 @@ int main(int argc, char *argv[]) {
     tf_wrapper->prepare_for_inference();
     tf_wrapper->topN = 10;
     std::vector<WrapperBase::distance> results = tf_wrapper->inference_and_matching(inFileName);
+    common_ops::delete_safe(tf_wrapper);
+
     for (const auto &result : results)
         std::cout << "Dst " << result.dist << " path " << result.path <<std::endl;
+
 
     return 0;
 }

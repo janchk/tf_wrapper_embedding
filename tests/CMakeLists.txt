@@ -15,7 +15,10 @@ find_package(TensorFlow CONFIG REQUIRED)
 
 add_executable(tf_test ${SRC_FILES} ${HDR_FILES})
 
-target_link_libraries(tf_test TensorFlow::TensorFlow gtest gtest_main)
+target_link_libraries(tf_test TensorFlow::TensorFlow gtest gtest_main TF_WRAPPER_EMBEDDING)
+
+target_include_directories(tf_test PUBLIC
+                            ${TF_WRAPPER_EMBEDDING_SOURCE_DIR})
 
 add_test(
         NAME

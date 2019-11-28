@@ -11,11 +11,12 @@ TensorflowWrapperCore::TensorflowWrapperCore(TensorflowWrapperCore &&that) {
     this->_name = std::move(that._name);
     this->_path = std::move(that._path);
     this->_graph_def = std::move(that._graph_def);
-
 }
 
-void TensorflowWrapperCore::clearSession() {
-    _output_tensors.clear();
+TensorflowWrapperCore::~TensorflowWrapperCore(){
+    clearSession();
+    auto a = this->_session->Close();
+    common_ops::delete_safe(_session);
 }
 
 // TODO Disable graph optimization. We assume that graph already optimized.
@@ -83,25 +84,26 @@ bool TensorflowWrapperCore::load(const std::string &filename, const std::string 
     SessionOptions opts = configureSession();
     if (_session) {
         _session->Close();
-        delete _session;
-        _session = nullptr;
+        common_ops::delete_safe(_session);
     }
-    Status status = NewSession(opts, &_session);
-    if (!status.ok()) {
-        tf_aux::DebugOutput("tf error: ", status.ToString());
+    // Blame Tensorflow developers for NewSession mem leak.
+    // It may appear on some versions.
+    _status = NewSession(opts, &_session);
+    if (!_status.ok()) {
+        tf_aux::DebugOutput("tf error: ", _status.ToString());
 
         return _is_loaded = false;
     }
-    status = ReadBinaryProto(Env::Default(), filename, &_graph_def);
-    if (!status.ok()) {
-        tf_aux::DebugOutput("tf error: ", status.ToString());
+    _status = ReadBinaryProto(Env::Default(), filename, &_graph_def);
+    if (!_status.ok()) {
+        tf_aux::DebugOutput("tf error: ", _status.ToString());
 
         return _is_loaded = false;
     }
     configureGraph();
-    status = _session->Create(_graph_def);
-    if (!status.ok()) {
-        tf_aux::DebugOutput("tf error: ", status.ToString());
+    _status = _session->Create(_graph_def);
+    if (!_status.ok()) {
+        tf_aux::DebugOutput("tf error: ", _status.ToString());
         return _is_loaded = false;
     } else {
         tf_aux::DebugOutput("WRAPPER_STATUS", "Graph successfully loaded!");
@@ -120,8 +122,8 @@ std::string TensorflowWrapperCore::inference(const std::vector<cv::Mat> &imgs){
     Tensor input = getConvertFunction(INPUT_TYPE::DT_FLOAT)(imgs, _input_height, _input_width, _input_depth, _convert_to_float, _mean);
 
     std::vector in_tensor_shape = tf_aux::get_tensor_shape(input);
-    std::vector<std::pair<string, tensorflow::Tensor>> inputs = {{_input_node_name, input}};
-    std::cout << _input_node_name << std::endl;
+    std::vector<std::pair<string, tensorflow::Tensor>> inputs = {{_input_node_names[0], input}};
+    std::cout << _input_node_names[0] << std::endl;
     _status = _session->Run(inputs, _output_node_names, {}, &_output_tensors);
     std::cerr << "NETWORK_STATUS: " << _status << std::endl;
     return _status.ToString();
@@ -130,6 +132,11 @@ std::string TensorflowWrapperCore::inference(const std::vector<cv::Mat> &imgs){
 //std::string TensorflowWrapperCore
 void TensorflowWrapperCore::setName(const std::string& name){
     _name = name;
+}
+
+void TensorflowWrapperCore::clearSession()
+{
+    _output_tensors.clear();
 }
 
 void TensorflowWrapperCore::parseName(const std::string &filename){
@@ -161,7 +168,7 @@ void TensorflowWrapperCore::getInputNodeNameFromGraphIfPossible(const std::strin
 //#ifdef TFDEBUG
         std::cerr << "Input node name:\n------------------" << std::endl;
 //#endif
-        _input_node_name = names_mapped(0);
+        _input_node_names[0] = names_mapped(0);
 //#ifdef TFDEBUG
         std::cerr << names_mapped(0) << std::endl;
 //#endif
