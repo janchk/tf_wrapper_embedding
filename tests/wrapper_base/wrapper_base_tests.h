@@ -5,7 +5,7 @@
 #ifndef TF_WRAPPER_WRAPPER_BASE_TESTS_H
 #define TF_WRAPPER_WRAPPER_BASE_TESTS_H
 
-#include "tf_test.h"
+#include "../tf_test/tf_test.h"
 #include "wrapper_base.h"
 
 class WrapperBaseTest : public WrapperBase {

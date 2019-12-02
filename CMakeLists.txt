@@ -27,4 +27,5 @@ fetch_googletest(
     )
 
 enable_testing()
-add_subdirectory(tests)
+add_subdirectory(tests/tf_test)
+add_subdirectory(tests/wrapper_base)

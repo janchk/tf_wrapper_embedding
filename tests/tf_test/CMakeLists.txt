@@ -6,14 +6,14 @@ set(CMAKE_MODULE_PATH
     ${CMAKE_MODULE_PATH}../cmake)
 
 set (SRC_FILES
-        ${CMAKE_CURRENT_LIST_DIR}/tf_test.cpp wrapper_base_tests.cpp wrapper_base_tests.h)
+        tf_test.cpp)
 
 set (HDR_FILES
-        ${CMAKE_CURRENT_LIST_DIR}/tf_test.h wrapper_base_tests.cpp wrapper_base_tests.h)
+        tf_test.h)
 
 find_package(TensorFlow CONFIG REQUIRED)
 
-add_executable(tf_test ${SRC_FILES} ${HDR_FILES} wrapper_base_tests.cpp wrapper_base_tests.h)
+add_executable(tf_test ${SRC_FILES} ${HDR_FILES})
 
 target_link_libraries(tf_test TensorFlow::TensorFlow gtest gtest_main TF_WRAPPER_EMBEDDING)
 
