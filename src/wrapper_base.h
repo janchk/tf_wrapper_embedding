@@ -8,6 +8,12 @@
 #include "common/fs_handling.h"
 #include "tensorflow_embeddings.h"
 
+namespace EmbeddingMatching
+{
+   static float calc_distance_euclid(std::vector<float> base, std::vector<float> target);
+
+}
+
 class WrapperBase
 {
 public:
@@ -15,8 +21,6 @@ public:
     WrapperBase()
     {
         db_handler = new DataHandling();
-
-        db_handler->config_path = "../../../config.json"; //Not my best decision
 
         inference_handler = new TensorFlowEmbeddings();
     }
@@ -33,6 +37,11 @@ public:
     };
 
     unsigned int topN = 1; //it's not very secure to set var like that, but whatever.
+
+    /// In case you want specific config to be used
+    /// \param path to config
+    /// \return if custom config is used
+    bool setConfigPath(std::string path);
 
     /// \brief main method used for reading images in directory and adding the to th database
     /// \return
@@ -53,7 +62,7 @@ protected:
     std::vector<std::string> _output_nodes;
 
 
-    static float _calc_distance(std::vector<float> base, std::vector<float> target);
+//    static float _calc_distance(std::vector<float> base, std::vector<float> target);
 
     bool _matching(std::vector<DataHandling::data_vec_entry> &base, std::vector<float> &target);
 
@@ -61,5 +70,7 @@ protected:
     bool _check_for_updates();
 
 };
+
+
 
 #endif //TF_WRAPPER_EMBEDDING_WRAPPER_BASE_H
