@@ -5,24 +5,27 @@ set(CMAKE_MODULE_PATH
     ${PROJECT_SOURCE_DIR}
     ${CMAKE_MODULE_PATH}../cmake)
 
-set (SRC_FILES
-        ${CMAKE_CURRENT_LIST_DIR}/tf_test.cpp)
 
-set (HDR_FILES
-        ${CMAKE_CURRENT_LIST_DIR}/tf_test.h)
 
 find_package(TensorFlow CONFIG REQUIRED)
 
-add_executable(tf_test ${SRC_FILES} ${HDR_FILES})
+# Configuring test data
 
-target_link_libraries(tf_test TensorFlow::TensorFlow gtest gtest_main TF_WRAPPER_EMBEDDING)
+set(TEST_DATA_DIRECTORY ${CMAKE_BINARY_DIR}/tests/test_data/series)
 
-target_include_directories(tf_test PUBLIC
-                            ${TF_WRAPPER_EMBEDDING_SOURCE_DIR})
+configure_file(test_data/config.json ${CMAKE_BINARY_DIR}/tests/tensorflowTests COPYONLY)
+configure_file(test_data/sample_config.json ${CMAKE_BINARY_DIR}/tests/commonTests COPYONLY)
 
-add_test(
-        NAME
-            tf_test
-        COMMAND
-            ./tf_test
-)
+
+
+file(GLOB_RECURSE TEST_DATA ${CMAKE_CURRENT_LIST_DIR}/test_data/series/*.jpg)
+
+
+
+message(STATUS ${TEST_DATA})
+message(STATUS ${TEST_DATA_DIRECTORY})
+
+
+add_subdirectory(commonTests)
+add_subdirectory(tensorflowTests)
+

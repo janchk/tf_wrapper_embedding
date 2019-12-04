@@ -25,7 +25,6 @@ cv::Mat fs_img::read_img(const std::string &im_filename, cv::Size &size ) {
 bool path_is_img(std::string &path){
     auto  extension = path.substr(path.find_last_of('.') + 1);
     return extension == "jpg" || extension == "JPG";
-
 }
 
 std::vector<std::string> fs_img::list_imgs(const std::string &dir_path) {
@@ -53,9 +52,12 @@ bool DataHandling::open_config() {
 }
 
 bool DataHandling::load_config() {
+
     using namespace rapidjson;
     Document doc;
     std::string line;
+    if( !config_datafile.good())
+        return false;
 
     if (this->config_datafile.is_open()) {
         std::getline(config_datafile, line);
@@ -81,6 +83,7 @@ bool DataHandling::load_config() {
         load_config();
     }
 
+    return true;
 }
 
 bool DataHandling::load_database() {
@@ -88,7 +91,6 @@ bool DataHandling::load_database() {
     std::string line;
     Document doc;
 
-//    this->imgs_and_paths = fs_img::read_imgs(imgs_path); //TODO probably move this out
     if (this->imgs_datafile.is_open()) {
         while (std::getline(imgs_datafile, line)) {
             data_vec_entry base_entry;
@@ -179,10 +181,4 @@ bool DataHandling::add_error_entry(const std::string& act_class_in,
         this->errors_datafile << strbuf.GetString() << std::endl;
         this->errors_datafile.close();
 
-    // }
-    // else {
-    //     this->open_error_datafile();
-    //     this->add_error_entry(std::move(new_data));
-
-    // }
 }

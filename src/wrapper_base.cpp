@@ -4,15 +4,19 @@
 
 #include "wrapper_base.h"
 
+#include <utility>
+
 
 
 bool WrapperBase::prepare_for_inference() {
-//    auto *db_handler = new DataHandling();
-//    db_handler->datafile_path = "";
-//    db_handler->imgs_path = "";
+    if(!db_handler->load_config()) {
+        std::cerr << "Can't load config!" << std::endl;
+        return false;
+    }
 
+    this->_input_nodes = {db_handler->config.input_node};
+    this->_output_nodes = {db_handler->config.output_node};
 
-    db_handler->load_config();
     std::cout << "Config was loaded" << std::endl;
     db_handler->load_database();
     std::cout << "Database was loaded" << std::endl;
@@ -23,8 +27,9 @@ bool WrapperBase::prepare_for_inference() {
     else
        std::cout << "No new images found" << std::endl;
 
-    this->_input_nodes = {db_handler->config.input_node};
-    this->_output_nodes = {db_handler->config.output_node};
+    return true;
+
+
 
 }
 
@@ -49,7 +54,9 @@ std::vector<WrapperBase::distance> WrapperBase::inference_and_matching(std::stri
 
 bool WrapperBase::_add_updates() {
     cv::Mat img;
-    inference_handler->load(db_handler->config.pb_path, db_handler->config.input_node);
+    if(!inference_handler->isLoaded())
+        inference_handler->load(db_handler->config.pb_path, db_handler->config.input_node);
+    inference_handler->set_input_output(this->_input_nodes, this->_output_nodes);
     std::vector<float> out_embedding; //TODO remember about batch
     DataHandling::data_vec_entry new_data;
     for (const auto &img_path : this->list_of_imgs) {
@@ -61,6 +68,7 @@ bool WrapperBase::_add_updates() {
         db_handler->data_vec_base.push_back(new_data);
         db_handler->add_json_entry(new_data);
     }
+    return true;
 
 }
 
@@ -91,8 +99,11 @@ bool WrapperBase::_matching(std::vector<DataHandling::data_vec_entry> &base,
     this->distances.clear();
     WrapperBase::distance distance;
 
+    if(base.empty() or target.empty())
+        return false;
+
     for (auto & it : base) {
-        distance.dist = WrapperBase::_calc_distance(it.embedding , target);
+        distance.dist = EmbeddingMatching::calc_distance_euclid(it.embedding, target);
         distance.path = it.filepath;
         this->distances.push_back(distance);
     }
@@ -104,7 +115,16 @@ bool WrapperBase::_matching(std::vector<DataHandling::data_vec_entry> &base,
     return true;
 }
 
-float WrapperBase::_calc_distance(std::vector<float> base, std::vector<float> target) {
+bool WrapperBase::setConfigPath(std::string path) {
+    if (path.empty()) {
+        std::cerr << "Config path is empty!" << std::endl;
+        return false;
+    }
+    this->db_handler->config_path = std::move(path);
+    return true;
+}
+
+float EmbeddingMatching::calc_distance_euclid(std::vector<float> base, std::vector<float> target) {
     float sum = 0;
     auto target_it = target.begin();
     for (auto base_it = base.begin(); base_it !=base.end(); ++base_it, ++target_it) {

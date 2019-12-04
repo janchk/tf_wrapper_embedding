@@ -12,19 +12,18 @@ class MetricsBase : public WrapperBase
 public:
     MetricsBase()
     {
-        db_handler->config_path = "../../../application/metrics/config.json";
-
-//        db_handler->load_config();
+        this->setConfigPath("config.json");
     };
 
     ~MetricsBase() = default;
 
-
+    /// using accuracy as metrics
+    /// \param testimg_path path to test image
+    /// \return value of accuracy
     float getMetrics(std::string &testimg_path);
 
     std::vector<WrapperBase::distance> inference_and_matching(std::string img_path) override;
 
-//    std::string inference(const std::vector<cv::Mat> &imgs) override;
 
     struct testimg_entry {
         std::string img_path;
