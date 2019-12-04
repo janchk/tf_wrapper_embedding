@@ -88,7 +88,6 @@ bool DataHandling::load_database() {
     std::string line;
     Document doc;
 
-//    this->imgs_and_paths = fs_img::read_imgs(imgs_path); //TODO probably move this out
     if (this->imgs_datafile.is_open()) {
         while (std::getline(imgs_datafile, line)) {
             data_vec_entry base_entry;
