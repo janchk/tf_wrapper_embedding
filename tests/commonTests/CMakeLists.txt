@@ -1,4 +1,4 @@
-set(MODULE_NAME common_tests)
+set(MODULE_NAME commonTests)
 set (SRC_FILES
         ${CMAKE_CURRENT_LIST_DIR}/testClassExtraction.cpp)
 
@@ -13,5 +13,5 @@ add_test(
         NAME
             ${MODULE_NAME}
         COMMAND
-            ./common_tests
+            ./${MODULE_NAME}
 )

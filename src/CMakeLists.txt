@@ -57,5 +57,5 @@ if(CUDA_FOUND)
   target_link_libraries(TF_WRAPPER_EMBEDDING ${CUDA_LIBRARIES})
 endif()
 
-message("INCLUDING TF LIBS""${TensorFlow_LIBRARIES}")
+message("INCLUDING TF LIBS" ${TensorFlow_LIBRARIES})
 #message("${TensorFlow_INCLUDE_DIRS}")
