@@ -14,6 +14,7 @@ find_package(TensorFlow CONFIG REQUIRED)
 set(TEST_DATA_DIRECTORY ${CMAKE_BINARY_DIR}/tests/test_data/series)
 
 configure_file(test_data/config.json ${CMAKE_BINARY_DIR}/tests/tensorflowTests COPYONLY)
+configure_file(test_data/sample_config.json ${CMAKE_BINARY_DIR}/tests/commonTests COPYONLY)
 
 
 

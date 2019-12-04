@@ -12,6 +12,7 @@ bool IsCorrect(MetricsBase::testimg_entry &entry) { return entry.is_correct; }
 
 float MetricsBase::getMetrics(std::string &testimg_path) {
 
+    float metrics;
     std::vector<std::string> test_imgs_paths = fs_img::list_imgs(testimg_path);
     testimg_entry test_img;
     WrapperBase::distance test_distance;
@@ -50,9 +51,11 @@ float MetricsBase::getMetrics(std::string &testimg_path) {
 
     val_correct = std::count_if(testimg_vector.begin(), testimg_vector.end(), IsCorrect);
 
-    std::cout << "Accuracy is : " << val_correct/testimg_vector.size() * 100.f << "%" << std::endl;
 
-    return 0;
+    metrics = val_correct/testimg_vector.size() * 100.f;
+    std::cout << "Accuracy is : " << metrics << "%" << std::endl;
+
+    return metrics;
 }
 
 bool MetricsBase::prepare_for_inference() {

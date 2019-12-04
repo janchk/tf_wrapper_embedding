@@ -36,7 +36,10 @@ int main(int argc, char *argv[]) {
     std::string const inFileName = parseCommandLine(argc, argv, std::string("-img"));
 
     auto *tf_wrapper = new WrapperBase();
-    tf_wrapper->prepare_for_inference();
+    if(!tf_wrapper->prepare_for_inference()) {
+        std::cerr << "Can't prepare for inference!" << std::endl;
+        return 1;
+    }
     tf_wrapper->topN = 10;
     std::vector<WrapperBase::distance> results = tf_wrapper->inference_and_matching(inFileName);
     common_ops::delete_safe(tf_wrapper);

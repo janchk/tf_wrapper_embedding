@@ -1,6 +1,8 @@
 set(MODULE_NAME commonTests)
 set (SRC_FILES
-        ${CMAKE_CURRENT_LIST_DIR}/testClassExtraction.cpp)
+        ${CMAKE_CURRENT_LIST_DIR}/testClassExtraction.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/testDataHandling.cpp
+        )
 
 add_executable(${MODULE_NAME} ${SRC_FILES})
 

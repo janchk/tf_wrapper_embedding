@@ -9,7 +9,10 @@
 
 
 bool WrapperBase::prepare_for_inference() {
-    db_handler->load_config();
+    if(!db_handler->load_config()) {
+        std::cerr << "Can't load config!" << std::endl;
+        return false;
+    }
 
     this->_input_nodes = {db_handler->config.input_node};
     this->_output_nodes = {db_handler->config.output_node};
@@ -23,6 +26,8 @@ bool WrapperBase::prepare_for_inference() {
         this->_add_updates();
     else
        std::cout << "No new images found" << std::endl;
+
+    return true;
 
 
 
@@ -63,6 +68,7 @@ bool WrapperBase::_add_updates() {
         db_handler->data_vec_base.push_back(new_data);
         db_handler->add_json_entry(new_data);
     }
+    return true;
 
 }
 
@@ -93,6 +99,9 @@ bool WrapperBase::_matching(std::vector<DataHandling::data_vec_entry> &base,
     this->distances.clear();
     WrapperBase::distance distance;
 
+    if(base.empty() or target.empty())
+        return false;
+
     for (auto & it : base) {
         distance.dist = EmbeddingMatching::calc_distance_euclid(it.embedding, target);
         distance.path = it.filepath;
@@ -108,6 +117,7 @@ bool WrapperBase::_matching(std::vector<DataHandling::data_vec_entry> &base,
 
 bool WrapperBase::setConfigPath(std::string path) {
     if (path.empty()) {
+        std::cerr << "Config path is empty!" << std::endl;
         return false;
     }
     this->db_handler->config_path = std::move(path);
