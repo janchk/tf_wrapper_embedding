@@ -56,40 +56,46 @@ bool DataHandling::load_config() {
     using namespace rapidjson;
     Document doc;
     std::string line;
-    if( !config_datafile.good())
-        return false;
+
+    open_config();
 
     if (this->config_datafile.is_open()) {
         std::getline(config_datafile, line);
         doc.Parse(line.c_str());
+        if (doc.IsObject()){
+            rapidjson::Value &input_size = doc["input_size"];
+            rapidjson::Value &datafile_path = doc["datafile_path"];
+            rapidjson::Value &img_path = doc["imgs_path"];
+            rapidjson::Value &input_node = doc["input_node"];
+            rapidjson::Value &output_node = doc["output_node"];
+            rapidjson::Value &pb_path = doc["pb_path"];
 
-        rapidjson::Value &input_size = doc["input_size"];
-        rapidjson::Value &datafile_path = doc["datafile_path"];
-        rapidjson::Value &img_path = doc["imgs_path"];
-        rapidjson::Value &input_node = doc["input_node"];
-        rapidjson::Value &output_node = doc["output_node"];
-        rapidjson::Value &pb_path = doc["pb_path"];
+            config.input_node = input_node.GetString();
+            config.output_node = output_node.GetString();
+            config.datafile_path = datafile_path.GetString();
+            config.imgs_path = img_path.GetString();
+            config.pb_path = pb_path.GetString();
+            config.input_size.height = input_size.GetArray()[0].GetInt();
+            config.input_size.width = input_size.GetArray()[1].GetInt();
 
-        config.input_node = input_node.GetString();
-        config.output_node = output_node.GetString();
-        config.datafile_path = datafile_path.GetString();
-        config.imgs_path = img_path.GetString();
-        config.pb_path = pb_path.GetString();
-        config.input_size.height = input_size.GetArray()[0].GetInt();
-        config.input_size.width = input_size.GetArray()[1].GetInt();
+            return true;
+        } else
+            return false;
 
     } else {
-        open_config();
-        load_config();
+        return false;
     }
 
-    return true;
+//    return true;
 }
 
 bool DataHandling::load_database() {
     using namespace rapidjson;
     std::string line;
     Document doc;
+
+    if(!data_vec_base.empty())
+        data_vec_base.clear();
 
     if (this->imgs_datafile.is_open()) {
         while (std::getline(imgs_datafile, line)) {
@@ -100,7 +106,6 @@ bool DataHandling::load_database() {
             rapidjson::Value &img_embedding = doc["embedding"];
 
             base_entry.filepath = img_name.GetString();
-//            for (const auto &value : img_embedding.GetObject()) {
             for (const auto &value : img_embedding.GetArray()) {
                 base_entry.embedding.emplace_back(value.GetFloat());
             }

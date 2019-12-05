@@ -5,7 +5,9 @@ set (SRC_FILES
         )
 
 add_executable(${MODULE_NAME} ${SRC_FILES})
-set(TEST_DATA_PATH ${CMAKE_BINARY_DIR}/tests/${MODULE_NAME}/queries/helsinki_1_andante/)
+
+set(TEST_DATA_PATH ${CMAKE_BINARY_DIR}/tests/${MODULE_NAME}/queries/helsinki_1_andante)
+
 file(MAKE_DIRECTORY ${TEST_DATA_PATH})
 file(COPY ${CMAKE_CURRENT_LIST_DIR}/../test_data/queries/helsinki_1_andante/IMG_7813_4.jpg DESTINATION ${TEST_DATA_PATH})
 
