@@ -16,7 +16,7 @@
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
 
-#include "../tensorflow_auxiliary.h"
+#include "tensorflow_auxiliary.h"
 
 #define EXPERIMENTAL
 #ifdef EXPERIMENTAL

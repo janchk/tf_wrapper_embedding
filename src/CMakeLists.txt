@@ -16,6 +16,7 @@ target_include_directories(TF_WRAPPER_EMBEDDING
         PUBLIC
         ~/.local/include
         ${PROJECT_SOURCE_DIR}/../include/
+        ${CMAKE_CURRENT_LIST_DIR}
         )
 
 target_sources(TF_WRAPPER_EMBEDDING

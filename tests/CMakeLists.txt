@@ -11,12 +11,11 @@ find_package(TensorFlow CONFIG REQUIRED)
 
 # Configuring test data
 
-#set(TEST_DATA_DIRECTORY ${CMAKE_BINARY_DIR}/tests/test_data/series)
 
 file(GLOB_RECURSE TEST_DATA ${CMAKE_CURRENT_LIST_DIR}/test_data/series/*.jpg)
 
-message(STATUS ${TEST_DATA})
-message(STATUS ${TEST_DATA_DIRECTORY})
+#message(STATUS ${TEST_DATA})
+#message(STATUS ${TEST_DATA_DIRECTORY})
 
 
 add_subdirectory(commonTests)

@@ -15,10 +15,5 @@
 
 #include "common/common_ops.h"
 
-//namespace tf_base
-//{
-//
-//
-//}
 
 #endif
