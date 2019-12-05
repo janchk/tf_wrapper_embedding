@@ -17,4 +17,5 @@ TEST(EXECUTION, EXECUTION_Acceptance_Test)
     std::vector<WrapperBase::distance> results = tf_wrapper->inference_and_matching(inFileName);
     std::string predicted_class = common_ops::extract_class(results[0].path);
     ASSERT_EQ(predicted_class, gt_class);
+    common_ops::delete_safe(tf_wrapper);
 }
