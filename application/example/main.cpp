@@ -41,6 +41,7 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     tf_wrapper->topN = 10;
+
     std::vector<WrapperBase::distance> results = tf_wrapper->inference_and_matching(inFileName);
     common_ops::delete_safe(tf_wrapper);
 

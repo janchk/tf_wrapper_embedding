@@ -28,9 +28,6 @@ bool WrapperBase::prepare_for_inference() {
        std::cout << "No new images found" << std::endl;
 
     return true;
-
-
-
 }
 
 std::vector<WrapperBase::distance> WrapperBase::inference_and_matching(std::string img_path) {

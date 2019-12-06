@@ -5,14 +5,14 @@
 #include "common/common_ops.h"
 #include "gtest/gtest.h"
 
-TEST(load_config, testLoadUnexistedConfig)
+TEST(load_config, load_config_unexisted_Test)
 {
    auto *data_handler = new DataHandling;
    data_handler->config_path = "unexisted_config.json";
    ASSERT_FALSE(data_handler->load_config());
 }
 
-TEST(load_config, testLoadConfig)
+TEST(load_config, load_config_load_Test)
 {
     auto *data_handler = new DataHandling;
     data_handler->config_path = "sample_config.json";
@@ -29,7 +29,7 @@ TEST(load_config, testLoadConfig)
     common_ops::delete_safe(data_handler);
 }
 
-TEST(load_database, testLoadDatabase)
+TEST(load_database, load_database_load_Test)
 {
     auto *data_handler = new DataHandling;
     data_handler->config_path = "sample_config.json";
@@ -42,7 +42,7 @@ TEST(load_database, testLoadDatabase)
     common_ops::delete_safe(data_handler);
 }
 
-TEST(add_json_entry, testAddJsonEntry)
+TEST(add_json_entry, add_json_entry_add_Test)
 {
     auto *data_handler = new DataHandling;
 
@@ -63,7 +63,7 @@ TEST(add_json_entry, testAddJsonEntry)
     common_ops::delete_safe(data_handler);
 }
 
-TEST(read_img, testReadImg)
+TEST(read_img, read_img_read_Test)
 {
     auto size = cv::Size_<int>(256, 256);
     cv::Mat test_img = fs_img::read_img("Lenna.jpg", size);
@@ -73,7 +73,7 @@ TEST(read_img, testReadImg)
     ASSERT_EQ(test_img.cols, 256);
 }
 
-TEST(list_imgs, testListImages)
+TEST(list_imgs, list_imgs_lis_Test)
 {
     std::vector<std::string> list_of_images = fs_img::list_imgs(".");
 
