@@ -67,7 +67,7 @@ TEST(_matching, _matching_testMatchingCorrectnes_Test)
     ASSERT_EQ(wrapper->distancesWrapper()[0].path, "/testpath/series/closest_res/randimg.jpg");
     ASSERT_EQ(wrapper->distancesWrapper()[1].path, "/testpath/series/middle_res/randimg.jpg");
     ASSERT_EQ(wrapper->distancesWrapper()[2].path, "/testpath/series/farthest_res/randimg.jpg");
-//    wrapper->distances[0].
-
+    
+    common_ops::delete_safe(wrapper);
 
 }
