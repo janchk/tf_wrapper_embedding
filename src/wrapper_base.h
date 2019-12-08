@@ -12,6 +12,7 @@ namespace EmbeddingMatching
 {
    static float calc_distance_euclid(std::vector<float> base, std::vector<float> target);
 
+   float calc_distance_cosine(std::vector<float> base, std::vector<float> target);
 }
 
 class WrapperBase

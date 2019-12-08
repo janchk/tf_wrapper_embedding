@@ -216,6 +216,14 @@ TEST(_add_updates, adds_new_images) {
     ASSERT_EQ(new_vec_base[1].filepath, "./Lenna.jpg");
 }
 
+TEST(calc_distance_cosine, test_codine_distance_calculation) {
+    std::vector<float> base{1.f, 2.f, 5.f};
+    std::vector<float> target{5.f, 2.f, 1.f};
+
+    float dist = EmbeddingMatching::calc_distance_cosine(base, target);
+    ASSERT_EQ(dist, 16.f / 30.f);
+}
+
 
 
 
