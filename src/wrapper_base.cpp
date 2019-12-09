@@ -28,9 +28,6 @@ bool WrapperBase::prepare_for_inference() {
        std::cout << "No new images found" << std::endl;
 
     return true;
-
-
-
 }
 
 std::vector<WrapperBase::distance> WrapperBase::inference_and_matching(std::string img_path) {
@@ -134,4 +131,16 @@ float EmbeddingMatching::calc_distance_euclid(std::vector<float> base, std::vect
 
 }
 
+float EmbeddingMatching::calc_distance_cosine(std::vector<float> base, std::vector<float> target) {
+    float numerator = 0, denominator_base = 0, denominator_target = 0;
+    auto target_it = target.begin();
+    for (auto base_it = base.begin(); base_it !=base.end(); ++base_it, ++target_it) {
+        numerator += *base_it * *target_it;
+        denominator_base += *base_it * *base_it;
+        denominator_target += *target_it * *target_it;
+    }
+    float expr = numerator / (sqrt(denominator_base) * sqrt(denominator_target));
+    return 1 - expr;
+
+}
 

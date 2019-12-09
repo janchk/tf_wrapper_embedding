@@ -1,1 +1,1 @@
-{  "input_size": [    256,    256  ],  "datafile_path": "/media/jakhremchik/ubuntuHD/PROJECTS/test_imgs/data_metrics.txt",  "imgs_path" : "/home/jakhremchik/CLionProjects/TF_WRAPPER_EMBEDDING/tests/test_data/series",  "pb_path" : "/home/jakhremchik/Downloads/optimized_val_84.pb",   "input_node" : "image_batch_p:0", "output_node" :  "embeddings:0"}
+{  "input_size": [    256,    256  ],  "datafile_path": "data_metrics.txt",  "imgs_path" : "series/",  "pb_path" : "../../test_data/optimized_val_84.pb",   "input_node" : "image_batch_p:0", "output_node" :  "embeddings:0"}

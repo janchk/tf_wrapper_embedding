@@ -12,6 +12,7 @@ namespace EmbeddingMatching
 {
    static float calc_distance_euclid(std::vector<float> base, std::vector<float> target);
 
+   float calc_distance_cosine(std::vector<float> base, std::vector<float> target);
 }
 
 class WrapperBase
@@ -23,6 +24,8 @@ public:
         db_handler = new DataHandling();
 
         inference_handler = new TensorFlowEmbeddings();
+
+        topN = 1;
     }
     ~WrapperBase()
     {
@@ -36,7 +39,7 @@ public:
         std::string path;
     };
 
-    unsigned int topN = 1; //it's not very secure to set var like that, but whatever.
+    unsigned int topN;
 
     /// In case you want specific config to be used
     /// \param path to config
@@ -60,7 +63,6 @@ protected:
 
     std::vector<std::string> _input_nodes;
     std::vector<std::string> _output_nodes;
-
 
 //    static float _calc_distance(std::vector<float> base, std::vector<float> target);
 
