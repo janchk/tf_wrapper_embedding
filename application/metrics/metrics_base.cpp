@@ -39,7 +39,7 @@ float MetricsBase::getMetrics(std::string &testimg_path) {
             it->is_correct = true;
         } else {
             it->is_correct = false;
-            db_handler->add_error_entry(it->img_path, it->img_class, test_class);
+            db_handler->add_error_entry(it->img_class, it->img_path, test_class);
         }
             
         it->is_correct = test_class == it->img_class; //So much simplified so wow.
