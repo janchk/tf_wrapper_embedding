@@ -31,7 +31,7 @@ float MetricsBase::getMetrics(std::string &testimg_path) {
 
         testimg_vector.emplace_back(test_img);
     }
-
+  
     for (auto it = testimg_vector.begin(); it != testimg_vector.end(); ++it) {
         test_distance = inference_and_matching(it->img_path);
         for (auto & res_it : test_distance) {

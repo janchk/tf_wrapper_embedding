@@ -51,7 +51,8 @@ std::vector<WrapperBase::distance> WrapperBase::inference_and_matching(std::stri
 }
 
 bool WrapperBase::_add_updates() {
-    cv::Mat img;
+    std::cout << "Adding updates to database..." << std::endl;
+    cv::Mat img; // TODO rethink this logic..
     if(!inference_handler->isLoaded())
         inference_handler->load(db_handler->config.pb_path, db_handler->config.input_node);
     inference_handler->set_input_output(this->_input_nodes, this->_output_nodes);
