@@ -15,7 +15,7 @@ float MetricsBase::getMetrics(std::string &testimg_path) {
     float metrics;
     std::vector<std::string> test_imgs_paths = fs_img::list_imgs(testimg_path);
     testimg_entry test_img;
-    WrapperBase::distance test_distance;
+    std::vector<WrapperBase::distance> test_distance;
     std::string test_class;
 
     std::cout << "Start prepearing for inference" << std::endl;
@@ -31,20 +31,25 @@ float MetricsBase::getMetrics(std::string &testimg_path) {
 
         testimg_vector.emplace_back(test_img);
     }
-
-    for (auto it = testimg_vector.begin(); it != testimg_vector.end(); ++it){
-        test_distance = inference_and_matching(it->img_path)[0];
-        test_class = common_ops::extract_class(test_distance.path);
-        if (test_class == it->img_class) {
-            it->is_correct = true;
-        } else {
-            it->is_correct = false;
-            db_handler->add_error_entry(it->img_class, it->img_path, test_class);
+  
+    for (auto it = testimg_vector.begin(); it != testimg_vector.end(); ++it) {
+        test_distance = inference_and_matching(it->img_path);
+        for (auto & res_it : test_distance) {
+            test_class = common_ops::extract_class(res_it.path);
+            if (test_class == it->img_class) {
+                it->is_correct = true;
+                break;
+            } else {
+                it->is_correct = false;
+            }
         }
+        if (!it->is_correct)
+             db_handler->add_error_entry(it->img_class, it->img_path, test_class);
+
             
         it->is_correct = test_class == it->img_class; //So much simplified so wow.
         it->img_class_proposed = test_class;
-        it->distance = test_distance.dist;
+        it->distance = test_distance[0].dist;
         std::cout << it - testimg_vector.begin()  + 1 << " of " << testimg_vector.size() << "\r"<< std::flush;
    
     }
