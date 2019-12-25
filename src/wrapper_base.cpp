@@ -32,7 +32,8 @@ bool WrapperBase::prepare_for_inference() {
 
 std::vector<WrapperBase::distance> WrapperBase::inference_and_matching(std::string img_path) {
     std::vector<float> embedding;
-
+    
+    this->topN = db_handler->config.top_n;
     cv::Mat img = fs_img::read_img(img_path, db_handler->config.input_size);
 
     if(!inference_handler->isLoaded())

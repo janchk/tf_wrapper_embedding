@@ -6,12 +6,14 @@
 #define TF_WRAPPER_METRICS_BASE_H
 
 #include "wrapper_base.h"
+#include <algorithm>
 
 class MetricsBase : public WrapperBase
 {
 public:
     MetricsBase()
     {
+//        this->topN = 5;
         this->setConfigPath("config.json");
     };
 

@@ -70,6 +70,7 @@ bool DataHandling::load_config() {
             rapidjson::Value &output_node = doc["output_node"];
             rapidjson::Value &pb_path = doc["pb_path"];
 
+
             config.input_node = input_node.GetString();
             config.output_node = output_node.GetString();
             config.datafile_path = datafile_path.GetString();
@@ -77,7 +78,13 @@ bool DataHandling::load_config() {
             config.pb_path = pb_path.GetString();
             config.input_size.height = input_size.GetArray()[0].GetInt();
             config.input_size.width = input_size.GetArray()[1].GetInt();
-
+            if (doc.HasMember("top_n")) {
+               rapidjson::Value &top_n = doc["top_n"];
+               config.top_n = top_n.GetInt();
+            } else {
+               config.top_n = 5;
+               std::cerr << "TopN not defined, Using TopN = 5" << std::endl;
+            }
             return true;
         } else
             return false;

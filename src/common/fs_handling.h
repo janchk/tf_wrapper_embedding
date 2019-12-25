@@ -47,6 +47,7 @@ public:
     };
     struct config_data {
         cv::Size input_size;
+        int top_n;
         std::string datafile_path;
         std::string imgs_path;
         std::string input_node;

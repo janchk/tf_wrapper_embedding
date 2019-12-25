@@ -40,7 +40,7 @@ int main(int argc, char *argv[]) {
         std::cerr << "Can't prepare for inference!" << std::endl;
         return 1;
     }
-    tf_wrapper->topN = 10;
+//    tf_wrapper->topN = 10;
 
     std::vector<WrapperBase::distance> results = tf_wrapper->inference_and_matching(inFileName);
     common_ops::delete_safe(tf_wrapper);
