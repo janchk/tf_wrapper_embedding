@@ -30,7 +30,7 @@ public:
     struct testimg_entry {
         std::string img_path;
         std::string img_class;
-        std::string img_class_proposed;
+        std::vector<std::string> img_classes_proposed;
         cv::Mat img;
         float distance;
         bool is_correct;
@@ -42,7 +42,8 @@ protected:
 
 
     bool prepare_for_inference() override;
-
+    std::vector<std::string> choose_classes (const std::vector<WrapperBase::distance>& matched_images_list,
+            std::vector<testimg_entry>::iterator &it, unsigned int top_N_classes=2);
 
 };
 

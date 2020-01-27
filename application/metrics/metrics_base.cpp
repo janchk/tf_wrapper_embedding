@@ -3,6 +3,7 @@
 //
 
 #include "metrics_base.h"
+#include <set>
 
 std::vector<WrapperBase::distance> MetricsBase::inference_and_matching(std::string img_path) {
     return WrapperBase::inference_and_matching(img_path);
@@ -34,21 +35,12 @@ float MetricsBase::getMetrics(std::string &testimg_path) {
   
     for (auto it = testimg_vector.begin(); it != testimg_vector.end(); ++it) {
         test_distance = inference_and_matching(it->img_path);
-        for (auto & res_it : test_distance) {
-            test_class = common_ops::extract_class(res_it.path);
-            if (test_class == it->img_class) {
-                it->is_correct = true;
-                break;
-            } else {
-                it->is_correct = false;
-            }
-        }
+        auto proposed_classes = choose_classes(test_distance, it);
         if (!it->is_correct)
              db_handler->add_error_entry(it->img_class, it->img_path, test_class);
 
-            
-        it->is_correct = test_class == it->img_class; //So much simplified so wow.
-        it->img_class_proposed = test_class;
+        //it->is_correct = test_class == it->img_class; //So much simplified so wow.
+        it->img_classes_proposed = proposed_classes;
         it->distance = test_distance[0].dist;
         std::cout << it - testimg_vector.begin()  + 1 << " of " << testimg_vector.size() << "\r"<< std::flush;
    
@@ -65,4 +57,25 @@ float MetricsBase::getMetrics(std::string &testimg_path) {
 
 bool MetricsBase::prepare_for_inference() {
     return WrapperBase::prepare_for_inference();
+}
+
+std::vector<std::string> MetricsBase::choose_classes(const std::vector<WrapperBase::distance> &matched_images_list,
+                                                     std::vector<testimg_entry>::iterator &it,
+                                                     unsigned int top_N_classes) {
+    std::set<std::string> top_classes_set;
+    std::string test_class;
+
+    for (const auto & res_it : matched_images_list) {
+        test_class = common_ops::extract_class(res_it.path);
+        top_classes_set.insert(test_class);
+
+        if (top_classes_set.size() >= top_N_classes)
+            break;
+    }
+
+    it->is_correct = top_classes_set.count(it->img_class) != 0;
+
+    std::vector<std::string> top_classes_vec(top_classes_set.begin(), top_classes_set.end());
+
+    return top_classes_vec;
 }
