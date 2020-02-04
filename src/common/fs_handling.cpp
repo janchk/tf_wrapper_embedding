@@ -17,7 +17,7 @@ std::vector<cv::Mat> read_batch(const std::string &imgs_path, int batch_size) {
 cv::Mat fs_img::read_img(const std::string &im_filename, cv::Size &size ) {
     cv::Mat img;
     img = cv::imread(im_filename, cv::IMREAD_COLOR);
-//    cv::cvtColor(img, img, cv::COLOR_BGR2RGB);
+    cv::cvtColor(img, img, cv::COLOR_BGR2RGB);
 
 //    tf_aux::fastResizeIfPossible(img, const_cast<cv::Mat *>(&img), size);
     return img;
