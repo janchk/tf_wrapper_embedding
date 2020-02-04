@@ -18,7 +18,8 @@ cv::Mat fs_img::read_img(const std::string &im_filename, cv::Size &size ) {
     cv::Mat img;
     img = cv::imread(im_filename, cv::IMREAD_COLOR);
 //    cv::cvtColor(img, img, cv::COLOR_BGR2RGB);
-    tf_aux::fastResizeIfPossible(img, const_cast<cv::Mat *>(&img), size);
+
+//    tf_aux::fastResizeIfPossible(img, const_cast<cv::Mat *>(&img), size);
     return img;
 }
 
@@ -37,17 +38,17 @@ std::vector<std::string> fs_img::list_imgs(const std::string &dir_path) {
 }
 
 bool DataHandling::open_datafile() {
-   this->imgs_datafile.open(config.datafile_path, std::ios::in | std::ios::app);
+   imgs_datafile.open(config.datafile_path, std::ios::in | std::ios::app);
    return true;
 }
 
 bool DataHandling::open_error_datafile() {
-   this->errors_datafile.open("errors.txt", std::ios::in | std::ios::app); //TODO!!
+   errors_datafile.open("errors.txt", std::ios::in | std::ios::app); //TODO!!
    return true;
 }
 
 bool DataHandling::open_config() {
-    this->config_datafile.open(config_path, std::ios::in | std::ios::app);
+    config_datafile.open(config_path, std::ios::in | std::ios::app);
     return true;
 }
 
@@ -104,7 +105,7 @@ bool DataHandling::load_database() {
     if(!data_vec_base.empty())
         data_vec_base.clear();
 
-    if (this->imgs_datafile.is_open()) {
+    if (imgs_datafile.is_open()) {
         while (std::getline(imgs_datafile, line)) {
             data_vec_entry base_entry;
             doc.Parse(line.c_str());
@@ -116,15 +117,15 @@ bool DataHandling::load_database() {
             for (const auto &value : img_embedding.GetArray()) {
                 base_entry.embedding.emplace_back(value.GetFloat());
             }
-            this->data_vec_base.emplace_back(base_entry);
+            data_vec_base.emplace_back(base_entry);
 
         }
 
     } else {
-        this->open_datafile();
-        this->load_database();
+        open_datafile();
+        load_database();
     }
-    this->imgs_datafile.close();
+    imgs_datafile.close();
     return true;
 }
 
@@ -139,7 +140,7 @@ bool DataHandling::add_json_entry(data_vec_entry new_data) {
     Value embedding(kArrayType); // for embedding
     Value name(kStringType); // for img path
     Document::AllocatorType& allocator = line.GetAllocator();
-    if (this->imgs_datafile.is_open()) {
+    if (imgs_datafile.is_open()) {
         for (const auto &value : new_data.embedding) {
             embedding.PushBack(value, allocator);
         }
@@ -150,13 +151,13 @@ bool DataHandling::add_json_entry(data_vec_entry new_data) {
 
         line.Accept(writer);
 //        std::cout << "json entry " << strbuf.GetString() << std::endl;
-        this->imgs_datafile << strbuf.GetString() << std::endl;
-        this->imgs_datafile.close();
+        imgs_datafile << strbuf.GetString() << std::endl;
+        imgs_datafile.close();
 
     }
     else {
-        this->open_datafile();
-        this->add_json_entry(std::move(new_data));
+        open_datafile();
+        add_json_entry(std::move(new_data));
 
     }
 }

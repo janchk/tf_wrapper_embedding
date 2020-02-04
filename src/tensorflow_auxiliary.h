@@ -6,11 +6,14 @@
 #define TF_WRAPPER_EMBEDDING_TENSORFLOW_AUXILIARY_H
 #define TFDEBUG
 
+#include <utility>
+
 #include "opencv/cv.h"
 #include "opencv/cv.hpp"
 
 #include "tensorflow/core/public/session.h"
 #include "tensorflow/core/graph/default_device.h"
+#include "tensorflow/cc/ops/image_ops.h"
 
 namespace tf_aux
 {
@@ -30,6 +33,7 @@ namespace tf_aux
         std::cerr << header << ": " << msg << "\n";
     #endif
     }
+    bool tfResizeBilinear(const cv::Mat &in, cv::Mat *dist, const cv::Size &size);
     bool fastResizeIfPossible(const cv::Mat &in, cv::Mat *dist, const cv::Size &size);
 
 
@@ -48,8 +52,8 @@ namespace tf_aux
 struct profiler {
     std::string name;
     std::chrono::high_resolution_clock::time_point p;
-    profiler(std::string const &n) :
-        name(n), p(std::chrono::high_resolution_clock::now()) { }
+    explicit profiler(std::string n) :
+        name(std::move(n)), p(std::chrono::high_resolution_clock::now()) { }
     ~profiler()
     {
         using dura = std::chrono::duration<double>;

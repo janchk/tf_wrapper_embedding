@@ -8,14 +8,18 @@
 
 
 bool TensorFlowEmbeddings::set_input_output(std::vector<std::string> in_nodes, std::vector<std::string> out_nodes) {
-    this->_input_node_names = std::move(in_nodes);
-    this->_output_node_names = std::move(out_nodes);
+    _input_node_names = std::move(in_nodes);
+    _output_node_names = std::move(out_nodes);
     return true;
 }
 
 bool TensorFlowEmbeddings::normalize_image(cv::Mat &img) {
     double  min, max;
-
+    //debugg
+    cv::Mat orig_img = img;
+    double min1, max1;
+    cv::minMaxLoc(orig_img, &min1, &max1);
+    cv::Mat image = orig_img * (255. / max1);
 //    tf_aux::fastResizeIfPossible()
     cv::Scalar data = img.at<cv::Vec3b>(0,0);
     cv::minMaxLoc(img, &min, &max);
@@ -29,9 +33,9 @@ bool TensorFlowEmbeddings::normalize_image(cv::Mat &img) {
 std::string TensorFlowEmbeddings::inference(const std::vector<cv::Mat> &imgs) {
     using namespace tensorflow;
     for (const cv::Mat &img : imgs) {
-        if(!normalize_image(const_cast<cv::Mat &>(img))){
-            return "Fail to normalize images";
-        }
+//        if(!normalize_image(const_cast<cv::Mat &>(img))){
+//            return "Fail to normalize images";
+//        }
     }
 
     if (!tf_aux::convertMatToTensor_v2(imgs, this->_input_tensor)){

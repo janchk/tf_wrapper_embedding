@@ -46,7 +46,6 @@ float MetricsBase::getMetrics(std::string &testimg_path) {
         if (!it->is_correct)
              db_handler->add_error_entry(it->img_class, it->img_path, test_class);
 
-            
         it->is_correct = test_class == it->img_class; //So much simplified so wow.
         it->img_class_proposed = test_class;
         it->distance = test_distance[0].dist;
@@ -55,7 +54,6 @@ float MetricsBase::getMetrics(std::string &testimg_path) {
     }
 
     val_correct = std::count_if(testimg_vector.begin(), testimg_vector.end(), IsCorrect);
-
 
     metrics = val_correct/testimg_vector.size() * 100.f;
     std::cout << "Accuracy is : " << metrics << "%" << std::endl;

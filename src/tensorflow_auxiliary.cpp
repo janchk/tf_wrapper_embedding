@@ -39,8 +39,17 @@ bool tf_aux::convertMatToTensor_v2(const std::vector<cv::Mat> &imgs, tensorflow:
 
     return true;
 }
+//bool tf_aux::tfResizeBilinear(const cv::Mat &in, cv::Mat *dist, const cv::Size &size) {
+//    using namespace tensorflow;
+//    using namespace ops;
+//    Scope root = Scope::NewRootScope();
+//    tensorflow::Tensor in_tensor;
+//    convertMatToTensor_v2({in}, in_tensor);
+//    ResizeBilinear(root, in_tensor, size);
+//}
 
 bool tf_aux::fastResizeIfPossible(const cv::Mat &in, cv::Mat *dist, const cv::Size &size) {
+
     if (in.size() == size) {
         DebugOutput("sizes matches", std::to_string(in.cols) + "x" + std::to_string(in.rows) + "; "
                                      + std::to_string(size.width) + "x" + std::to_string(size.height));

@@ -20,10 +20,10 @@ bool WrapperBase::prepare_for_inference() {
     std::cout << "Config was loaded" << std::endl;
     db_handler->load_database();
     std::cout << "Database was loaded" << std::endl;
-    this->list_of_imgs = fs_img::list_imgs(db_handler->config.imgs_path); //TODO rewrite it
-    this->_check_for_updates();
+    list_of_imgs = fs_img::list_imgs(db_handler->config.imgs_path); //TODO rewrite it
+    _check_for_updates();
     if (!list_of_imgs.empty())
-        this->_add_updates();
+        _add_updates();
     else
        std::cout << "No new images found" << std::endl;
 
@@ -33,18 +33,19 @@ bool WrapperBase::prepare_for_inference() {
 std::vector<WrapperBase::distance> WrapperBase::inference_and_matching(std::string img_path) {
     std::vector<float> embedding;
     
-    this->topN = db_handler->config.top_n;
+    topN = db_handler->config.top_n;
     cv::Mat img = fs_img::read_img(img_path, db_handler->config.input_size);
 
+    cv::Scalar data = img.at<cv::Vec3b>(0,0);
     if(!inference_handler->isLoaded())
-        inference_handler->load(db_handler->config.pb_path, this->_input_nodes[0]);
+        inference_handler->load(db_handler->config.pb_path, _input_nodes[0]);
 
-    inference_handler->set_input_output(this->_input_nodes, this->_output_nodes);
+    inference_handler->set_input_output(_input_nodes, _output_nodes);
     inference_handler->inference({img});
 
     embedding = inference_handler->getOutputEmbeddings()[0];
 
-    this->_matching(db_handler->data_vec_base, embedding);
+    _matching(db_handler->data_vec_base, embedding);
     inference_handler->clearSession();
 
     return distances;
@@ -55,10 +56,10 @@ bool WrapperBase::_add_updates() {
     cv::Mat img; // TODO rethink this logic..
     if(!inference_handler->isLoaded())
         inference_handler->load(db_handler->config.pb_path, db_handler->config.input_node);
-    inference_handler->set_input_output(this->_input_nodes, this->_output_nodes);
+    inference_handler->set_input_output(_input_nodes, _output_nodes);
     std::vector<float> out_embedding; //TODO remember about batch
     DataHandling::data_vec_entry new_data;
-    for (const auto &img_path : this->list_of_imgs) {
+    for (const auto &img_path : list_of_imgs) {
         img = fs_img::read_img(img_path, db_handler->config.input_size);
         inference_handler->inference({img}); //TODO remember about batch
         new_data.embedding = inference_handler->getOutputEmbeddings()[0]; //TODO BATCH
