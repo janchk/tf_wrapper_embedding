@@ -24,6 +24,8 @@ std::string parseCommandLine(int argc, char *argv[], const std::string& c) {
     } else {
         std::cout << "Use --test_path $path for images to test$"
                   << std::endl;
+        std::cout << "Use --topN $number of classes$"
+                  << std::endl;
         std::exit(EXIT_FAILURE);
     }
     return ret;
@@ -33,11 +35,13 @@ std::string parseCommandLine(int argc, char *argv[], const std::string& c) {
 
 int main(int argc, char *argv[]) {
     std::string const inPath = parseCommandLine(argc, argv, std::string("--test_path"));
+    std::string const topNClassesString= parseCommandLine(argc, argv, std::string("--topN"));
+    int topNClasses = std::stoi(topNClassesString);
     std::cout << "Start initalizing tf_wrapper" << std::endl;
     auto *tf_wrapper = new MetricsBase();
     std::cout << "Wrapper was initialized" << std::endl;
-    tf_wrapper->getMetrics((std::string &) inPath);
-    std::cout << "Using TOP"<< tf_wrapper->topN << std::endl;
+    std::cout << "Finding TOP " << topNClasses << " among " << tf_wrapper->topN << std::endl;
+    tf_wrapper->getMetrics((std::string &) inPath, topNClasses);
 
     common_ops::delete_safe(tf_wrapper);
 }

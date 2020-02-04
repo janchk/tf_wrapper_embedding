@@ -22,7 +22,7 @@ public:
     /// using accuracy as metrics
     /// \param testimg_path path to test image
     /// \return value of accuracy
-    float getMetrics(std::string &testimg_path);
+    float getMetrics(std::string &testimg_path, int top_N_classes=4);
 
     std::vector<WrapperBase::distance> inference_and_matching(std::string img_path) override;
 
@@ -43,7 +43,7 @@ protected:
 
     bool prepare_for_inference() override;
     std::vector<std::string> choose_classes (const std::vector<WrapperBase::distance>& matched_images_list,
-            std::vector<testimg_entry>::iterator &it, unsigned int top_N_classes=2);
+            std::vector<testimg_entry>::iterator &it, unsigned int top_N_classes);
 
 };
 

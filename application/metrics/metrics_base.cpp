@@ -11,7 +11,7 @@ std::vector<WrapperBase::distance> MetricsBase::inference_and_matching(std::stri
 
 bool IsCorrect(MetricsBase::testimg_entry &entry) { return entry.is_correct; }
 
-float MetricsBase::getMetrics(std::string &testimg_path) {
+float MetricsBase::getMetrics(std::string &testimg_path, int top_N_classes) {
 
     float metrics;
     std::vector<std::string> test_imgs_paths = fs_img::list_imgs(testimg_path);
@@ -35,7 +35,7 @@ float MetricsBase::getMetrics(std::string &testimg_path) {
   
     for (auto it = testimg_vector.begin(); it != testimg_vector.end(); ++it) {
         test_distance = inference_and_matching(it->img_path);
-        auto proposed_classes = choose_classes(test_distance, it);
+        auto proposed_classes = choose_classes(test_distance, it, top_N_classes);
         if (!it->is_correct)
              db_handler->add_error_entry(it->img_class, it->img_path, test_class);
 
