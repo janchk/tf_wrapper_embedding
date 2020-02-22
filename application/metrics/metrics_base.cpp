@@ -22,7 +22,7 @@ float MetricsBase::getMetrics(std::string &testimg_path, int top_N_classes) {
     std::cout << "Start prepearing for inference" << std::endl;
     prepare_for_inference();
     std::cout << "Preparaing for inference was finished" << std::endl;
-
+    std::cout << "Finding TOP " << top_N_classes << " among " << this->db_handler->config.top_n << std::endl;
     float val_correct;
 
     for (const auto &test_img_path : test_imgs_paths ) {

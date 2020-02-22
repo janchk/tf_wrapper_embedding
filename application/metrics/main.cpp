@@ -40,8 +40,6 @@ int main(int argc, char *argv[]) {
     std::cout << "Start initalizing tf_wrapper" << std::endl;
     auto *tf_wrapper = new MetricsBase();
     std::cout << "Wrapper was initialized" << std::endl;
-    std::cout << "Finding TOP " << topNClasses << " among " << tf_wrapper->topN << std::endl;
     tf_wrapper->getMetrics((std::string &) inPath, topNClasses);
-
     common_ops::delete_safe(tf_wrapper);
 }
