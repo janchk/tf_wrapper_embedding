@@ -51,6 +51,7 @@ float MetricsBase::getMetrics(std::string &testimg_path, int top_N_classes) {
 
     metrics = val_correct/testimg_vector.size() * 100.f;
     std::cout << "Accuracy is : " << metrics << "%" << std::endl;
+    std::cout << "Got " << val_correct << " out of " << testimg_vector.size() << " right" << std::endl;
 
     return metrics;
 }
