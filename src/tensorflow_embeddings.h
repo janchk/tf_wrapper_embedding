@@ -15,7 +15,7 @@ class TensorFlowEmbeddings : public TensorflowWrapperCore
 {
 public:
     TensorFlowEmbeddings() = default;
-    virtual ~TensorFlowEmbeddings() = default;
+    ~TensorFlowEmbeddings() override = default;
 
     int batch_size;
 
@@ -40,6 +40,7 @@ public:
     /// \return Vector of embeddings
     static  std::vector<std::vector<float>> convertTensorToVector(const tensorflow::Tensor& tensor);
 
+    bool setGpuNumberPreferred(int value);
 
 protected:
     tensorflow::Status _status;

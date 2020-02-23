@@ -8,8 +8,8 @@
 
 
 bool TensorFlowEmbeddings::set_input_output(std::vector<std::string> in_nodes, std::vector<std::string> out_nodes) {
-    this->_input_node_names = std::move(in_nodes);
-    this->_output_node_names = std::move(out_nodes);
+    _input_node_names = std::move(in_nodes);
+    _output_node_names = std::move(out_nodes);
     return true;
 }
 
@@ -17,11 +17,11 @@ bool TensorFlowEmbeddings::normalize_image(cv::Mat &img) {
     double  min, max;
 
 //    tf_aux::fastResizeIfPossible()
-    cv::Scalar data = img.at<cv::Vec3b>(0,0);
-    cv::minMaxLoc(img, &min, &max);
-    img.convertTo(img, CV_32F, 1, 0); //TODO normalize it in a right way
-    img = ((img - cv::Scalar(min, min, min)) / (max - min));
-    img = (img * 2) - cv::Scalar(1);
+//    cv::Scalar data = img.at<cv::Vec3b>(0,0);
+//    cv::minMaxLoc(img, &min, &max);
+//    img.convertTo(img, CV_32F, 1, 0); //TODO normalize it in a right way
+//    img = ((img - cv::Scalar(min, min, min)) / (max - min));
+//    img = (img * 2) - cv::Scalar(1);
     return true;
 
 }
@@ -93,4 +93,15 @@ std::vector<std::vector<float>> TensorFlowEmbeddings::convertTensorToVector(cons
 
     return vec_embeddings;
 
+}
+
+bool TensorFlowEmbeddings::setGpuNumberPreferred(int value) {
+    TensorflowWrapperCore::setGpuNumber(value);
+    const int gpu_num_value = TensorflowWrapperCore::getGpuNumber();
+    if (gpu_num_value != value) {
+        std::cerr << "GPU number was not set" << std::endl;
+        return false;
+    }
+
+    return true;
 }

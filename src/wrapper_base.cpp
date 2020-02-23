@@ -3,7 +3,8 @@
 //
 
 #include "wrapper_base.h"
-
+#include "tensorflow_embeddings.h"
+#include "wrapper_interfaces.h"
 #include <utility>
 
 

@@ -7,6 +7,8 @@
 
 #include "common/fs_handling.h"
 #include "tensorflow_embeddings.h"
+//#include "interfaces.h"
+#include "wrapper_interfaces.h"
 
 namespace EmbeddingMatching
 {
@@ -23,15 +25,16 @@ public:
     {
         db_handler = new DataHandling();
 
-        inference_handler = new TensorFlowEmbeddings();
+//        inference_handler = new TensorFlowEmbeddingsInterface();
+        inference_handler = std::make_unique<TensorFlowEmbeddingsInterface>();
 
         topN = 1;
     }
     ~WrapperBase()
     {
-        common_ops::delete_safe(inference_handler);
+//        common_ops::delete_safe(inference_handler);
         common_ops::delete_safe(db_handler);
-        common_ops::delete_safe(inference_handler);
+//        common_ops::delete_safe(inference_handler);
     };
 
     struct distance {
@@ -57,7 +60,8 @@ public:
 
 protected:
     DataHandling *db_handler;
-    TensorFlowEmbeddings *inference_handler;
+//    EmbeddingsInterface *inference_handler;
+    std::unique_ptr<EmbeddingsInterface> inference_handler;
     std::vector<std::string> list_of_imgs;
     std::vector<WrapperBase::distance> distances;
 

@@ -21,6 +21,8 @@ target_include_directories(TF_WRAPPER_EMBEDDING
 
 target_sources(TF_WRAPPER_EMBEDDING
         PUBLIC
+        ${CMAKE_CURRENT_LIST_DIR}/interfaces.h
+        ${CMAKE_CURRENT_LIST_DIR}/wrapper_interfaces.h
         ${CMAKE_CURRENT_LIST_DIR}/tensorflow_base.h
         ${CMAKE_CURRENT_LIST_DIR}/tensorflow_wrapper_core.h
         ${CMAKE_CURRENT_LIST_DIR}/tensorflow_embeddings.h
