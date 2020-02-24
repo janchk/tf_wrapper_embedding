@@ -29,7 +29,7 @@ namespace fs = std::filesystem;
 namespace fs_img
 {
 
-    cv::Mat read_img(const std::string &im_filename, cv::Size &size);
+    cv::Mat read_img(const std::string &im_filename, const cv::Size &size);
 
     std::vector<std::string> list_imgs(const std::string & dir_path);
 }
@@ -70,6 +70,36 @@ public:
 
     bool add_error_entry(const std::string& act_class_in,
                                         const std::string& act_path_in, const std::string& expected_class_in);
+
+    /// In case you want specific config to be used
+    /// \param path to config
+    /// \return if custom config is used
+    bool set_config_path(std::string path);
+
+    cv::Size get_config_input_size();
+
+    std::string get_config_input_node();
+
+    std::string get_config_output_node();
+
+    std::string get_config_pb_path();
+
+    std::string get_config_imgs_path();
+
+    int get_config_top_n();
+
+    bool set_config_input_size(const cv::Size& size);
+
+    bool set_config_input_node(const std::string& input_node);
+
+    bool set_config_output_node(const std::string& output_node);
+
+    bool set_config_pb_path(const std::string& pb_path);
+
+    std::vector<DataHandling::data_vec_entry> get_data_vec_base();
+
+    void add_element_to_data_vec_base(DataHandling::data_vec_entry entry);
+
 
 protected:
     std::fstream imgs_datafile;

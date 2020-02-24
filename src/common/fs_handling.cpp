@@ -14,7 +14,7 @@ std::vector<cv::Mat> read_batch(const std::string &imgs_path, int batch_size) {
 
 }
 
-cv::Mat fs_img::read_img(const std::string &im_filename, cv::Size &size ) {
+cv::Mat fs_img::read_img(const std::string &im_filename, const cv::Size &size ) {
     cv::Mat img;
     img = cv::imread(im_filename, cv::IMREAD_COLOR);
 //    cv::cvtColor(img, img, cv::COLOR_BGR2RGB);
@@ -193,4 +193,65 @@ bool DataHandling::add_error_entry(const std::string& act_class_in,
         this->errors_datafile << strbuf.GetString() << std::endl;
         this->errors_datafile.close();
 
+}
+
+bool DataHandling::set_config_path(std::string path="config.json") {
+    if (path.empty()) {
+        std::cerr << "Config path is empty!" << std::endl;
+        return false;
+    }
+    config_path = std::move(path);
+    return true;
+}
+
+cv::Size DataHandling::get_config_input_size() {
+    return config.input_size;
+}
+
+std::string DataHandling::get_config_input_node() {
+    return config.input_node;
+}
+
+std::string DataHandling::get_config_output_node() {
+    return config.output_node;
+}
+
+std::string DataHandling::get_config_pb_path() {
+    return config.pb_path;
+}
+
+std::string DataHandling::get_config_imgs_path() {
+    return config.imgs_path;
+}
+
+int DataHandling::get_config_top_n(){
+    return config.top_n;
+}
+
+bool DataHandling::set_config_input_size(const cv::Size& size) {
+    config.input_size = size;
+    return true;
+}
+
+bool DataHandling::set_config_input_node(const std::string& input_node) {
+    config.input_node = input_node;
+    return true;
+}
+
+bool DataHandling::set_config_output_node(const std::string& output_node) {
+    config.output_node = output_node;
+    return true;
+}
+
+bool DataHandling::set_config_pb_path(const std::string& pb_path) {
+    config.pb_path = pb_path;
+    return true;
+}
+
+std::vector<DataHandling::data_vec_entry> DataHandling::get_data_vec_base() {
+    return data_vec_base;
+}
+
+void DataHandling::add_element_to_data_vec_base(DataHandling::data_vec_entry entry) {
+    data_vec_base.push_back(entry);
 }

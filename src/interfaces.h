@@ -41,7 +41,16 @@ public:
 
     virtual bool load_config() = 0;
 
-    virtual bool load_colors() = 0;
+    virtual bool load_database() = 0;
+
+    virtual bool add_json_entry(DataHandling::data_vec_entry new_data) = 0;
+
+    virtual void add_element_to_data_vec_base(DataHandling::data_vec_entry entry) = 0;
+
+    virtual bool add_error_entry(const std::string& act_class_in,
+                         const std::string& act_path_in, const std::string& expected_class_in) = 0;
+
+    virtual std::vector<DataHandling::data_vec_entry> get_data_vec_base() = 0;
 
     virtual cv::Size get_config_input_size() = 0;
 
@@ -51,9 +60,9 @@ public:
 
     virtual std::string get_config_pb_path() = 0;
 
-    virtual std::string get_config_colors_path() = 0;
+    virtual std::string get_config_imgs_path() = 0;
 
-    virtual std::vector<std::array<int, 3>> get_colors() = 0;
+    virtual int get_config_top_n() = 0;
 
     virtual bool set_config_input_size(const cv::Size& size) = 0;
 
@@ -62,8 +71,6 @@ public:
     virtual bool set_config_output_node(const std::string& output_node) = 0;
 
     virtual bool set_config_pb_path(const std::string& pb_path) = 0;
-
-    virtual bool set_config_colors_path(const std::string& colors_path) = 0;
 
 };
 #endif //TF_WRAPPER_INTERFACES_H

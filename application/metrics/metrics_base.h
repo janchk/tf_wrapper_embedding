@@ -14,7 +14,8 @@ public:
     MetricsBase()
     {
 //        this->topN = 5;
-        this->setConfigPath("config.json");
+//        this->setConfigPath("config.json");
+        this->db_handler->set_config_path("config.json");
     };
 
     ~MetricsBase() = default;

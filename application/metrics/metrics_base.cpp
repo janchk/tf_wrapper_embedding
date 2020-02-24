@@ -22,13 +22,13 @@ float MetricsBase::getMetrics(std::string &testimg_path, int top_N_classes) {
     std::cout << "Start prepearing for inference" << std::endl;
     prepare_for_inference();
     std::cout << "Preparaing for inference was finished" << std::endl;
-    std::cout << "Finding TOP " << top_N_classes << " among " << this->db_handler->config.top_n << std::endl;
+    std::cout << "Finding TOP " << top_N_classes << " among " << this->db_handler->get_config_top_n() << std::endl;
     float val_correct;
 
     for (const auto &test_img_path : test_imgs_paths ) {
         test_img.img_path = test_img_path;
         test_img.img_class = common_ops::extract_class(test_img_path);
-        test_img.img = fs_img::read_img(test_img_path, db_handler->config.input_size);
+        test_img.img = fs_img::read_img(test_img_path, db_handler->get_config_input_size());
 
         testimg_vector.emplace_back(test_img);
     }

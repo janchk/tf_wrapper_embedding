@@ -23,9 +23,7 @@ public:
 
     WrapperBase()
     {
-        db_handler = new DataHandling();
-
-//        inference_handler = new TensorFlowEmbeddingsInterface();
+        db_handler = std::make_unique<WrapperDBInterface>();
         inference_handler = std::make_unique<TensorFlowEmbeddingsInterface>();
 
         topN = 1;
@@ -33,7 +31,7 @@ public:
     ~WrapperBase()
     {
 //        common_ops::delete_safe(inference_handler);
-        common_ops::delete_safe(db_handler);
+//        common_ops::delete_safe(db_handler);
 //        common_ops::delete_safe(inference_handler);
     };
 
@@ -47,7 +45,7 @@ public:
     /// In case you want specific config to be used
     /// \param path to config
     /// \return if custom config is used
-    bool setConfigPath(std::string path);
+//    bool setConfigPath(std::string path);
 
     /// \brief main method used for reading images in directory and adding the to th database
     /// \return
@@ -59,8 +57,7 @@ public:
     virtual std::vector<WrapperBase::distance> inference_and_matching(std::string img_path);
 
 protected:
-    DataHandling *db_handler;
-//    EmbeddingsInterface *inference_handler;
+    std::unique_ptr<DBInterface> db_handler;
     std::unique_ptr<EmbeddingsInterface> inference_handler;
     std::vector<std::string> list_of_imgs;
     std::vector<WrapperBase::distance> distances;
@@ -70,7 +67,7 @@ protected:
 
 //    static float _calc_distance(std::vector<float> base, std::vector<float> target);
 
-    bool _matching(std::vector<DataHandling::data_vec_entry> &base, std::vector<float> &target);
+    bool _matching(const std::vector<DataHandling::data_vec_entry>& base, std::vector<float> &target);
 
     bool _add_updates();
     bool _check_for_updates();

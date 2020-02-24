@@ -32,42 +32,51 @@ private:
     TensorFlowEmbeddings embed;
 };
 
-//class WrapperDBInterface : public DBInterface
-//{
-//public:
-//
-//    bool set_config_path(std::string path) override {return db.set_config_path(path);};
-//
-//    bool load_config() override {return db.load_config();};
-//
-//    bool load_colors() override {return db.load_colors();}
-//
-//    cv::Size get_config_input_size() override {return db.get_config_input_size();}
-//
-//    std::string get_config_input_node() override {return db.get_config_input_node();}
-//
-//    std::string get_config_output_node() override {return db.get_config_output_node();}
-//
-//    std::string get_config_pb_path() override {return db.get_config_pb_path();}
-//
-//    std::string get_config_colors_path() override {return db.get_config_colors_path();}
-//
-//    std::vector<std::array<int, 3>> get_colors() override {return db.get_colors();}
-//
-//    bool set_config_input_size(const cv::Size& size) override {return db.set_config_input_size(size);}
-//
-//    bool set_config_input_node(const std::string& input_node) override {return db.set_config_input_node(input_node);}
-//
-//    bool set_config_output_node(const std::string& output_node) override {return db.set_config_output_node(output_node);}
-//
-//    bool set_config_pb_path(const std::string& pb_path) override {return db.set_config_pb_path(pb_path);}
-//
-//    bool set_config_colors_path(const std::string& colors_path) override {return db.set_config_colors_path(colors_path);}
-//
-//private:
-//
-//    DataHandling db;
-//
-//};
+class WrapperDBInterface : public DBInterface
+{
+public:
+
+    bool set_config_path(std::string path) override {return db.set_config_path(path);};
+
+    bool load_config() override {return db.load_config();};
+
+    bool load_database() override { return db.load_database();};
+
+    bool add_json_entry(DataHandling::data_vec_entry new_data) override { return db.add_json_entry(new_data);};
+
+    void add_element_to_data_vec_base(DataHandling::data_vec_entry entry) override {db.add_element_to_data_vec_base(entry);};
+
+    bool add_error_entry(const std::string& act_class_in,
+                         const std::string& act_path_in, const std::string& expected_class_in) override {
+        return db.add_error_entry(act_class_in, act_path_in, expected_class_in);
+    }
+
+    std::vector<DataHandling::data_vec_entry> get_data_vec_base() override { return db.get_data_vec_base();};
+
+    cv::Size get_config_input_size() override {return db.get_config_input_size();}
+
+    std::string get_config_input_node() override {return db.get_config_input_node();}
+
+    std::string get_config_output_node() override {return db.get_config_output_node();}
+
+    std::string get_config_pb_path() override {return db.get_config_pb_path();}
+
+    std::string get_config_imgs_path() override { return db.get_config_imgs_path();};
+
+    int get_config_top_n() override { return db.get_config_top_n();};
+
+    bool set_config_input_size(const cv::Size& size) override {return db.set_config_input_size(size);}
+
+    bool set_config_input_node(const std::string& input_node) override {return db.set_config_input_node(input_node);}
+
+    bool set_config_output_node(const std::string& output_node) override {return db.set_config_output_node(output_node);}
+
+    bool set_config_pb_path(const std::string& pb_path) override {return db.set_config_pb_path(pb_path);}
+
+private:
+
+    DataHandling db;
+
+};
 
 #endif //TF_WRAPPER_WRAPPER_INTERFACES_H
