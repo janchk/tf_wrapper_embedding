@@ -36,6 +36,11 @@ public:
 class DBInterface
 {
 public:
+    struct data_vec_entry
+    {
+        std::string filepath;
+        std::vector<float> embedding;
+    };
 
     virtual bool set_config_path(std::string path) = 0;
 
@@ -43,14 +48,14 @@ public:
 
     virtual bool load_database() = 0;
 
-    virtual bool add_json_entry(DataHandling::data_vec_entry new_data) = 0;
+    virtual bool add_json_entry(data_vec_entry new_data) = 0;
 
-    virtual void add_element_to_data_vec_base(DataHandling::data_vec_entry entry) = 0;
+    virtual void add_element_to_data_vec_base(data_vec_entry &entry) = 0;
 
     virtual bool add_error_entry(const std::string& act_class_in,
                          const std::string& act_path_in, const std::string& expected_class_in) = 0;
 
-    virtual std::vector<DataHandling::data_vec_entry> get_data_vec_base() = 0;
+    virtual std::vector<data_vec_entry> get_data_vec_base() = 0;
 
     virtual cv::Size get_config_input_size() = 0;
 

@@ -16,7 +16,7 @@
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
 
-#include "tensorflow_auxiliary.h"
+#include "interfaces.h"
 
 #define EXPERIMENTAL
 #ifdef EXPERIMENTAL
@@ -34,17 +34,17 @@ namespace fs_img
     std::vector<std::string> list_imgs(const std::string & dir_path);
 }
 
-class DataHandling
+class DataHandling : public DBInterface
 {
 public:
     DataHandling() = default;
     virtual ~DataHandling() = default;
 
-    struct data_vec_entry
-    {
-        std::string filepath;
-        std::vector<float> embedding;
-    };
+//    struct data_vec_entry
+//    {
+//        std::string filepath;
+//        std::vector<float> embedding;
+//    };
     struct config_data {
         cv::Size input_size;
         int top_n;
@@ -98,7 +98,7 @@ public:
 
     std::vector<DataHandling::data_vec_entry> get_data_vec_base();
 
-    void add_element_to_data_vec_base(DataHandling::data_vec_entry entry);
+    void add_element_to_data_vec_base(DataHandling::data_vec_entry &entry);
 
 
 protected:

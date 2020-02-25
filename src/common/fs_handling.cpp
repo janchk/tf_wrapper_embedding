@@ -2,6 +2,7 @@
 // Created by jakhremchik
 //
 
+#include "tensorflow_auxiliary.h"
 #include "fs_handling.h"
 #include <utility>
 
@@ -252,6 +253,6 @@ std::vector<DataHandling::data_vec_entry> DataHandling::get_data_vec_base() {
     return data_vec_base;
 }
 
-void DataHandling::add_element_to_data_vec_base(DataHandling::data_vec_entry entry) {
+void DataHandling::add_element_to_data_vec_base(DataHandling::data_vec_entry &entry) {
     data_vec_base.push_back(entry);
 }

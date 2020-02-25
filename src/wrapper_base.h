@@ -5,10 +5,7 @@
 #ifndef TF_WRAPPER_EMBEDDING_WRAPPER_BASE_H
 #define TF_WRAPPER_EMBEDDING_WRAPPER_BASE_H
 
-#include "common/fs_handling.h"
-#include "tensorflow_embeddings.h"
-//#include "interfaces.h"
-#include "wrapper_interfaces.h"
+#include "interfaces.h"
 
 namespace EmbeddingMatching
 {
@@ -21,13 +18,8 @@ class WrapperBase
 {
 public:
 
-    WrapperBase()
-    {
-        db_handler = std::make_unique<WrapperDBInterface>();
-        inference_handler = std::make_unique<TensorFlowEmbeddingsInterface>();
+    WrapperBase();
 
-        topN = 1;
-    }
     ~WrapperBase()
     {
 //        common_ops::delete_safe(inference_handler);
@@ -67,7 +59,7 @@ protected:
 
 //    static float _calc_distance(std::vector<float> base, std::vector<float> target);
 
-    bool _matching(const std::vector<DataHandling::data_vec_entry>& base, std::vector<float> &target);
+    bool _matching(const std::vector<DBInterface::data_vec_entry>& base, std::vector<float> &target);
 
     bool _add_updates();
     bool _check_for_updates();

@@ -7,7 +7,13 @@
 #include "wrapper_interfaces.h"
 #include <utility>
 
+WrapperBase::WrapperBase()
+{
+    db_handler = std::make_unique<DataHandling>();
+    inference_handler = std::make_unique<TensorFlowEmbeddingsInterface>();
 
+    topN = 1;
+}
 
 bool WrapperBase::prepare_for_inference() {
     if(!db_handler->load_config()) {
@@ -94,7 +100,7 @@ bool sortbydist(const WrapperBase::distance &a, const WrapperBase::distance &b){
     return (a.dist < b.dist);
 }
 
-bool WrapperBase::_matching(const std::vector<DataHandling::data_vec_entry>& base,
+bool WrapperBase::_matching(const std::vector<DBInterface::data_vec_entry>& base,
                             std::vector<float> &target){
     this->distances.clear();
     WrapperBase::distance distance;
