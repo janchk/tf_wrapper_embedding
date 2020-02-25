@@ -2,6 +2,7 @@
 // Created by jakhremchik
 //
 #include "metrics_base.h"
+#include <iostream>
 
 char *getCmdOption(char **begin, char **end, const std::string &option) {
     char **itr = std::find(begin, end, option);
@@ -41,5 +42,5 @@ int main(int argc, char *argv[]) {
     auto *tf_wrapper = new MetricsBase();
     std::cout << "Wrapper was initialized" << std::endl;
     tf_wrapper->getMetrics((std::string &) inPath, topNClasses);
-    common_ops::delete_safe(tf_wrapper);
+//    common_ops::delete_safe(tf_wrapper);
 }

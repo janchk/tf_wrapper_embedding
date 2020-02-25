@@ -3,6 +3,8 @@
 //
 
 #include "metrics_base.h"
+#include "common/common_ops.h"
+#include <iostream>
 #include <set>
 
 std::vector<WrapperBase::distance> MetricsBase::inference_and_matching(std::string img_path) {
