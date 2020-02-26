@@ -2,9 +2,9 @@
 // Created by jakhremchik
 //
 
-#include "wrapper_base.h"
-#include "tensorflow_embeddings.h"
-#include "wrapper_interfaces.h"
+#include "tf_wrapper/wrapper_base.h"
+#include "tf_wrapper/tensorflow_embeddings.h"
+#include "tf_wrapper/wrapper_interfaces.h"
 #include <utility>
 
 WrapperBase::WrapperBase()

@@ -2,7 +2,7 @@
 // Created by jakhremchik
 //
 
-#include "tensorflow_wrapper_core.h"
+#include "tf_wrapper/tensorflow_wrapper_core.h"
 
 TensorflowWrapperCore::TensorflowWrapperCore(TensorflowWrapperCore &&that) {
     this->_session = that._session;

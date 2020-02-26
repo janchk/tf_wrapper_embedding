@@ -1,5 +1,5 @@
 #include <iostream>
-#include "wrapper_base.h"
+#include "tf_wrapper/wrapper_base.h"
 
 #include <vector>
 #include <string>
@@ -43,7 +43,7 @@ int main(int argc, char *argv[]) {
 //    tf_wrapper->topN = 10;
 
     std::vector<WrapperBase::distance> results = tf_wrapper->inference_and_matching(inFileName);
-    common_ops::delete_safe(tf_wrapper);
+//    common_ops::delete_safe(tf_wrapper);
 
     for (const auto &result : results)
         std::cout << "Dst " << result.dist << " path " << result.path <<std::endl;

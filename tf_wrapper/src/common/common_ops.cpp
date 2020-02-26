@@ -2,7 +2,7 @@
 // Created by jakhremchik on 08.11.2019.
 //
 
-#include "common_ops.h"
+#include "tf_wrapper/common/common_ops.h"
 
 std::string common_ops::extract_class(const std::string &filepath) {
    std::string spilt_delim = "/"; //TODO another delimiter for windows

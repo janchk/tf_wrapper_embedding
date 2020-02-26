@@ -3,7 +3,7 @@
 //
 
 #include "metrics_base.h"
-#include "common/common_ops.h"
+#include "tf_wrapper/common/common_ops.h"
 #include <iostream>
 #include <set>
 

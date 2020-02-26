@@ -2,7 +2,7 @@
 // Created by jakhremchik
 //
 
-#include "tensorflow_embeddings.h"
+#include "tf_wrapper/tensorflow_embeddings.h"
 
 #include <utility>
 

@@ -5,7 +5,7 @@
 #ifndef TF_WRAPPER_METRICS_BASE_H
 #define TF_WRAPPER_METRICS_BASE_H
 
-#include "wrapper_base.h"
+#include "tf_wrapper/wrapper_base.h"
 #include <algorithm>
 
 class MetricsBase : public WrapperBase

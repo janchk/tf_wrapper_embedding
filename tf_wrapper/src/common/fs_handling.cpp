@@ -2,8 +2,8 @@
 // Created by jakhremchik
 //
 
-#include "tensorflow_auxiliary.h"
-#include "fs_handling.h"
+#include "tf_wrapper/tensorflow_auxiliary.h"
+#include "tf_wrapper/common/fs_handling.h"
 #include <utility>
 
 

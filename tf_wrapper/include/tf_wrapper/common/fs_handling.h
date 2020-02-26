@@ -16,7 +16,7 @@
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
 
-#include "interfaces.h"
+#include "tf_wrapper/interfaces.h"
 
 #define EXPERIMENTAL
 #ifdef EXPERIMENTAL
