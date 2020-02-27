@@ -2,7 +2,10 @@
 // Created by jakhremchik
 //
 
-#include "wrapper_base.h"
+#include <utility>
+
+#include "tf_wrapper/wrapper_base.h"
+#include "tf_wrapper/common/common_ops.h"
 #include "gtest/gtest.h"
 
 class WrapperBaseWrapper : public WrapperBase {
@@ -28,11 +31,11 @@ public:
     }
 
     auto setDataVecBase(std::vector<DataHandling::data_vec_entry> &vec_base) {
-        this->db_handler->data_vec_base = vec_base;
+        this->db_handler->set_data_vec_base(vec_base);
     }
 
     auto getDataVecBase() {
-        return this->db_handler->data_vec_base;
+        return this->db_handler->get_data_vec_base();
     }
 
     auto setListOfImgs(std::vector<std::string> &list_of_imgs) {
@@ -48,8 +51,12 @@ public:
     }
 
     auto setNodes() {
-        this->_input_nodes = {db_handler->config.input_node};
-        this->_output_nodes = {db_handler->config.output_node};
+        this->_input_nodes = {db_handler->get_config_input_node()};
+        this->_output_nodes = {db_handler->get_config_output_node()};
+    }
+
+    auto setConfigPath(const std::string &path) {
+        this->db_handler->set_config_path(path);
     }
 
 };

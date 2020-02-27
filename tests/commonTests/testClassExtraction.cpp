@@ -2,7 +2,7 @@
 // Created by jakhremchik
 //
 
-#include "common/common_ops.h"
+#include "tf_wrapper/common/common_ops.h"
 #include "gtest/gtest.h"
 
 TEST(PATH, testClassExtraction)

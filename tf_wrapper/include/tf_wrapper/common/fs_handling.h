@@ -74,7 +74,7 @@ public:
     /// In case you want specific config to be used
     /// \param path to config
     /// \return if custom config is used
-    bool set_config_path(std::string path);
+    bool set_config_path(std::string path) override;
 
     cv::Size get_config_input_size();
 
@@ -87,6 +87,8 @@ public:
     std::string get_config_imgs_path();
 
     int get_config_top_n();
+
+    bool set_data_vec_base(const std::vector<data_vec_entry> &base);
 
     bool set_config_input_size(const cv::Size& size);
 

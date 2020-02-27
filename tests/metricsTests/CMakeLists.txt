@@ -14,6 +14,7 @@ target_include_directories(${MODULE_NAME} PUBLIC
 target_include_directories(${MODULE_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/application/metrics)
 
 #set(TEST_DATA_PATH ${CMAKE_BINARY_DIR}/tests/${MODULE_NAME})
+set_target_properties(${MODULE_NAME} PROPERTIES LINK_FLAGS "-Wl,-rpath,/usr/local/cuda-10.0/lib64")
 
 add_test(
         NAME

@@ -229,6 +229,11 @@ int DataHandling::get_config_top_n(){
     return config.top_n;
 }
 
+bool DataHandling::set_data_vec_base(const std::vector<DataHandling::data_vec_entry> &base){
+    data_vec_base = base;
+    return true;
+}
+
 bool DataHandling::set_config_input_size(const cv::Size& size) {
     config.input_size = size;
     return true;

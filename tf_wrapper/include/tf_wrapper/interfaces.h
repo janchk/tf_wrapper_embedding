@@ -68,6 +68,8 @@ public:
     virtual std::string get_config_imgs_path() = 0;
 
     virtual int get_config_top_n() = 0;
+    
+    virtual bool set_data_vec_base(const std::vector<data_vec_entry> &base) = 0;
 
     virtual bool set_config_input_size(const cv::Size& size) = 0;
 

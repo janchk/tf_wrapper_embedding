@@ -2,7 +2,7 @@
 // Created by jakhremchik
 //
 
-#include "common/common_ops.h"
+#include "tf_wrapper/common/common_ops.h"
 #include "gtest/gtest.h"
 
 TEST(load_config, load_config_unexisted_Test)
@@ -69,8 +69,9 @@ TEST(read_img, read_img_read_Test)
     cv::Mat test_img = fs_img::read_img("Lenna.jpg", size);
 
     ASSERT_FALSE(test_img.empty());
-    ASSERT_EQ(test_img.rows, 256);
-    ASSERT_EQ(test_img.cols, 256);
+//    Comment these lines out for now. New checkpoints have resize op inside them
+//    ASSERT_EQ(test_img.rows, 256);
+//    ASSERT_EQ(test_img.cols, 256);
 }
 
 TEST(list_imgs, list_imgs_lis_Test)
