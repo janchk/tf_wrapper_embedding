@@ -11,9 +11,9 @@ add_subdirectory(application/metrics)
 
 include(cmake/googletest.cmake)
 fetch_googletest(
-    ${PROJECT_SOURCE_DIR}/cmake
-    ${PROJECT_BINARY_DIR}/googletest
-    )
+        ${PROJECT_SOURCE_DIR}/cmake
+        ${PROJECT_BINARY_DIR}/googletest
+)
 
 enable_testing()
 add_subdirectory(tests)

@@ -1,5 +1,5 @@
 set(MODULE_NAME commonTests)
-set (SRC_FILES
+set(SRC_FILES
         ${CMAKE_CURRENT_LIST_DIR}/testClassExtraction.cpp
         ${CMAKE_CURRENT_LIST_DIR}/testDataHandling.cpp
         )
@@ -18,11 +18,11 @@ configure_file(../test_data/testdatafile.txt ${TEST_DATAFILE_PATH} COPYONLY)
 file(COPY ${CMAKE_CURRENT_LIST_DIR}/../test_data/sample_images/Lenna.jpg DESTINATION ${TEST_DATA_PATH})
 
 target_include_directories(${MODULE_NAME} PUBLIC
-                            ${TF_WRAPPER_EMBEDDING_SOURCE_DIR})
+        ${TF_WRAPPER_EMBEDDING_SOURCE_DIR})
 
 add_test(
         NAME
-            ${MODULE_NAME}
+        ${MODULE_NAME}
         COMMAND
-            ./${MODULE_NAME}
+        ./${MODULE_NAME}
 )
