@@ -16,7 +16,6 @@ set(TEST_DATA_PATH ${CMAKE_BINARY_DIR}/tests/${MODULE_NAME})
 file(COPY ${CMAKE_CURRENT_LIST_DIR}/../test_data/sample_images/Lenna.jpg DESTINATION ${TEST_DATA_PATH})
 file(COPY ${CMAKE_CURRENT_LIST_DIR}/../test_data/config.json DESTINATION ${TEST_DATA_PATH})
 file(COPY ${CMAKE_CURRENT_LIST_DIR}/../test_data/testdatafile.txt DESTINATION ${TEST_DATA_PATH})
-set_target_properties(${MODULE_NAME} PROPERTIES LINK_FLAGS "-Wl,-rpath,/usr/local/cuda-10.0/lib64")
 
 add_test(
         NAME

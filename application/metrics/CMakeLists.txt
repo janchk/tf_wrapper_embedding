@@ -11,4 +11,3 @@ target_include_directories(TF_WRAPPER_METRICS
                             PUBLIC
                             ${TF_WRAPPER_EMBEDDING_SOURCE_DIR}
                             )
-set_target_properties(${MODULE_NAME} PROPERTIES LINK_FLAGS "-Wl,-rpath,/usr/local/cuda-10.0/lib64")

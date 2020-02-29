@@ -19,7 +19,6 @@ file(COPY ${CMAKE_CURRENT_LIST_DIR}/../test_data/sample_images/Lenna.jpg DESTINA
 
 target_include_directories(${MODULE_NAME} PUBLIC
                             ${TF_WRAPPER_EMBEDDING_SOURCE_DIR})
-set_target_properties(${MODULE_NAME} PROPERTIES LINK_FLAGS "-Wl,-rpath,/usr/local/cuda-10.0/lib64")
 
 add_test(
         NAME
