@@ -9,7 +9,7 @@
 class WrapperBaseWrapper : public WrapperBase {
 public:
     auto setConfigPath(const std::string &path) {
-        this->db_handler->set_config_path(path);
+        db_handler->set_config_path(path);
     }
 };
 

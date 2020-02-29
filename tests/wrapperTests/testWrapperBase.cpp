@@ -31,32 +31,32 @@ public:
     }
 
     auto setDataVecBase(std::vector<DataHandling::data_vec_entry> &vec_base) {
-        this->db_handler->set_data_vec_base(vec_base);
+        db_handler->set_data_vec_base(vec_base);
     }
 
     auto getDataVecBase() {
-        return this->db_handler->get_data_vec_base();
+        return db_handler->get_data_vec_base();
     }
 
     auto setListOfImgs(std::vector<std::string> &list_of_imgs) {
-        this->list_of_imgs = list_of_imgs;
+        list_of_imgs = list_of_imgs;
     }
 
     auto getListOfImgs() {
-        return this->list_of_imgs;
+        return list_of_imgs;
     }
 
     auto loadConfig() {
-        return this->db_handler->load_config();
+        return db_handler->load_config();
     }
 
     auto setNodes() {
-        this->_input_nodes = {db_handler->get_config_input_node()};
-        this->_output_nodes = {db_handler->get_config_output_node()};
+        _input_nodes = {db_handler->get_config_input_node()};
+        _output_nodes = {db_handler->get_config_output_node()};
     }
 
     auto setConfigPath(const std::string &path) {
-        this->db_handler->set_config_path(path);
+        db_handler->set_config_path(path);
     }
 
 };

@@ -21,16 +21,16 @@ bool WrapperBase::prepare_for_inference() {
         return false;
     }
 
-    this->_input_nodes = {db_handler->get_config_input_node()};
-    this->_output_nodes = {db_handler->get_config_output_node()};
+    _input_nodes = {db_handler->get_config_input_node()};
+    _output_nodes = {db_handler->get_config_output_node()};
 
     std::cout << "Config was loaded" << std::endl;
     db_handler->load_database();
     std::cout << "Database was loaded" << std::endl;
-    this->list_of_imgs = fs_img::list_imgs(db_handler->get_config_imgs_path()); //TODO rewrite it
-    this->_check_for_updates();
+    list_of_imgs = fs_img::list_imgs(db_handler->get_config_imgs_path()); //TODO rewrite it
+    _check_for_updates();
     if (!list_of_imgs.empty())
-        this->_add_updates();
+        _add_updates();
     else
        std::cout << "No new images found" << std::endl;
 
@@ -40,18 +40,18 @@ bool WrapperBase::prepare_for_inference() {
 std::vector<WrapperBase::distance> WrapperBase::inference_and_matching(std::string img_path) {
     std::vector<float> embedding;
     
-    this->topN = db_handler->get_config_top_n();
+    topN = db_handler->get_config_top_n();
     cv::Mat img = fs_img::read_img(img_path, db_handler->get_config_input_size());
 
     if(!inference_handler->isLoaded())
-        inference_handler->load(db_handler->get_config_pb_path(), this->_input_nodes[0]);
+        inference_handler->load(db_handler->get_config_pb_path(), _input_nodes[0]);
 
-    inference_handler->set_input_output(this->_input_nodes, this->_output_nodes);
+    inference_handler->set_input_output(_input_nodes, _output_nodes);
     inference_handler->inference({img});
 
     embedding = inference_handler->getOutputEmbeddings()[0];
 
-    this->_matching(db_handler->get_data_vec_base(), embedding);
+    _matching(db_handler->get_data_vec_base(), embedding);
     inference_handler->clearSession();
 
     return distances;
@@ -62,10 +62,10 @@ bool WrapperBase::_add_updates() {
     cv::Mat img; // TODO rethink this logic..
     if(!inference_handler->isLoaded())
         inference_handler->load(db_handler->get_config_pb_path(), db_handler->get_config_input_node());
-    inference_handler->set_input_output(this->_input_nodes, this->_output_nodes);
+    inference_handler->set_input_output(_input_nodes, _output_nodes);
     std::vector<float> out_embedding; //TODO remember about batch
     DataHandling::data_vec_entry new_data;
-    for (const auto &img_path : this->list_of_imgs) {
+    for (const auto &img_path : list_of_imgs) {
         img = fs_img::read_img(img_path, db_handler->get_config_input_size());
         inference_handler->inference({img}); //TODO remember about batch
         new_data.embedding = inference_handler->getOutputEmbeddings()[0]; //TODO BATCH
@@ -80,9 +80,9 @@ bool WrapperBase::_add_updates() {
 
 bool WrapperBase::_check_for_updates() {
     for (const auto &entry : db_handler->get_data_vec_base()) {
-        for (auto img_path = this->list_of_imgs.begin(); img_path != this->list_of_imgs.end();) {
+        for (auto img_path = list_of_imgs.begin(); img_path != list_of_imgs.end();) {
             if (*img_path == entry.filepath) {
-                this->list_of_imgs.erase(img_path);
+                list_of_imgs.erase(img_path);
             } else {
                 img_path++;
             }
@@ -102,7 +102,7 @@ bool sortbydist(const WrapperBase::distance &a, const WrapperBase::distance &b){
 
 bool WrapperBase::_matching(const std::vector<DBInterface::data_vec_entry>& base,
                             std::vector<float> &target){
-    this->distances.clear();
+    distances.clear();
     WrapperBase::distance distance;
 
     if(base.empty() or target.empty())
@@ -111,24 +111,15 @@ bool WrapperBase::_matching(const std::vector<DBInterface::data_vec_entry>& base
     for (auto & it : base) {
         distance.dist = EmbeddingMatching::calc_distance_euclid(it.embedding, target);
         distance.path = it.filepath;
-        this->distances.push_back(distance);
+        distances.push_back(distance);
     }
-    std::sort(this->distances.begin(), this->distances.end(), sortbydist);
-    if (topN > this->distances.size())
-        topN = this->distances.size();
-    this->distances.erase(this->distances.begin() + topN, this->distances.end());
+    std::sort(distances.begin(), distances.end(), sortbydist);
+    if (topN > distances.size())
+        topN = distances.size();
+    distances.erase(distances.begin() + topN, distances.end());
 
     return true;
 }
-
-//bool WrapperBase::setConfigPath(std::string path) {
-//    if (path.empty()) {
-//        std::cerr << "Config path is empty!" << std::endl;
-//        return false;
-//    }
-//    this->db_handler->config_path = std::move(path);
-//    return true;
-//}
 
 float EmbeddingMatching::calc_distance_euclid(std::vector<float> base, std::vector<float> target) {
     float sum = 0;

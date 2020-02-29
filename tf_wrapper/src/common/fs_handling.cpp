@@ -38,17 +38,17 @@ std::vector<std::string> fs_img::list_imgs(const std::string &dir_path) {
 }
 
 bool DataHandling::open_datafile() {
-   this->imgs_datafile.open(config.datafile_path, std::ios::in | std::ios::app);
+   imgs_datafile.open(config.datafile_path, std::ios::in | std::ios::app);
    return true;
 }
 
 bool DataHandling::open_error_datafile() {
-   this->errors_datafile.open("errors.txt", std::ios::in | std::ios::app); //TODO!!
+   errors_datafile.open("errors.txt", std::ios::in | std::ios::app); //TODO!!
    return true;
 }
 
 bool DataHandling::open_config() {
-    this->config_datafile.open(config_path, std::ios::in | std::ios::app);
+    config_datafile.open(config_path, std::ios::in | std::ios::app);
     return true;
 }
 
@@ -60,7 +60,7 @@ bool DataHandling::load_config() {
 
     open_config();
 
-    if (this->config_datafile.is_open()) {
+    if (config_datafile.is_open()) {
         std::getline(config_datafile, line);
         doc.Parse(line.c_str());
         if (doc.IsObject()){
@@ -105,7 +105,7 @@ bool DataHandling::load_database() {
     if(!data_vec_base.empty())
         data_vec_base.clear();
 
-    if (this->imgs_datafile.is_open()) {
+    if (imgs_datafile.is_open()) {
         while (std::getline(imgs_datafile, line)) {
             data_vec_entry base_entry;
             doc.Parse(line.c_str());
@@ -117,15 +117,15 @@ bool DataHandling::load_database() {
             for (const auto &value : img_embedding.GetArray()) {
                 base_entry.embedding.emplace_back(value.GetFloat());
             }
-            this->data_vec_base.emplace_back(base_entry);
+            data_vec_base.emplace_back(base_entry);
 
         }
 
     } else {
-        this->open_datafile();
-        this->load_database();
+        open_datafile();
+        load_database();
     }
-    this->imgs_datafile.close();
+    imgs_datafile.close();
     return true;
 }
 
@@ -140,7 +140,7 @@ bool DataHandling::add_json_entry(data_vec_entry new_data) {
     Value embedding(kArrayType); // for embedding
     Value name(kStringType); // for img path
     Document::AllocatorType& allocator = line.GetAllocator();
-    if (this->imgs_datafile.is_open()) {
+    if (imgs_datafile.is_open()) {
         for (const auto &value : new_data.embedding) {
             embedding.PushBack(value, allocator);
         }
@@ -151,13 +151,13 @@ bool DataHandling::add_json_entry(data_vec_entry new_data) {
 
         line.Accept(writer);
 //        std::cout << "json entry " << strbuf.GetString() << std::endl;
-        this->imgs_datafile << strbuf.GetString() << std::endl;
-        this->imgs_datafile.close();
+        imgs_datafile << strbuf.GetString() << std::endl;
+        imgs_datafile.close();
 
     }
     else {
-        this->open_datafile();
-        this->add_json_entry(std::move(new_data));
+        open_datafile();
+        add_json_entry(std::move(new_data));
 
     }
 }
@@ -175,8 +175,8 @@ bool DataHandling::add_error_entry(const std::string& act_class_in,
     Value act_path(kStringType); // for img path
     Value expected_class(kStringType); // for img path
     Document::AllocatorType& allocator = line.GetAllocator();
-    if (!this->errors_datafile.is_open()) {
-        this->open_error_datafile();
+    if (!errors_datafile.is_open()) {
+        open_error_datafile();
     }
         // for (const auto &value : new_data.embedding) {
             // embedding.PushBack(value, allocator);
@@ -191,8 +191,8 @@ bool DataHandling::add_error_entry(const std::string& act_class_in,
 
         line.Accept(writer);
         // std::cout << "json entry " << strbuf.GetString() << std::endl;
-        this->errors_datafile << strbuf.GetString() << std::endl;
-        this->errors_datafile.close();
+        errors_datafile << strbuf.GetString() << std::endl;
+        errors_datafile.close();
 
 }
 

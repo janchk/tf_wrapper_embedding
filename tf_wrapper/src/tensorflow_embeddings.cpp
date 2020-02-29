@@ -34,7 +34,7 @@ std::string TensorFlowEmbeddings::inference(const std::vector<cv::Mat> &imgs) {
         }
     }
 
-    if (!tf_aux::convertMatToTensor_v2(imgs, this->_input_tensor)){
+    if (!tf_aux::convertMatToTensor_v2(imgs, _input_tensor)){
         return "Fail to convert Mat to Tensor";
     }
 
@@ -43,7 +43,7 @@ std::string TensorFlowEmbeddings::inference(const std::vector<cv::Mat> &imgs) {
     phase_tensor.scalar<bool>()() = false;
     std::vector<std::pair<string, tensorflow::Tensor>> inputs = {{_input_node_name, input},{"phase_train:0", phase_tensor}};
     #else
-    std::vector<std::pair<string, tensorflow::Tensor>> inputs = {{_input_node_names[0], this->_input_tensor}};
+    std::vector<std::pair<string, tensorflow::Tensor>> inputs = {{_input_node_names[0], _input_tensor}};
     #endif
 
     _status = _session->Run(inputs, _output_node_names, {}, &_output_tensors);

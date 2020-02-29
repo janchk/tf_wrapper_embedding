@@ -5,17 +5,17 @@
 #include "tf_wrapper/tensorflow_wrapper_core.h"
 
 TensorflowWrapperCore::TensorflowWrapperCore(TensorflowWrapperCore &&that) {
-    this->_session = that._session;
-    this->_is_loaded = that._is_loaded;
+    _session = that._session;
+    _is_loaded = that._is_loaded;
 
-    this->_name = std::move(that._name);
-    this->_path = std::move(that._path);
-    this->_graph_def = std::move(that._graph_def);
+    _name = std::move(that._name);
+    _path = std::move(that._path);
+    _graph_def = std::move(that._graph_def);
 }
 
 TensorflowWrapperCore::~TensorflowWrapperCore(){
     clearSession();
-    auto a = this->_session->Close();
+    auto a = _session->Close();
     common_ops::delete_safe(_session);
 }
 
