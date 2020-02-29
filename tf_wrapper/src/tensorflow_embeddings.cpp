@@ -16,7 +16,7 @@ bool TensorFlowEmbeddings::set_input_output(std::vector<std::string> in_nodes, s
 bool TensorFlowEmbeddings::normalize_image(cv::Mat &img) {
     double  min, max;
 
-//    tf_aux::fastResizeIfPossible()
+//    tf_aux::fast_resize_if_possible()
 //    cv::Scalar data = img.at<cv::Vec3b>(0,0);
 //    cv::minMaxLoc(img, &min, &max);
 //    img.convertTo(img, CV_32F, 1, 0); //TODO normalize it in a right way
@@ -34,7 +34,7 @@ std::string TensorFlowEmbeddings::inference(const std::vector<cv::Mat> &imgs) {
         }
     }
 
-    if (!tf_aux::convertMatToTensor_v2(imgs, _input_tensor)){
+    if (!tf_aux::convert_mat_to_tensor_v2(imgs, _input_tensor)){
         return "Fail to convert Mat to Tensor";
     }
 
@@ -48,14 +48,14 @@ std::string TensorFlowEmbeddings::inference(const std::vector<cv::Mat> &imgs) {
 
     _status = _session->Run(inputs, _output_node_names, {}, &_output_tensors);
 
-//    tf_aux::DebugOutput("NETWORK_STATUS", _status.ToString());
+//    tf_aux::debug_output("NETWORK_STATUS", _status.ToString());
     return _status.ToString();
 }
 
 
 
 
-std::vector<std::vector<float>> TensorFlowEmbeddings::getOutputEmbeddings() {
+std::vector<std::vector<float>> TensorFlowEmbeddings::get_output_embeddings() {
     if(_output_tensors.empty() || !_is_loaded) {
         std::cerr << "Can't get output Embeddings" << std::endl;
         return {};
@@ -63,17 +63,17 @@ std::vector<std::vector<float>> TensorFlowEmbeddings::getOutputEmbeddings() {
 
     if (_out_embeddings.empty()){
         const auto& output = _output_tensors[0];
-        _out_embeddings = convertTensorToVector(output);
+        _out_embeddings = convert_tensor_to_vector(output);
     } else {
         _out_embeddings.clear();
-        getOutputEmbeddings();
+        get_output_embeddings();
     }
 
     return _out_embeddings;
 }
 
 
-std::vector<std::vector<float>> TensorFlowEmbeddings::convertTensorToVector(const tensorflow::Tensor &tensor) {
+std::vector<std::vector<float>> TensorFlowEmbeddings::convert_tensor_to_vector(const tensorflow::Tensor &tensor) {
     const auto &temp_tensor = tensor.tensor<float, 2>();
     const auto &dims = tensor.shape();
     std::vector<float> temp_vec;
@@ -95,9 +95,9 @@ std::vector<std::vector<float>> TensorFlowEmbeddings::convertTensorToVector(cons
 
 }
 
-bool TensorFlowEmbeddings::setGpuNumberPreferred(int value) {
-    TensorflowWrapperCore::setGpuNumber(value);
-    const int gpu_num_value = TensorflowWrapperCore::getGpuNumber();
+bool TensorFlowEmbeddings::set_gpu_number_preferred(int value) {
+  TensorflowWrapperCore::set_gpu_number(value);
+    const int gpu_num_value = TensorflowWrapperCore::get_gpu_number();
     if (gpu_num_value != value) {
         std::cerr << "GPU number was not set" << std::endl;
         return false;

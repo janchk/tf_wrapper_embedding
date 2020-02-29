@@ -14,7 +14,7 @@ std::vector<int> tf_aux::get_tensor_shape(tensorflow::Tensor &tensor) {
     return shape;
 }
 
-bool tf_aux::convertMatToTensor_v2(const std::vector<cv::Mat> &imgs, tensorflow::Tensor &tensor) {
+bool tf_aux::convert_mat_to_tensor_v2(const std::vector<cv::Mat> &imgs, tensorflow::Tensor &tensor) {
     // We assume that images are already resized and normalized
     int height = imgs[0].size[0];
     int width = imgs[0].size[1];
@@ -40,10 +40,12 @@ bool tf_aux::convertMatToTensor_v2(const std::vector<cv::Mat> &imgs, tensorflow:
     return true;
 }
 
-bool tf_aux::fastResizeIfPossible(const cv::Mat &in, cv::Mat *dist, const cv::Size &size) {
+bool tf_aux::fast_resize_if_possible(const cv::Mat &in, cv::Mat *dist, const cv::Size &size) {
     if (in.size() == size) {
-        DebugOutput("sizes matches", std::to_string(in.cols) + "x" + std::to_string(in.rows) + "; "
-                                     + std::to_string(size.width) + "x" + std::to_string(size.height));
+      debug_output("sizes matches", std::to_string(in.cols) + "x" +
+                                        std::to_string(in.rows) + "; " +
+                                        std::to_string(size.width) + "x" +
+                                        std::to_string(size.height));
         in.copyTo(*dist);
         return true;
     }

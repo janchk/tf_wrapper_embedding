@@ -13,7 +13,7 @@ class EmbeddingsInterface
 {
 public:
 
-    virtual bool setGpuNumberPreferred(int value) = 0;
+    virtual bool set_gpu_number_preferred(int value) = 0;
 
     virtual bool set_input_output(std::vector<std::string> in_nodes,
                                   std::vector<std::string> out_nodes) = 0;
@@ -23,13 +23,13 @@ public:
 
     virtual std::string inference(const std::vector<cv::Mat> &imgs) = 0;
 
-    virtual std::string getVisibleDevices() = 0;
+    virtual std::string get_visible_devices() = 0;
 
-    virtual bool isLoaded() = 0;
+    virtual bool is_loaded() = 0;
 
-    virtual std::vector<std::vector<float>> getOutputEmbeddings() = 0;
+    virtual std::vector<std::vector<float>> get_output_embeddings() = 0;
 
-    virtual void clearSession() = 0;
+    virtual void clear_session() = 0;
 
 };
 

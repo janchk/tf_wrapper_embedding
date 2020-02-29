@@ -10,7 +10,7 @@
 class TensorFlowEmbeddingsInterface : public EmbeddingsInterface
 {
 public:
-    bool setGpuNumberPreferred(int value) override { return embed.setGpuNumberPreferred(value);}
+    bool set_gpu_number_preferred(int value) override { return embed.set_gpu_number_preferred(value);}
 
     bool load(const std::string &filename, const std::string &inputNodeName) override { return embed.load(filename, inputNodeName);}
 
@@ -19,13 +19,13 @@ public:
 
     std::string inference(const std::vector<cv::Mat> &imgs) override { return embed.inference(imgs);};
 
-    std::string getVisibleDevices() override { return embed.getVisibleDevices();} //Does not really work yet
+    std::string get_visible_devices() override { return embed.get_visible_devices();} //Does not really work yet
 
-    bool isLoaded() override { return embed.isLoaded(); }
+    bool is_loaded() override { return embed.is_loaded(); }
 
-    std::vector<std::vector<float>> getOutputEmbeddings() override { return embed.getOutputEmbeddings();}
+    std::vector<std::vector<float>> get_output_embeddings() override { return embed.get_output_embeddings();}
 
-    void clearSession() override {embed.clearSession();};
+    void clear_session() override { embed.clear_session();};
 
 private:
 

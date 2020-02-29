@@ -43,16 +43,16 @@ std::vector<WrapperBase::distance> WrapperBase::inference_and_matching(std::stri
     topN = db_handler->get_config_top_n();
     cv::Mat img = fs_img::read_img(img_path, db_handler->get_config_input_size());
 
-    if(!inference_handler->isLoaded())
+    if(!inference_handler->is_loaded())
         inference_handler->load(db_handler->get_config_pb_path(), _input_nodes[0]);
 
     inference_handler->set_input_output(_input_nodes, _output_nodes);
     inference_handler->inference({img});
 
-    embedding = inference_handler->getOutputEmbeddings()[0];
+    embedding = inference_handler->get_output_embeddings()[0];
 
     _matching(db_handler->get_data_vec_base(), embedding);
-    inference_handler->clearSession();
+    inference_handler->clear_session();
 
     return distances;
 }
@@ -60,7 +60,7 @@ std::vector<WrapperBase::distance> WrapperBase::inference_and_matching(std::stri
 bool WrapperBase::_add_updates() {
     std::cout << "Adding updates to database..." << std::endl;
     cv::Mat img; // TODO rethink this logic..
-    if(!inference_handler->isLoaded())
+    if(!inference_handler->is_loaded())
         inference_handler->load(db_handler->get_config_pb_path(), db_handler->get_config_input_node());
     inference_handler->set_input_output(_input_nodes, _output_nodes);
     std::vector<float> out_embedding; //TODO remember about batch
@@ -68,8 +68,9 @@ bool WrapperBase::_add_updates() {
     for (const auto &img_path : list_of_imgs) {
         img = fs_img::read_img(img_path, db_handler->get_config_input_size());
         inference_handler->inference({img}); //TODO remember about batch
-        new_data.embedding = inference_handler->getOutputEmbeddings()[0]; //TODO BATCH
-        inference_handler->clearSession();
+        new_data.embedding =
+            inference_handler->get_output_embeddings()[0]; //TODO BATCH
+        inference_handler->clear_session();
         new_data.filepath = img_path;
         db_handler->add_element_to_data_vec_base(new_data);
         db_handler->add_json_entry(new_data);
@@ -96,7 +97,7 @@ bool WrapperBase::_check_for_updates() {
 
     return true;
 }
-bool sortbydist(const WrapperBase::distance &a, const WrapperBase::distance &b){
+bool sort_by_dist(const WrapperBase::distance &a, const WrapperBase::distance &b){
     return (a.dist < b.dist);
 }
 
@@ -113,7 +114,7 @@ bool WrapperBase::_matching(const std::vector<DBInterface::data_vec_entry>& base
         distance.path = it.filepath;
         distances.push_back(distance);
     }
-    std::sort(distances.begin(), distances.end(), sortbydist);
+    std::sort(distances.begin(), distances.end(), sort_by_dist);
     if (topN > distances.size())
         topN = distances.size();
     distances.erase(distances.begin() + topN, distances.end());

@@ -32,54 +32,51 @@ public:
 
     virtual inline std::string inference(const std::vector<cv::Mat> &imgs);
 
-    virtual inline bool isLoaded() const { return _is_loaded; }
+    virtual inline bool is_loaded() const { return _is_loaded; }
 
-    virtual void clearSession();
+    virtual void clear_session();
 
-    virtual inline std::string getName() const { return _name; }
-    virtual void setName(const std::string& name);
+    virtual inline std::string get_name() const { return _name; }
+    virtual void set_name(const std::string& name);
 
+    std::string get_path() const;
 
-//    virtual void warmUp(int batchSize) = 0;
+    bool get_aggressive_optimization_gpu_enabled() const;
+    void set_aggressive_optimization_gpu_enabled(bool enabled);
 
-    std::string getPath() const;
+    bool get_allow_soft_placement() const;
+    void set_allow_soft_placement(bool allow_soft_placement);
 
-    bool getAggressiveOptimizationGPUEnabled() const;
-    void setAggressiveOptimizationGPUEnabled(bool enabled);
+    bool get_cpu_only() const;
+    void set_cpu_only(bool cpu_only);
 
-    bool getAllowSoftPlacement() const;
-    void setAllowSoftPlacement(bool allowSoftPlacement);
-
-    bool getCpuOnly() const;
-    void setCpuOnly(bool cpu_only);
-
-    bool getAggressiveOptimizationCPUEnabled() const;
+    bool get_aggressive_optimization_cpu_enabled() const;
     ///
     /// \brief setAgressiveOptimizationCPUEnabled JIT optimizations for CPU. Only for CPU Only mode.
     ///
-    void setAggressiveOptimizationCPUEnabled(bool enabled);
+    void set_aggressive_optimization_cpu_enabled(bool enabled);
 
 
-    int getGpuNumber() const;
+    int get_gpu_number() const;
     // If -1 may use all visible GPUs. Otherwise that GPU number that was set. Override with default device in the model
-    void setGpuNumber(int value);
+    void set_gpu_number(int value);
 
-    double getGpuMemoryFraction() const;
-    void setGpuMemoryFraction(double gpu_memory_fraction);
+    double get_gpu_memory_fraction() const;
+    void set_gpu_memory_fraction(double gpu_memory_fraction);
 
-    std::string getVisibleDevices() const;
-    void setVisibleDevices(const std::string &visible_devices);
+    std::string get_visible_devices() const;
+    void set_visible_devices(const std::string &visible_devices);
 
-    bool getAllowGrowth() const;
-    void setAllowGrowth(bool allow_growth);
+    bool get_allow_growth() const;
+    void set_allow_growth(bool allow_growth);
 
 
 protected:
 
-//    virtual void clearModel() = 0;
-//    virtual void clearSession() = 0;
+//    virtual void clear_model() = 0;
+//    virtual void clear_session() = 0;
 
-    void getInputNodeNameFromGraphIfPossible(const std::string &inputNodeName);
+    void get_input_node_name_from_graph_if_possible(const std::string &input_node_name);
 
     tensorflow::Status _status;
 
@@ -100,22 +97,22 @@ protected:
 
     std::vector<tensorflow::Tensor> _output_tensors;
 
-    void parseName(const std::string& filename);
-    tensorflow::SessionOptions configureSession();
-    void configureGraph();
+    void parse_name(const std::string& filename);
+    tensorflow::SessionOptions configure_session();
+    void configure_graph();
 
     ///
     /// \brief getTensorFromGraph Method for extracting tensors from graph. For usage, model must be loaded and Session must be active.
     /// \param tensor_name Name in the Graph
     /// \return Empty Tensor if failed, otherwise extructed Tensor
     ///
-    tensorflow::Tensor getTensorFromGraph(const std::string& tensor_name);
+    tensorflow::Tensor get_tensor_from_graph(const std::string& tensor_name);
 
-    using ConvertFunctionType = decltype(&(wrapper_legacy::convertMatToTensor<tensorflow::DT_FLOAT>));
+    using ConvertFunctionType = decltype(&(wrapper_legacy::convert_mat_to_tensor<tensorflow::DT_FLOAT>));
 
-    ConvertFunctionType getConvertFunction(INPUT_TYPE type) {
+    ConvertFunctionType get_convert_function(INPUT_TYPE type) {
         if (type == INPUT_TYPE::DT_FLOAT) {
-            return wrapper_legacy::convertMatToTensor<tensorflow::DT_FLOAT>;
+            return wrapper_legacy::convert_mat_to_tensor<tensorflow::DT_FLOAT>;
         }
 ///Actually we don't need support for int operations because we don't have strong hardware limits.
 //        else if (type == INPUT_TYPE::DT_UINT8) {

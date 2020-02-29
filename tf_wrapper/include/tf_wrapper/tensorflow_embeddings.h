@@ -28,7 +28,7 @@ public:
 
     /// \brief
     /// \return vector of output embeddings after inference
-    std::vector<std::vector<float>> getOutputEmbeddings();
+    std::vector<std::vector<float>> get_output_embeddings();
 
     /// \brief function to normalize input image
     /// \param img is an input_image
@@ -38,9 +38,9 @@ public:
     /// \brief function to convert output tensor of embeddings to vector of embeddings
     /// \param tensor
     /// \return Vector of embeddings
-    static  std::vector<std::vector<float>> convertTensorToVector(const tensorflow::Tensor& tensor);
+    static  std::vector<std::vector<float>> convert_tensor_to_vector(const tensorflow::Tensor& tensor);
 
-    bool setGpuNumberPreferred(int value);
+    bool set_gpu_number_preferred(int value);
 
 protected:
     tensorflow::Status _status;

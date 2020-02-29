@@ -8,54 +8,50 @@
 #include "tf_wrapper/common/common_ops.h"
 #include "gtest/gtest.h"
 
-class WrapperBaseWrapper : public WrapperBase {
+class WrapperBaseTester : public WrapperBase {
 public:
-    auto matchingWrapper(std::vector<DataHandling::data_vec_entry> &base, std::vector<float> &target) {
+    auto matching(std::vector<DataHandling::data_vec_entry> &base, std::vector<float> &target) {
         return _matching(base, target);
     }
 
-    auto add_updatesWrapper() {
+    auto add_updates() {
         return _add_updates();
     }
 
-    auto check_for_updatesWrapper() {
+    auto check_for_updates() {
         return _check_for_updates();
     }
 
-    auto distancesWrapper() {
+    auto get_distances() {
         return distances;
     }
 
-    auto setTopNWrapper(unsigned int N) {
-        topN = N;
-    }
-
-    auto setDataVecBase(std::vector<DataHandling::data_vec_entry> &vec_base) {
+    auto set_data_vec_base(std::vector<DataHandling::data_vec_entry> &vec_base) {
         db_handler->set_data_vec_base(vec_base);
     }
 
-    auto getDataVecBase() {
+    auto get_data_vec_base() {
         return db_handler->get_data_vec_base();
     }
 
-    auto setListOfImgs(std::vector<std::string> &list_of_imgs) {
-        list_of_imgs = list_of_imgs;
+    auto set_list_of_imgs(std::vector<std::string> &list_of_imgs) {
+        this->list_of_imgs = list_of_imgs;
     }
 
-    auto getListOfImgs() {
+    auto get_list_of_imgs() {
         return list_of_imgs;
     }
 
-    auto loadConfig() {
+    auto load_config() {
         return db_handler->load_config();
     }
 
-    auto setNodes() {
+    auto set_nodes() {
         _input_nodes = {db_handler->get_config_input_node()};
         _output_nodes = {db_handler->get_config_output_node()};
     }
 
-    auto setConfigPath(const std::string &path) {
+    auto set_config_path(const std::string &path) {
         db_handler->set_config_path(path);
     }
 
@@ -65,9 +61,9 @@ public:
 TEST(_matching, _matching_testMatchingCorrectnes_Test)
 {
 
-    auto *wrapper = new WrapperBaseWrapper;
+    WrapperBaseTester wrapper;
 
-    wrapper->setTopNWrapper(3);
+    wrapper.topN = 3;
 
     std::vector<float> test_target;
 
@@ -93,11 +89,11 @@ TEST(_matching, _matching_testMatchingCorrectnes_Test)
     test_base.emplace_back(test_entry_middle);
 
 
-    wrapper->matchingWrapper(test_base, test_target);
+    wrapper.matching(test_base, test_target);
 
-    ASSERT_EQ(wrapper->distancesWrapper()[0].path, "/testpath/series/closest_res/randimg.jpg");
-    ASSERT_EQ(wrapper->distancesWrapper()[1].path, "/testpath/series/middle_res/randimg.jpg");
-    ASSERT_EQ(wrapper->distancesWrapper()[2].path, "/testpath/series/farthest_res/randimg.jpg");
+    ASSERT_EQ(wrapper.get_distances()[0].path, "/testpath/series/closest_res/randimg.jpg");
+    ASSERT_EQ(wrapper.get_distances()[1].path, "/testpath/series/middle_res/randimg.jpg");
+    ASSERT_EQ(wrapper.get_distances()[2].path, "/testpath/series/farthest_res/randimg.jpg");
     
 //    common_ops::delete_safe(wrapper);
 
@@ -128,12 +124,12 @@ TEST(_check_for_updates, _check_no_changes) {
     test_list_of_imgs.emplace_back(test_entry_closest.filepath);
     test_list_of_imgs.emplace_back(test_entry_middle.filepath);
 
-    auto *wrapper = new WrapperBaseWrapper;
-    wrapper->setDataVecBase(test_base);
-    wrapper->setListOfImgs(test_list_of_imgs);
-    wrapper->check_for_updatesWrapper();
+    WrapperBaseTester wrapper;
+    wrapper.set_data_vec_base(test_base);
+    wrapper.set_list_of_imgs(test_list_of_imgs);
+    wrapper.check_for_updates();
 
-    ASSERT_TRUE(wrapper->getListOfImgs().empty());
+    ASSERT_TRUE(wrapper.get_list_of_imgs().empty());
 }
 
 TEST(_check_for_updates, _check_some_changes) {
@@ -156,11 +152,11 @@ TEST(_check_for_updates, _check_some_changes) {
     test_list_of_imgs.emplace_back(test_entry_closest.filepath);
     test_list_of_imgs.emplace_back(test_entry_middle.filepath);
 
-    auto *wrapper = new WrapperBaseWrapper;
-    wrapper->setDataVecBase(test_base);
-    wrapper->setListOfImgs(test_list_of_imgs);
-    wrapper->check_for_updatesWrapper();
-    ASSERT_FALSE(wrapper->getListOfImgs().empty());
+    WrapperBaseTester wrapper;
+    wrapper.set_data_vec_base(test_base);
+    wrapper.set_list_of_imgs(test_list_of_imgs);
+    wrapper.check_for_updates();
+    ASSERT_FALSE(wrapper.get_list_of_imgs().empty());
 }
 
 TEST(_check_for_updates, _remembers_images_that_are_not_present_anymore) {
@@ -187,16 +183,16 @@ TEST(_check_for_updates, _remembers_images_that_are_not_present_anymore) {
     test_list_of_imgs.emplace_back(test_entry_farthest.filepath);
     test_list_of_imgs.emplace_back(test_entry_closest.filepath);
 
-    auto *wrapper = new WrapperBaseWrapper;
-    wrapper->setDataVecBase(test_base);
-    wrapper->setListOfImgs(test_list_of_imgs);
-    wrapper->check_for_updatesWrapper();
+    WrapperBaseTester wrapper;
+    wrapper.set_data_vec_base(test_base);
+    wrapper.set_list_of_imgs(test_list_of_imgs);
+    wrapper.check_for_updates();
 
-    ASSERT_TRUE(wrapper->getListOfImgs().empty());
+    ASSERT_TRUE(wrapper.get_list_of_imgs().empty());
 }
 
 TEST(_add_updates, adds_new_images) {
-    auto *wrapper = new WrapperBaseWrapper;
+    WrapperBaseTester wrapper;
 
     std::vector<DataHandling::data_vec_entry> test_base;
 
@@ -210,15 +206,15 @@ TEST(_add_updates, adds_new_images) {
     std::vector<std::string> test_list_of_imgs;
     test_list_of_imgs.emplace_back("./Lenna.jpg");
 
-    wrapper->setDataVecBase(test_base);
-    wrapper->setListOfImgs(test_list_of_imgs);
-    wrapper->setConfigPath("./config.json");
-    wrapper->loadConfig();
-    wrapper->setNodes();
+    wrapper.set_data_vec_base(test_base);
+    wrapper.set_list_of_imgs(test_list_of_imgs);
+    wrapper.set_config_path("./config.json");
+    wrapper.load_config();
+    wrapper.set_nodes();
 
-    wrapper->add_updatesWrapper();
+    wrapper.add_updates();
 
-    auto new_vec_base = wrapper->getDataVecBase();
+    auto new_vec_base = wrapper.get_data_vec_base();
 
     ASSERT_EQ(new_vec_base[1].filepath, "./Lenna.jpg");
 }

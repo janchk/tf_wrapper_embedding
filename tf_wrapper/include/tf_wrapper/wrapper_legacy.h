@@ -21,7 +21,7 @@ namespace wrapper_legacy {
     /// \param depth Output Tensor depth
     /// \return Ready to inference Tensor with batch of images
     template<tensorflow::DataType T>
-    tensorflow::Tensor convertMatToTensor(const std::vector <cv::Mat> &imgs, int height, int width, int depth,
+    tensorflow::Tensor convert_mat_to_tensor(const std::vector <cv::Mat> &imgs, int height, int width, int depth,
                                           bool normalize, const std::vector<float> &mean) {
 
         using namespace tensorflow;
@@ -44,7 +44,8 @@ namespace wrapper_legacy {
             {
             PROFILE_BLOCK("resize img");
 #endif
-            tf_aux::fastResizeIfPossible(imgs[i], &img, cv::Size(width, height));
+            tf_aux::fast_resize_if_possible(imgs[i], &img,
+                                            cv::Size(width, height));
 #ifdef TFDEBUG
             }
 #endif

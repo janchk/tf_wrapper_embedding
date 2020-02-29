@@ -25,19 +25,19 @@ namespace tf_aux
     struct profiler;
     /// Profile helper
     #define PROFILE_BLOCK(pbn) tf_aux::profiler _pfinstance(pbn)
-    inline void DebugOutput(const std::string& header, const std::string& msg) {
+    inline void debug_output(const std::string& header, const std::string& msg) {
     #ifdef TFDEBUG
         std::cerr << header << ": " << msg << "\n";
     #endif
     }
-    bool fastResizeIfPossible(const cv::Mat &in, cv::Mat *dist, const cv::Size &size);
+    bool fast_resize_if_possible(const cv::Mat &in, cv::Mat *dist, const cv::Size &size);
 
 
     ///
     /// \param imgs
     /// \param tensor
     /// \return
-    bool convertMatToTensor_v2(const std::vector<cv::Mat> &imgs, tensorflow::Tensor &tensor);
+    bool convert_mat_to_tensor_v2(const std::vector<cv::Mat> &imgs, tensorflow::Tensor &tensor);
 
     ///
     /// \param tensor
