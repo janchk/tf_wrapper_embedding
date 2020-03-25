@@ -1,18 +1,15 @@
 message(STATUS "Including GTest on Tests build")
-# include_directories (${GTest_INCLUDE_DIR}/..)
 
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR} ${CMAKE_MODULE_PATH}../cmake)
 
 find_package(TensorFlow CONFIG REQUIRED)
-find_package(Eigen3 REQUIRED)
 
 # Configuring test data
 
-file(COPY test_data/optimized_val_84.pb
+file(COPY test_data/test79_rotated.pb
      DESTINATION ${CMAKE_BINARY_DIR}/test_data/)
 file(GLOB_RECURSE TEST_DATA ${CMAKE_CURRENT_LIST_DIR}/test_data/series/*.jpg)
 
-# message(STATUS ${TEST_DATA}) message(STATUS ${TEST_DATA_DIRECTORY})
 
 add_subdirectory(commonTests)
 add_subdirectory(tensorflowTests)

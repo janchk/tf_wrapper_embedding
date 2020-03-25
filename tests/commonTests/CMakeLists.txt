@@ -10,8 +10,7 @@ set(TEST_DATA_PATH ${CMAKE_BINARY_DIR}/tests/${MODULE_NAME})
 
 file(MAKE_DIRECTORY ${TEST_DATAFILE_PATH})
 
-target_link_libraries(${MODULE_NAME} gtest gtest_main TF_WRAPPER_EMBEDDING
-                      Eigen3::Eigen)
+target_link_libraries(${MODULE_NAME} gtest gtest_main TF_WRAPPER_EMBEDDING)
 
 configure_file(../test_data/testdatafile.txt ${TEST_DATAFILE_PATH} COPYONLY)
 

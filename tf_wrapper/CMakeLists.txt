@@ -7,7 +7,8 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules")
 find_package(TensorFlow CONFIG REQUIRED)
 find_package(OpenCV REQUIRED)
 find_package(Eigen3 REQUIRED)
-# find_package(RapidJSON REQUIRED)
+find_package(absl REQUIRED)
+find_package(RapidJSON REQUIRED)
 
 add_library(
   TF_WRAPPER_EMBEDDING
@@ -28,9 +29,16 @@ target_include_directories(
   TF_WRAPPER_EMBEDDING PRIVATE ${TensorFlow_INCLUDE_DIRS}
                                ${Protobuf_INCLUDE_DIRS})
 target_link_libraries(
-  TF_WRAPPER_EMBEDDING PRIVATE stdc++fs ${OpenCV_LIBS} ${TensorFlow_LIBRARIES}
-                               ${GLOG_LIBRARIES})
-
+  TF_WRAPPER_EMBEDDING
+  PRIVATE stdc++fs
+          ${OpenCV_LIBS}
+          Eigen3::Eigen
+          ${TensorFlow_LIBRARIES}
+          ${Protobuf_LIBRARIES}
+          absl::base
+          absl::synchronization
+          absl::strings
+          ${GLOG_LIBRARIES})
 message(TF LIBRARIES ${TensorFlow_LIBRARIES})
 
 message("INCLUDING TF LIBS" ${TensorFlow_LIBRARIES})

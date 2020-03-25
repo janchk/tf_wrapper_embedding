@@ -8,6 +8,4 @@ message(dir ${TF_WRAPPER_EMBEDDING_SOURCE_DIR})
 configure_file(config.json ${CMAKE_BINARY_DIR}/application/metrics COPYONLY)
 
 target_include_directories(TF_WRAPPER_METRICS
-        PUBLIC
-        ${TF_WRAPPER_EMBEDDING_SOURCE_DIR}
-        )
+                           PUBLIC ${TF_WRAPPER_EMBEDDING_SOURCE_DIR})
