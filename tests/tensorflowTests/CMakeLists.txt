@@ -23,7 +23,7 @@ file(MAKE_DIRECTORY ${TEST_DATA_PATH_QUERIES})
 
 file(COPY ${CMAKE_CURRENT_LIST_DIR}/../test_data/queries/helsinki_1_andante/IMG_7813_4.jpg DESTINATION ${TEST_DATA_PATH_QUERIES})
 
-target_link_libraries(${MODULE_NAME} gtest gtest_main TF_WRAPPER_EMBEDDING)
+target_link_libraries(${MODULE_NAME} gtest gtest_main TF_WRAPPER_EMBEDDING Eigen3::Eigen TensorFlow)
 
 target_include_directories(${MODULE_NAME} PUBLIC
         ${TF_WRAPPER_EMBEDDING_SOURCE_DIR})
